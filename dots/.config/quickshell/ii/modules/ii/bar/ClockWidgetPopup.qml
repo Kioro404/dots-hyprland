@@ -55,7 +55,7 @@ StyledPopup {
 
             StyledPopupValueRow {
                 icon: "checklist"
-                label: Translation.tr("To Do:")
+                label: Translation.tr("To Do") + ":"
                 value: ""
             }
 
