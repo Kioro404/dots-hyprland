@@ -10,7 +10,6 @@ import Quickshell.Services.Notifications
 
 /**
  * Provides extra features not in Quickshell.Services.Notifications:
- *  - Persistent storage
  *  - Popup notifications, with timeout
  *  - Notification groups by app
  */
@@ -75,7 +74,6 @@ Singleton {
 
     property bool silent: false
     property int unread: 0
-    property var filePath: Directories.notificationsPath
     property list<Notif> list: []
     property var popupList: list.filter((notif) => notif.popup);
     property bool popupInhibited: (GlobalStates?.sidebarRightOpen ?? false) || silent
@@ -157,7 +155,7 @@ Singleton {
         bodySupported: true
         imageSupported: true
         keepOnReload: false
-        persistenceSupported: true
+        persistenceSupported: false
 
         onNotification: (notification) => {
             notification.tracked = true
@@ -181,7 +179,6 @@ Singleton {
             }
             root.notify(newNotifObject);
             // console.log(notifToString(newNotifObject));
-            notifFileView.setText(stringifyList(root.list));
         }
     }
 
@@ -195,7 +192,6 @@ Singleton {
         const notifServerIndex = notifServer.trackedNotifications.values.findIndex((notif) => notif.id + root.idOffset === id);
         if (index !== -1) {
             root.list.splice(index, 1);
-            notifFileView.setText(stringifyList(root.list));
             triggerListChange()
         }
         if (notifServerIndex !== -1) {
@@ -207,7 +203,6 @@ Singleton {
     function discardAllNotifications() {
         root.list = []
         triggerListChange()
-        notifFileView.setText(stringifyList(root.list));
         notifServer.trackedNotifications.values.forEach((notif) => {
             notif.dismiss()
         })
@@ -256,50 +251,9 @@ Singleton {
         root.list = root.list.slice(0)
     }
 
-    function refresh() {
-        notifFileView.reload()
-    }
-
     Component.onCompleted: {
-        refresh()
-    }
-
-    FileView {
-        id: notifFileView
-        path: Qt.resolvedUrl(filePath)
-        onLoaded: {
-            const fileContents = notifFileView.text()
-            root.list = JSON.parse(fileContents).map((notif) => {
-                return notifComponent.createObject(root, {
-                    "notificationId": notif.notificationId,
-                    "actions": [], // Notification actions are meaningless if they're not tracked by the server or the sender is dead
-                    "appIcon": notif.appIcon,
-                    "appName": notif.appName,
-                    "body": notif.body,
-                    "image": notif.image,
-                    "summary": notif.summary,
-                    "time": notif.time,
-                    "urgency": notif.urgency,
-                });
-            });
-            // Find largest notificationId
-            let maxId = 0
-            root.list.forEach((notif) => {
-                maxId = Math.max(maxId, notif.notificationId)
-            })
-
-            console.log("[Notifications] File loaded")
-            root.idOffset = maxId
-            root.initDone()
-        }
-        onLoadFailed: (error) => {
-            if(error == FileViewError.FileNotFound) {
-                console.log("[Notifications] File not found, creating new file.")
-                root.list = []
-                notifFileView.setText(stringifyList(root.list));
-            } else {
-                console.log("[Notifications] Error loading file: " + error)
-            }
-        }
+        root.list = []
+        root.idOffset = 0
+        root.initDone()
     }
 }
