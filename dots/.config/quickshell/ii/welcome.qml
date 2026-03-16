@@ -346,7 +346,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
 
                         ContentSubsection {
-                            title: "Weeb"
+                            title: Translation.tr("Weeb")
 
                             ConfigSelectionArray {
                                 currentValue: Config.options.policies.weeb
@@ -445,14 +445,14 @@ ApplicationWindow {
                             materialIcon: "help"
                             mainText: Translation.tr("Usage")
                             onClicked: {
-                                Qt.openUrlExternally("https://end-4.github.io/dots-hyprland-wiki/en/ii-qs/02usage/");
+                                Qt.openUrlExternally("https://ii.clsty.link/en/ii-qs/02usage/");
                             }
                         }
                         RippleButtonWithIcon {
                             materialIcon: "construction"
                             mainText: Translation.tr("Configuration")
                             onClicked: {
-                                Qt.openUrlExternally("https://end-4.github.io/dots-hyprland-wiki/en/ii-qs/03config/");
+                                Qt.openUrlExternally("https://ii.clsty.link/en/ii-qs/03config/");
                             }
                         }
                     }
@@ -470,14 +470,14 @@ ApplicationWindow {
                             nerdIcon: "󰊤"
                             mainText: Translation.tr("GitHub")
                             onClicked: {
-                                Qt.openUrlExternally("https://github.com/end-4/dots-hyprland");
+                                Qt.openUrlExternally("https://github.com/kioro404/dots-hyprland");
                             }
                         }
                         RippleButtonWithIcon {
                             materialIcon: "favorite"
-                            mainText: "Funny number"
+                            mainText: Translation.tr("Donate")
                             onClicked: {
-                                Qt.openUrlExternally("https://github.com/sponsors/end-4");
+                                Qt.openUrlExternally("https://ko-fi.com/R5R41W3ALQ");
                             }
                         }
                     }
