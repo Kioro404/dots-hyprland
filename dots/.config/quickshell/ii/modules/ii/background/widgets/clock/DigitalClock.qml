@@ -13,38 +13,91 @@ ColumnLayout {
     property color colText: Appearance.colors.colOnSecondaryContainer
     property var textHorizontalAlignment: Text.AlignHCenter
 
-    // Time
-    ClockText {
-        id: timeTextTop
-        text: clockColumn.isVertical ? DateTime.time.split(":")[0].padStart(2, "0") : DateTime.time
-        color: clockColumn.colText
-        horizontalAlignment: Text.AlignHCenter
-        font {
-            pixelSize: Config.options.background.widgets.clock.digital.font.size
-            weight: Config.options.background.widgets.clock.digital.font.weight
-            family: Config.options.background.widgets.clock.digital.font.family
-            variableAxes: ({
-                    "wdth": Config.options.background.widgets.clock.digital.font.width,
-                    "ROND": Config.options.background.widgets.clock.digital.font.roundness
-                })
+    component TimeDigits: Row {
+        id: timeDigits
+        property int value: 0
+        property color textColor: clockColumn.colText
+        property var alignment: clockColumn.textHorizontalAlignment
+        property int fontSize: Config.options.background.widgets.clock.digital.font.size
+        property int fontWeight: Config.options.background.widgets.clock.digital.font.weight
+        property string fontFamily: Config.options.background.widgets.clock.digital.font.family
+        property var fontAxes: ({
+                "wdth": Config.options.background.widgets.clock.digital.font.width,
+                "ROND": Config.options.background.widgets.clock.digital.font.roundness
+            })
+        spacing: 0
+
+        ClockText {
+            text: Math.floor(timeDigits.value / 10).toString()
+            color: timeDigits.textColor
+            horizontalAlignment: timeDigits.alignment
+            font {
+                pixelSize: timeDigits.fontSize
+                weight: timeDigits.fontWeight
+                family: timeDigits.fontFamily
+                variableAxes: timeDigits.fontAxes
+            }
+        }
+        ClockText {
+            text: (timeDigits.value % 10).toString()
+            color: timeDigits.textColor
+            horizontalAlignment: timeDigits.alignment
+            font {
+                pixelSize: timeDigits.fontSize
+                weight: timeDigits.fontWeight
+                family: timeDigits.fontFamily
+                variableAxes: timeDigits.fontAxes
+            }
         }
     }
 
+    // Time
     Loader {
-        Layout.topMargin: -40
+        id: timeLoader
         Layout.fillWidth: true
-        active: clockColumn.isVertical
-        visible: active
-        sourceComponent: ClockText {
-            id: timeTextBottom
-            text: DateTime.time.split(":")[1].split(" ")[0].padStart(2, "0")
-            color: clockColumn.colText
-            horizontalAlignment: clockColumn.textHorizontalAlignment
-            font {
-                pixelSize: timeTextTop.font.pixelSize
-                weight: timeTextTop.font.weight
-                family: timeTextTop.font.family
-                variableAxes: timeTextTop.font.variableAxes
+        sourceComponent: clockColumn.isVertical ? verticalTimeComponent : horizontalTimeComponent
+    }
+
+    Component {
+        id: verticalTimeComponent
+        ColumnLayout {
+            spacing: 4
+            TimeDigits {
+                value: DateTime.clock.hours
+                Layout.alignment: Qt.AlignHCenter
+            }
+            TimeDigits {
+                value: DateTime.clock.minutes
+                Layout.alignment: Qt.AlignHCenter
+                Layout.topMargin: -40
+            }
+        }
+    }
+
+    Component {
+        id: horizontalTimeComponent
+        Row {
+            spacing: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            TimeDigits {
+                value: DateTime.clock.hours
+            }
+            ClockText {
+                text: ":"
+                color: clockColumn.colText
+                horizontalAlignment: clockColumn.textHorizontalAlignment
+                font {
+                    pixelSize: Config.options.background.widgets.clock.digital.font.size
+                    weight: Config.options.background.widgets.clock.digital.font.weight
+                    family: Config.options.background.widgets.clock.digital.font.family
+                    variableAxes: ({
+                            "wdth": Config.options.background.widgets.clock.digital.font.width,
+                            "ROND": Config.options.background.widgets.clock.digital.font.roundness
+                        })
+                }
+            }
+            TimeDigits {
+                value: DateTime.clock.minutes
             }
         }
     }
