@@ -5,9 +5,9 @@
 
 <div align="center">
 
-    ![](https://img.shields.io/github/last-commit/kioro404/dots-hyprland?&style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B)
-    ![](https://img.shields.io/github/stars/kioro404/dots-hyprland?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B)
-    ![](https://img.shields.io/github/repo-size/kioro404/dots-hyprland?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B)
+![](https://img.shields.io/github/last-commit/kioro404/dots-hyprland?&style=for-the-badge&color=8ad7eb&logo=git&logoColor=D9E0EE&labelColor=1E202B)
+![](https://img.shields.io/github/stars/kioro404/dots-hyprland?style=for-the-badge&logo=andela&color=86dbd7&logoColor=D9E0EE&labelColor=1E202B)
+![](https://img.shields.io/github/repo-size/kioro404/dots-hyprland?color=86dbce&label=SIZE&logo=protondrive&style=for-the-badge&logoColor=D9E0EE&labelColor=1E202B)
 
 </div>
 
@@ -105,5 +105,5 @@ Widget system: Quickshell | Support: Yes
     <h3></h3>
 </div>
 
- - Inspiration: end_4 osu!lazer, Windows 11, Material Design 3, AvdanOS (concept)
+ - Inspiration: end_4, osu!lazer, Windows 11, Material Design 3, AvdanOS (concept)
  - Copying: The license allows you to. Personally I have absolutely no problem with others redistributing/recreating my work. There's no "stealing" (maybe unless you loudly do weird stuff and violate the license) <sub>(some people actually had to ask smh)</sub>
