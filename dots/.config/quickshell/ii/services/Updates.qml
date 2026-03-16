@@ -15,6 +15,7 @@ Singleton {
     property bool available: false
     property alias checking: checkUpdatesProc.running
     property int count: 0
+    property int lastCount: 0
     
     readonly property bool updateAdvised: available && count > Config.options.updates.adviseUpdateThreshold
     readonly property bool updateStronglyAdvised: available && count > Config.options.updates.stronglyAdviseUpdateThreshold
@@ -27,7 +28,8 @@ Singleton {
     }
 
     Timer {
-        interval: Config.options.updates.checkInterval * 60 * 1000
+        id: periodicCheckTimer
+        interval: 21600000 // 6 hours
         repeat: true
         running: Config.ready && Config.options.updates.enableCheck
         onTriggered: {
@@ -38,12 +40,20 @@ Singleton {
 
     Process {
         id: checkAvailabilityProc
-        running: Config.ready && Config.options.updates.enableCheck
+        running: false
         command: ["which", "checkupdates"]
         onExited: (exitCode, exitStatus) => {
             root.available = (exitCode === 0);
             root.refresh();
         }
+    }
+
+    Timer {
+        id: initialCheckTimer
+        interval: 10000 // seconds
+        repeat: false
+        running: Config.ready && Config.options.updates.enableCheck
+        onTriggered: checkAvailabilityProc.running = true
     }
 
     Process {
@@ -52,6 +62,10 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.count = parseInt(text.trim());
+                if (root.count > 0 && root.lastCount == 0)
+                    // Quickshell.execDetached(["notify-send", Translation.tr("Updates"), Translation.tr("There are %1 updates available").arg(root.count), "-a", "Shell"]);
+                    Quickshell.execDetached(["notify-send", "-A", "update=" + Translation.tr("Update"), Translation.tr("Updates"), Translation.tr("There are %1 updates available").arg(root.count), "-a", "Shell", '--action-click="update=kitty -e sudo pacman -Syu && exit 0"']);
+                root.lastCount = root.count;
             }
         }
     }
