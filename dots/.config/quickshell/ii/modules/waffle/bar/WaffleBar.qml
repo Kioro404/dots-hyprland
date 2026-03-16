@@ -22,6 +22,7 @@ Scope {
                 screen: modelData
                 exclusionMode: ExclusionMode.Ignore
                 exclusiveZone: implicitHeight
+                WlrLayershell.layer: WlrLayer.Bottom
                 WlrLayershell.namespace: "quickshell:bar"
 
                 anchors {
