@@ -25,16 +25,22 @@ Singleton {
 
 	property var activeTrack;
 
-	readonly property bool hasActivePlasmaIntegration: Mpris.players.values.some(
-		p => p.dbusName?.startsWith('org.mpris.MediaPlayer2.plasma-browser-integration')
-	)
+	property bool hasPlasmaIntegration: false
+    Process {
+        id: plasmaIntegrationAvailabilityCheckProc
+        running: true
+        command: ["bash", "-c", "command -v plasma-browser-integration-host"]
+        onExited: (exitCode, exitStatus) => {
+            root.hasPlasmaIntegration = (exitCode === 0);
+        }
+    }
 	function isRealPlayer(player) {
         if (!Config.options.media.filterDuplicatePlayers) {
             return true;
         }
         return (
-            // Remove native browser buses only if plasma-browser-integration is actually active on D-Bus
-            !(hasActivePlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.firefox')) && !(hasActivePlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
+            // Remove unecessary native buses from browsers if there's plasma integration
+            !(hasPlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.firefox')) && !(hasPlasmaIntegration && player.dbusName.startsWith('org.mpris.MediaPlayer2.chromium')) &&
             // playerctld just copies other buses and we don't need duplicates
             !player.dbusName?.startsWith('org.mpris.MediaPlayer2.playerctld') &&
             // Non-instance mpd bus
