@@ -62,7 +62,6 @@ _THERE IS NO WAYBAR STOP FUCKING CALLING EVERY BAR WAYBAR_
 Support widgets:
   - Quickshell: This is the latest and only supported style. Other stuff are still there mostly for viewing pleasure and not actual use, but code is still available, see below.
 
-
 [Showcase video](https://www.youtube.com/watch?v=RPwovTInagE)
 
 | AI, settings app | Some widgets |
@@ -77,7 +76,7 @@ Support widgets:
     <h2>• thank you •</h2>
 </div>
 
- - [@end-4](https://github.com/end-4) Thank you for creating the base for this project.
+ - [@end-4](https://github.com/end-4) original creator of the base for this project.
 
 <div align="center">
     <h2>• stonks •</h2>
