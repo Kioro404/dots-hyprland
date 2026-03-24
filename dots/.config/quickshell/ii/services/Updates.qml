@@ -62,10 +62,6 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 root.count = parseInt(text.trim());
-                if (root.count > 0 && root.lastCount == 0)
-                    // Quickshell.execDetached(["notify-send", Translation.tr("Updates"), Translation.tr("There are %1 updates available").arg(root.count), "-a", "Shell"]);
-                    Quickshell.execDetached(["notify-send", "-A", "update=" + Translation.tr("Update"), Translation.tr("Updates"), Translation.tr("There are %1 updates available").arg(root.count), "-a", "Shell", '--action-click="update=kitty -e sudo pacman -Syu && exit 0"']);
-                root.lastCount = root.count;
             }
         }
     }
