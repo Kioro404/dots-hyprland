@@ -44,7 +44,7 @@
   "Depends on workspace": "Depende del espacio de trabajo",
   "Enter password": "Introduce la contraseña",
   "Local only": "Local solamente",
-  "at": "a las",
+  "at": "en",
   "Math": "Matemáticas",
   "Consider plugging in your device": "Considera conectar tu dispositivo",
   "Workspaces shown": "Espacios de trabajo mostrados",
@@ -695,5 +695,6 @@
   "Input device": "Dispositivo de entrada",
   "Updates": "Actualizaciones",
   "Update": "Actualizar",
-  "There are %1 updates available": "Hay %1 actualizaciones disponibles"
+  "There are %1 updates available": "Hay %1 actualizaciones disponibles",
+  "Now": "Ahora"
 }
