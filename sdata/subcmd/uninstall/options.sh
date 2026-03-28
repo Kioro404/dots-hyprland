@@ -7,7 +7,7 @@ echo -e "Syntax: $0 uninstall [OPTIONS]...
 Unintall dots.
 
 Options:
-  -h, --help       Show this help message
+  -h, --help                     Show this help message
 "
 }
 # `man getopt` to see more

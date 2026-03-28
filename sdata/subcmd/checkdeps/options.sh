@@ -7,7 +7,7 @@ echo -e "Syntax: $0 checkdeps [OPTIONS] <LIST_FILE_PATH>...
 Check whether pkgs listed in <LIST_FILE_PATH> exist in AUR or repos of Arch.
 
 Options:
-  -h, --help       Show this help message
+  -h, --help                     Show this help message
 "
 }
 # `man getopt` to see more
