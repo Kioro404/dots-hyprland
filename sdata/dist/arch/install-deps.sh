@@ -22,7 +22,7 @@ remove_deprecated_dependencies(){
   for i in ${list[@]};do try sudo pacman --noconfirm -Rdd $i;done
 }
 # NOTE: `implicitize_old_dependencies()` was for the old days when we just switch from dependencies.conf to local PKGBUILDs.
-# However, let's just keep it as references for other distros writing their `sdata/dist-<OS_GROUP_ID>/install-deps.sh`, if they need it.
+# However, let's just keep it as references for other distros writing their `sdata/dist/<OS_GROUP_ID>/install-deps.sh`, if they need it.
 implicitize_old_dependencies(){
 # Convert old dependencies to non explicit dependencies so that they can be orphaned if not in meta packages
   remove_bashcomments_emptylines ./sdata/dist/arch/previous_dependencies.conf ./cache/old_deps_stripped.conf
