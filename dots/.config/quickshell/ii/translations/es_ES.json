@@ -300,7 +300,7 @@
   "Invalid arguments. Must provide `key` and `value`.": "Argumentos inválidos. Debe proporcionar `key` y `value`.",
   "Allows you to open sidebars by clicking or hovering screen corners regardless of bar position": "Le permite abrir barras laterales haciendo clic o colocando el cursor sobre las esquinas de la pantalla, independientemente de la posición de la barra.",
   "Bar style": "Estilo de la barra",
-  "Load:": "Carga:",
+  "Load:": "Cargar:",
   "Open file link": "Abrir enlace a archivo",
   "Ignored if terminal theming is not enabled": "Ignorado si la tematica del terminal no está activada",
   "Shutdown": "Apagar",
@@ -694,5 +694,6 @@
   "of %1": "de %1",
   "Overlay: Crosshair": "Superposición: Mira",
   "Input device": "Dispositivo de entrada",
-  "Now": "Ahora"
+  "Now": "Ahora",
+  "All monitors": "Todos los monitores"
 }

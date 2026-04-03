@@ -18,6 +18,8 @@ Scope {
     Variants {
         // For each monitor
         model: {
+            if (Config.options.bar.disabled)
+                return [];
             const screens = Quickshell.screens;
             const list = Config.options.bar.screenList;
             if (!list || list.length === 0)

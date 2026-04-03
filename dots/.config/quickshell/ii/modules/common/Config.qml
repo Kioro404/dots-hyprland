@@ -249,6 +249,7 @@ Singleton {
                     property int cpuWarningThreshold: 90
                 }
                 property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
+                property bool disabled: false
                 property JsonObject utilButtons: JsonObject {
                     property bool showScreenSnip: true
                     property bool showColorPicker: false
@@ -301,7 +302,7 @@ Singleton {
                 // 0: 󰖳  | 1: 󰌽 | 2: 󰘳 | 3:  | 4: 󰨡
                 // 5:  | 6:  | 7: 󰣇 | 8:  | 9: 
                 // 10:  | 11:  | 12:  | 13:  | 14: 󱄛
-                property string superKey: ""
+                property string superKey: ""
                 property bool useMacSymbol: false
                 property bool splitButtons: false
                 property bool useMouseSymbol: false

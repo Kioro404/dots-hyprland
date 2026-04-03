@@ -6,6 +6,7 @@ import qs.modules.common.widgets
 
 ContentPage {
     forceWidth: true
+    property var screenListTemp: []
 
     ContentSection {
         icon: "notifications"
@@ -39,22 +40,22 @@ ContentPage {
                         {
                             displayName: Translation.tr("Top"),
                             icon: "arrow_upward",
-                            value: 0 // bottom: false, vertical: false
+                            value: 0
                         },
                         {
                             displayName: Translation.tr("Left"),
                             icon: "arrow_back",
-                            value: 2 // bottom: false, vertical: true
+                            value: 2
                         },
                         {
                             displayName: Translation.tr("Bottom"),
                             icon: "arrow_downward",
-                            value: 1 // bottom: true, vertical: false
+                            value: 1
                         },
                         {
                             displayName: Translation.tr("Right"),
                             icon: "arrow_forward",
-                            value: 3 // bottom: true, vertical: true
+                            value: 3
                         }
                     ]
                 }
@@ -66,7 +67,7 @@ ContentPage {
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.autoHide.enable
                     onSelected: newValue => {
-                        Config.options.bar.autoHide.enable = newValue; // Update local copy
+                        Config.options.bar.autoHide.enable = newValue;
                     }
                     options: [
                         {
@@ -85,7 +86,6 @@ ContentPage {
         }
 
         ConfigRow {
-            
             ContentSubsection {
                 title: Translation.tr("Corner style")
                 Layout.fillWidth: true
@@ -93,7 +93,7 @@ ContentPage {
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.cornerStyle
                     onSelected: newValue => {
-                        Config.options.bar.cornerStyle = newValue; // Update local copy
+                        Config.options.bar.cornerStyle = newValue;
                     }
                     options: [
                         {
@@ -122,7 +122,7 @@ ContentPage {
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.borderless
                     onSelected: newValue => {
-                        Config.options.bar.borderless = newValue; // Update local copy
+                        Config.options.bar.borderless = newValue;
                     }
                     options: [
                         {
@@ -348,3 +348,4 @@ ContentPage {
         }
     }
 }
+
