@@ -150,29 +150,19 @@ Button {
             }
         }
 
-        Item {
+        Rectangle {
             id: ripple
             width: ripple.implicitWidth
             height: ripple.implicitHeight
             opacity: 0
             visible: width > 0 && height > 0
-
-            property real implicitWidth: 0
-            property real implicitHeight: 0
-
-            Behavior on opacity {
-                animation: Appearance?.animation.elementMoveFast.colorAnimation.createObject(this)
+            implicitWidth: 0
+            implicitHeight: 0
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: root.rippleColor }
+                GradientStop { position: 0.3; color: root.rippleColor }
+                GradientStop { position: 0.5; color: Qt.rgba(root.rippleColor.r, root.rippleColor.g, root.rippleColor.b, 0) }
             }
-
-            RadialGradient {
-                anchors.fill: parent
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: root.rippleColor }
-                    GradientStop { position: 0.3; color: root.rippleColor }
-                    GradientStop { position: 0.5; color: Qt.rgba(root.rippleColor.r, root.rippleColor.g, root.rippleColor.b, 0) }
-                }
-            }
-
             transform: Translate {
                 x: -ripple.width / 2
                 y: -ripple.height / 2

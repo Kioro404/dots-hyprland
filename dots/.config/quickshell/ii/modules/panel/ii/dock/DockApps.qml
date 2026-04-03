@@ -170,11 +170,11 @@ Item {
 
                                 ButtonGroup {
                                     contentWidth: parent.width - anchors.margins * 2
-                                    WrapperRectangle {
+                                    Rectangle {
                                         Layout.fillWidth: true
+                                        Layout.margins: 5
                                         color: ColorUtils.transparentize(Appearance.colors.colSurfaceContainer)
                                         radius: Appearance.rounding.small
-                                        margin: 5
                                         StyledText {
                                             Layout.fillWidth: true
                                             font.pixelSize: Appearance.font.pixelSize.small

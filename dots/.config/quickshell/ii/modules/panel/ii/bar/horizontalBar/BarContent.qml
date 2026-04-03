@@ -3,6 +3,7 @@ import qs.modules.panel.ii.bar as Bar
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Services.SystemTray
 import Quickshell.Services.UPower
 import qs
 import qs.services
@@ -17,6 +18,7 @@ Item { // Bar content region
     property var brightnessMonitor: Brightness.getMonitorForScreen(screen)
     property real useShortenedForm: (Appearance.sizes.barHellaShortenScreenWidthThreshold >= screen?.width) ? 2 : (Appearance.sizes.barShortenScreenWidthThreshold >= screen?.width) ? 1 : 0
     readonly property int centerSideModuleWidth: (useShortenedForm == 2) ? Appearance.sizes.barCenterSideModuleWidthHellaShortened : (useShortenedForm == 1) ? Appearance.sizes.barCenterSideModuleWidthShortened : Appearance.sizes.barCenterSideModuleWidth
+    property bool showSeparator: true
 
     component VerticalBarSeparator: Rectangle {
         Layout.topMargin: Appearance.sizes.baseBarHeight / 3
@@ -323,7 +325,7 @@ Item { // Bar content region
                 font.pixelSize: Appearance.font.pixelSize.larger
                 color: Appearance.colors.colSubtext
                 text: "•"
-                visible: root.showSeparator && SystemTray.items.values.length > 0
+                visible: root.showSeparator && (TrayService.pinnedItems.length + TrayService.unpinnedItems.length) > 0
             }
 
             Bar.UpdatesButton{

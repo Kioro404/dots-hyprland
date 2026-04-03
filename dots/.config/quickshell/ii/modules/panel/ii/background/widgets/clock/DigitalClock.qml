@@ -9,7 +9,7 @@ ColumnLayout {
     id: clockColumn
     spacing: 0
     
-    property bool isVertical: Config.options.background.widgets.clock.digital.vertical
+    property bool isVertical: Config.options && Config.options.background && Config.options.background.widgets && Config.options.background.widgets.clock && Config.options.background.widgets.clock.digital && Config.options.background.widgets.clock.digital.vertical ? Config.options.background.widgets.clock.digital.vertical : false
     property color colText: Appearance.colors.colOnSecondaryContainer
     property var textHorizontalAlignment: Text.AlignHCenter
 
@@ -113,27 +113,29 @@ ColumnLayout {
         }
     }
 
-    ColumnLayout {
+    Component {
         id: dateQuote
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillHeight: true
-
-        ClockText {
-            visible: Config.options.background.widgets.clock.digital.showDate
+        ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
-            text: DateTime.longDate
-            color: clockColumn.colText
-            horizontalAlignment: Text.AlignHCenter
-        }
+            Layout.fillHeight: true
 
-        ClockText {
-            visible: Config.options.background.widgets.clock.quote.enable && Config.options.background.widgets.clock.quote.text.length > 0
-            Layout.alignment: Qt.AlignHCenter
-            font.pixelSize: Appearance.font.pixelSize.normal
-            text: Config.options.background.widgets.clock.quote.text
-            animateChange: false
-            color: clockColumn.colText
-            horizontalAlignment: Text.AlignHCenter
+            ClockText {
+                visible: Config.options.background.widgets.clock.digital.showDate
+                Layout.alignment: Qt.AlignHCenter
+                text: DateTime.longDate
+                color: clockColumn.colText
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            ClockText {
+                visible: Config.options.background.widgets.clock.quote.enable && Config.options.background.widgets.clock.quote.text.length > 0
+                Layout.alignment: Qt.AlignHCenter
+                font.pixelSize: Appearance.font.pixelSize.normal
+                text: Config.options.background.widgets.clock.quote.text
+                animateChange: false
+                color: clockColumn.colText
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
     }
 }

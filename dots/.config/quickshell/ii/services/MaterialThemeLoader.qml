@@ -2,6 +2,7 @@ pragma Singleton
 pragma ComponentBehavior: Bound
 
 import qs.modules.common
+import qs.modules.common.functions
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -19,6 +20,10 @@ Singleton {
     }
 
     function applyColors(fileContent) {
+        if (!fileContent || fileContent.trim().length === 0) {
+            return
+        }
+
         const json = JSON.parse(fileContent)
         for (const key in json) {
             if (json.hasOwnProperty(key)) {
@@ -34,6 +39,11 @@ Singleton {
 
     function resetFilePathNextTime() {
         resetFilePathNextWallpaperChange.enabled = true
+    }
+
+    function createMissingThemeFile() {
+        const escapedPath = StringUtils.shellSingleQuoteEscape(root.filePath)
+        Quickshell.execDetached(["bash", "-lc", `mkdir -p "$(dirname '${escapedPath}')" && printf '{}' > '${escapedPath}'`])
     }
 
     Connections {
@@ -57,7 +67,15 @@ Singleton {
         }
     }
 
-	FileView { 
+    Timer {
+        id: missingThemeFileReloadTimer
+        interval: 50
+        repeat: false
+        running: false
+        onTriggered: themeFileView.reload()
+    }
+
+    FileView { 
         id: themeFileView
         path: Qt.resolvedUrl(root.filePath)
         watchChanges: true
@@ -65,10 +83,14 @@ Singleton {
             this.reload()
             delayedFileRead.start()
         }
-        onLoadedChanged: {
+        onLoaded: {
             const fileContent = themeFileView.text()
             root.applyColors(fileContent)
         }
-        onLoadFailed: root.resetFilePathNextTime();
+        onLoadFailed: {
+            root.createMissingThemeFile()
+            missingThemeFileReloadTimer.restart()
+            root.resetFilePathNextTime();
+        }
     }
 }
