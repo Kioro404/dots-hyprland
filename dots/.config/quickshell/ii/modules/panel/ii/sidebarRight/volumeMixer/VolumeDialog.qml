@@ -14,7 +14,7 @@ WindowDialog {
     backgroundHeight: 600
 
     WindowDialogTitle {
-        text: root.isSink ? Translation.tr("Audio output") : Translation.tr("Audio input")
+        text: (root.isSink ? Translation.tr("%1 output") : Translation.tr("%1 input")).arg(Translation.tr("Audio"))
     }
 
     WindowDialogSeparator {

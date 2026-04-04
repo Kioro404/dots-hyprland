@@ -67,7 +67,7 @@ WButton {
         WMenuItem {
             visible: root.pinnedStart
             icon.name: "arrow-left"
-            text: Translation.tr("Move left")
+            text: Translation.tr("Move %1").arg(Translation.tr("Left").toLowerCase())
             onTriggered: {
                 LauncherApps.moveLeft(root.desktopEntry.id);
             }
@@ -75,7 +75,7 @@ WButton {
         WMenuItem {
             visible: root.pinnedStart
             icon.name: "arrow-right"
-            text: Translation.tr("Move right")
+            text: Translation.tr("Move %1").arg(Translation.tr("Right").toLowerCase())
             onTriggered: {
                 LauncherApps.moveRight(root.desktopEntry.id);
             }

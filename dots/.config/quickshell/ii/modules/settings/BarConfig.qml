@@ -87,7 +87,7 @@ ContentPage {
 
         ConfigRow {
             ContentSubsection {
-                title: Translation.tr("Corner style")
+                title: Translation.tr("%1 style").arg(Translation.tr("Corner"))
                 Layout.fillWidth: true
 
                 ConfigSelectionArray {
@@ -116,7 +116,7 @@ ContentPage {
             }
 
             ContentSubsection {
-                title: Translation.tr("Group style")
+                title: Translation.tr("%1 style").arg(Translation.tr("Group"))
                 Layout.fillWidth: false
 
                 ConfigSelectionArray {
@@ -307,7 +307,7 @@ ContentPage {
         }
 
         ContentSubsection {
-            title: Translation.tr("Number style")
+            title: Translation.tr("%1 style").arg(Translation.tr("Number"))
 
             ConfigSelectionArray {
                 currentValue: JSON.stringify(Config.options.bar.workspaces.numberMap)

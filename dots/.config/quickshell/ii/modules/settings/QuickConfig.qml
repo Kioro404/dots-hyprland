@@ -251,7 +251,7 @@ ContentPage {
                 }
             }
             ContentSubsection {
-                title: Translation.tr("Bar style")
+                title: Translation.tr("%1 style").arg(Translation.tr("Bar"))
 
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.cornerStyle

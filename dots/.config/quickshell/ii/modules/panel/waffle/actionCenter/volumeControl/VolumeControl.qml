@@ -28,7 +28,7 @@ Item {
 
                 HeaderRow {
                     Layout.fillWidth: true
-                    title: root.output ? Translation.tr("Sound output") : Translation.tr("Sound input")
+                    title: (root.output ? Translation.tr("%1 output") : Translation.tr("%1 input")).arg(Translation.tr("Sound"))
                 }
 
                 StyledFlickable {
@@ -84,7 +84,7 @@ Item {
         spacing: 4
 
         SectionText {
-            text: root.output ? Translation.tr("Output device") : Translation.tr("Input device")
+            text: Translation.tr("%1 device").arg(Translation.tr((root.output ? "Output" : "Input")))
         }
 
         Repeater {

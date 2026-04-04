@@ -55,7 +55,7 @@ ContentPage {
     ContentSection {
         id: settingsClock
         icon: "clock_loader_40"
-        title: Translation.tr("Widget: Clock")
+        title: Translation.tr("Widget: %1").arg(Translation.tr("Clock"))
 
         function stylePresent(styleName) {
             if (!Config.options.background.widgets.clock.showOnlyWhenLocked && Config.options.background.widgets.clock.style === styleName) {
@@ -146,7 +146,7 @@ ContentPage {
             }
 
             ContentSubsection {
-                title: Translation.tr("Clock style (locked)")
+                title: Translation.tr("%1 style (locked)").arg(Translation.tr("Clock"))
                 Layout.fillWidth: false
                 ConfigSelectionArray {
                     currentValue: Config.options.background.widgets.clock.styleLocked
@@ -369,7 +369,7 @@ ContentPage {
 
         ContentSubsection {
             visible: settingsClock.cookiePresent
-            title: Translation.tr("Dial style")
+            title: Translation.tr("%1 style").arg(Translation.tr("Dial"))
             ConfigSelectionArray {
                 currentValue: Config.options.background.widgets.clock.cookie.dialNumberStyle
                 onSelected: newValue => {
@@ -514,7 +514,7 @@ ContentPage {
 
         ContentSubsection {
             visible: settingsClock.cookiePresent
-            title: Translation.tr("Date style")
+            title: Translation.tr("%1 style").arg(Translation.tr("Date"))
 
             ConfigSelectionArray {
                 currentValue: Config.options.background.widgets.clock.cookie.dateStyle
@@ -571,7 +571,7 @@ ContentPage {
 
     ContentSection {
         icon: "weather_mix"
-        title: Translation.tr("Widget: Weather")
+        title: Translation.tr("Widget: %1").arg(Translation.tr("Weather"))
 
         ConfigRow {
             Layout.fillWidth: true

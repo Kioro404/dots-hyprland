@@ -351,7 +351,7 @@ MouseArea {
                             onClicked: root.useDarkMode = !root.useDarkMode
                             text: root.useDarkMode ? "dark_mode" : "light_mode"
                             StyledToolTip {
-                                text: Translation.tr("Click to toggle light/dark mode\n(applied when wallpaper is chosen)")
+                                text: Translation.tr("Click to toggle %1/%2 mode\n(applied when wallpaper is chosen)").arg(Translation.tr("Light")).arg(Translation.tr("Dark"))
                             }
                         }
 

@@ -195,7 +195,7 @@ ContentPage {
         }
 
         ContentSubsection {
-            title: Translation.tr("Style: general")
+            title: Translation.tr("Style: %1").arg(Translation.tr("General"))
 
             ConfigSwitch {
                 buttonIcon: "center_focus_weak"
@@ -225,7 +225,7 @@ ContentPage {
             }
         }
         ContentSubsection {
-            title: Translation.tr("Style: Blurred")
+            title: Translation.tr("Style: %1").arg(Translation.tr("Blurred"))
 
             ConfigSwitch {
                 buttonIcon: "blur_on"
@@ -748,12 +748,12 @@ ContentPage {
                 }
                 options: [
                     {
-                        displayName: Translation.tr("Left to right"),
+                        displayName: Translation.tr("%1 to %2").arg(Translation.tr("Left")).arg(Translation.tr("Right").toLowerCase()),
                         icon: "arrow_forward",
                         value: 0
                     },
                     {
-                        displayName: Translation.tr("Right to left"),
+                        displayName: Translation.tr("%1 to %2").arg(Translation.tr("Right")).arg(Translation.tr("Left").toLowerCase()),
                         icon: "arrow_back",
                         value: 1
                     }
@@ -804,7 +804,7 @@ ContentPage {
 
             MaterialTextArea {
                 Layout.fillWidth: true
-                placeholderText: Translation.tr("Font family name (e.g., Google Sans Flex)")
+                placeholderText: Translation.tr("Font family name (e.g., %1)").arg("Google Sans Flex")
                 text: Config.options.appearance.fonts.main
                 wrapMode: TextEdit.NoWrap
                 onTextChanged: {
@@ -849,7 +849,7 @@ ContentPage {
 
             MaterialTextArea {
                 Layout.fillWidth: true
-                placeholderText: Translation.tr("Font family name (e.g., JetBrains Mono NF)")
+                placeholderText: Translation.tr("Font family name (e.g., %1)").arg("JetBrains Mono NF")
                 text: Config.options.appearance.fonts.monospace
                 wrapMode: TextEdit.NoWrap
                 onTextChanged: {
@@ -864,7 +864,7 @@ ContentPage {
 
             MaterialTextArea {
                 Layout.fillWidth: true
-                placeholderText: Translation.tr("Font family name (e.g., JetBrains Mono NF)")
+                placeholderText: Translation.tr("Font family name (e.g., %1)").arg("JetBrains Mono NF")
                 text: Config.options.appearance.fonts.iconNerd
                 wrapMode: TextEdit.NoWrap
                 onTextChanged: {
@@ -879,7 +879,7 @@ ContentPage {
 
             MaterialTextArea {
                 Layout.fillWidth: true
-                placeholderText: Translation.tr("Font family name (e.g., Readex Pro)")
+                placeholderText: Translation.tr("Font family name (e.g., %1)").arg("Readex Pro")
                 text: Config.options.appearance.fonts.reading
                 wrapMode: TextEdit.NoWrap
                 onTextChanged: {
@@ -894,7 +894,7 @@ ContentPage {
 
             MaterialTextArea {
                 Layout.fillWidth: true
-                placeholderText: Translation.tr("Font family name (e.g., Space Grotesk)")
+                placeholderText: Translation.tr("Font family name (e.g., %1)").arg("Space Grotesk")
                 text: Config.options.appearance.fonts.expressive
                 wrapMode: TextEdit.NoWrap
                 onTextChanged: {
