@@ -37,9 +37,15 @@ Variants {
         }
         color: "transparent"
 
+        property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)
+        property var monitorBackground: {
+            const monitor = Config.options.monitor.find(m => m.output.screen.name === monitor.name);
+            return monitor?.output.background || Config.options.background;
+        }
+
         StyledImage {
             anchors.fill: parent
-            source: Config.options.background.wallpaperPath
+            source: monitorBackground.wallpaperPath
             fillMode: Image.PreserveAspectCrop
         }
     }

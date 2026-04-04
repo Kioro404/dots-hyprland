@@ -49,8 +49,8 @@ Singleton {
     Connections {
         id: resetFilePathNextWallpaperChange
         enabled: false
-        target: Config.options.background
-        function onWallpaperPathChanged() {
+        target: Appearance
+        function onActiveWallpaperPathChanged() {
             root.filePath = ""
             root.filePath = Directories.generatedMaterialThemePath
             resetFilePathNextWallpaperChange.enabled = false

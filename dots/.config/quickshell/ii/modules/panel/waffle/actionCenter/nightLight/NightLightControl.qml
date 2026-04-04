@@ -84,7 +84,7 @@ Item {
         }
 
         ToggleItem {
-            name: Translation.tr("Enable now")
+            name: Translation.tr("Enable %1").arg(Translation.tr("Now"))
             description: Translation.tr("More comfortable viewing at night")
             iconName: WIcons.nightLightIcon
             checked: Hyprsunset.active

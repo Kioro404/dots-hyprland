@@ -15,12 +15,21 @@ Singleton {
     property QtObject sizes
     property string syntaxHighlightingTheme
 
+    property var activeMonitorBackground: {
+        const monitorName = HyprlandData.activeWorkspace?.monitor;
+        const monitor = Config.options.monitor.find(m => m.output.screen.name === monitorName);
+        return monitor?.output.background || Config.options.background;
+    }
+
+    property string activeWallpaperPath: activeMonitorBackground.wallpaperPath
+
     // Transparency. The quadratic functions were derived from analysis of hand-picked transparency values.
     ColorQuantizer {
         id: wallColorQuant
-        property string wallpaperPath: Config.options.background.wallpaperPath
+        property string wallpaperPath: activeMonitorBackground.wallpaperPath
+        property string thumbnailPath: activeMonitorBackground.thumbnailPath
         property bool wallpaperIsVideo: wallpaperPath.endsWith(".mp4") || wallpaperPath.endsWith(".webm") || wallpaperPath.endsWith(".mkv") || wallpaperPath.endsWith(".avi") || wallpaperPath.endsWith(".mov")
-        source: Qt.resolvedUrl(wallpaperIsVideo ? Config.options.background.thumbnailPath : Config.options.background.wallpaperPath)
+        source: Qt.resolvedUrl(wallpaperIsVideo ? thumbnailPath : wallpaperPath)
         depth: 0 // 2^0 = 1 color
         rescaleSize: 10
     }

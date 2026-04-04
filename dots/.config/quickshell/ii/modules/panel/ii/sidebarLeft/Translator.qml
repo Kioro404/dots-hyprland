@@ -226,7 +226,7 @@ Item {
         z: 9999
         sourceComponent: SelectionDialog {
             id: languageSelectorDialog
-            titleText: Translation.tr("Select Language")
+            titleText: Translation.tr("Select %1").arg(Translation.tr("Language"))
             items: root.languages
             defaultChoice: root.languageSelectorTarget ? root.targetLanguage : root.sourceLanguage
             onCanceled: () => {

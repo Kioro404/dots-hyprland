@@ -43,7 +43,7 @@ WindowDialog {
             }
             iconSize: Appearance.font.pixelSize.larger
             buttonIcon: "lightbulb"
-            text: Translation.tr("Enable now")
+            text: Translation.tr("Enable %1").arg(Translation.tr("Now"))
             checked: Hyprsunset.active
             onCheckedChanged: {
                 Hyprsunset.toggle(checked)

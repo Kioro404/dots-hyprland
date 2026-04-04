@@ -143,15 +143,19 @@ EOF
 
 set_wallpaper_path() {
     local path="$1"
+    local monitor_name="${2:-$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')}"
     if [ -f "$SHELL_CONFIG_FILE" ]; then
-        jq --arg path "$path" '.background.wallpaperPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+        # Update wallpaperPath for the monitor with matching name
+        jq --arg path "$path" --arg name "$monitor_name" '(.monitor[] | select(.output.screen.name == $name) | .output.background.wallpaperPath) = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
     fi
 }
 
 set_thumbnail_path() {
     local path="$1"
+    local monitor_name="${2:-$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')}"
     if [ -f "$SHELL_CONFIG_FILE" ]; then
-        jq --arg path "$path" '.background.thumbnailPath = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
+        # Update thumbnailPath for the monitor with matching name
+        jq --arg path "$path" --arg name "$monitor_name" '(.monitor[] | select(.output.screen.name == $name) | .output.background.thumbnailPath) = $path' "$SHELL_CONFIG_FILE" > "$SHELL_CONFIG_FILE.tmp" && mv "$SHELL_CONFIG_FILE.tmp" "$SHELL_CONFIG_FILE"
     fi
 }
 
@@ -167,14 +171,23 @@ switch() {
     type_flag="$3"
     color_flag="$4"
     color="$5"
+    monitor_name="$6"
 
     # Start Gemini auto-categorization if enabled
-    aiStylingEnabled=$(jq -r '.background.widgets.clock.cookie.aiStyling' "$SHELL_CONFIG_FILE")
+    if [ -n "$monitor_name" ]; then
+        aiStylingEnabled=$(jq -r --arg name "$monitor_name" '.monitor[] | select(.output.screen.name == $name) | .output.background.widgets.clock.cookie.aiStyling // "false"' "$SHELL_CONFIG_FILE")
+    else
+        aiStylingEnabled=$(jq -r '.background.widgets.clock.cookie.aiStyling' "$SHELL_CONFIG_FILE")
+    fi
     if [[ "$aiStylingEnabled" == "true" ]]; then
         categorize_wallpaper "$imgpath" &
     fi
 
-    read scale screenx screeny screensizey < <(hyprctl monitors -j | jq '.[] | select(.focused) | .scale, .x, .y, .height' | xargs)
+    if [ -n "$monitor_name" ]; then
+        read scale screenx screeny screensizey < <(hyprctl monitors -j | jq ".[] | select(.name == \"$monitor_name\") | .scale, .x, .y, .height" | xargs)
+    else
+        read scale screenx screeny screensizey < <(hyprctl monitors -j | jq '.[] | select(.focused) | .scale, .x, .y, .height' | xargs)
+    fi
     cursorposx=$(hyprctl cursorpos -j | jq '.x' 2>/dev/null) || cursorposx=960
     cursorposx=$(bc <<< "scale=0; ($cursorposx - $screenx) * $scale / 1")
     cursorposy=$(hyprctl cursorpos -j | jq '.y' 2>/dev/null) || cursorposy=540
@@ -224,7 +237,7 @@ switch() {
             fi
 
             # Set wallpaper path
-            set_wallpaper_path "$imgpath"
+            set_wallpaper_path "$imgpath" "$monitor_name"
 
             # Set video wallpaper
             local video_path="$imgpath"
@@ -239,7 +252,7 @@ switch() {
             ffmpeg -y -i "$imgpath" -vframes 1 "$thumbnail" 2>/dev/null
 
             # Set thumbnail path
-            set_thumbnail_path "$thumbnail"
+            set_thumbnail_path "$thumbnail" "$monitor_name"
 
             if [ -f "$thumbnail" ]; then
                 matugen_args+=(image "$thumbnail")
@@ -254,7 +267,7 @@ switch() {
             matugen_args+=(image "$imgpath")
             generate_colors_material_args=(--path "$imgpath")
             # Update wallpaper path in config
-            set_wallpaper_path "$imgpath"
+            set_wallpaper_path "$imgpath" "$monitor_name"
             remove_restore
         fi
     fi
@@ -323,6 +336,7 @@ main() {
     color_flag=""
     color=""
     noswitch_flag=""
+    monitor_flag=""
 
     get_type_from_config() {
         jq -r '.appearance.palette.type' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "auto"
@@ -352,6 +366,10 @@ main() {
                 type_flag="$2"
                 shift 2
                 ;;
+            --monitor)
+                monitor_flag="$2"
+                shift 2
+                ;;
             --color)
                 if [[ "$2" =~ ^#?[A-Fa-f0-9]{6}$ ]]; then
                     set_accent_color "$2"
@@ -370,7 +388,11 @@ main() {
                 ;;
             --noswitch)
                 noswitch_flag="1"
-                imgpath=$(jq -r '.background.wallpaperPath' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "")
+                if [ -n "$monitor_flag" ]; then
+                    imgpath=$(jq -r --arg name "$monitor_flag" '.monitor[] | select(.output.screen.name == $name) | .output.background.wallpaperPath' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "")
+                else
+                    imgpath=$(jq -r '.background.wallpaperPath' "$SHELL_CONFIG_FILE" 2>/dev/null || echo "")
+                fi
                 shift
                 ;;
             *)
@@ -444,7 +466,7 @@ main() {
         fi
     fi
 
-    switch "$imgpath" "$mode_flag" "$type_flag" "$color_flag" "$color"
+    switch "$imgpath" "$mode_flag" "$type_flag" "$color_flag" "$color" "$monitor_flag"
 }
 
 main "$@"

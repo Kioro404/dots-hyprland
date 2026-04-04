@@ -6,7 +6,6 @@ import qs.modules.common.widgets
 
 ContentPage {
     forceWidth: true
-    property var screenListTemp: []
 
     ContentSection {
         icon: "notifications"

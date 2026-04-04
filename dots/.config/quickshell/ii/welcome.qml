@@ -145,7 +145,7 @@ ApplicationWindow {
                     title: Translation.tr("Language")
 
                     ContentSubsection {
-                        title: Translation.tr("Select language")
+                        title: Translation.tr("Select %1").arg(Translation.tr("Language"))
                         ConfigSelectionArray {
                             id: languageSelector
                             currentValue: Config.options.language.ui

@@ -44,193 +44,221 @@ Singleton {
         obj[keys[keys.length - 1]] = convertedValue;
     }
 
-    function listMonitors() {
-        let monitors = HyprlandData.monitors.map(monitor => {
-            return {
-                output: {
-                    screen: {
-                        disabled:        monitor.disabled,
-                        id:              monitor.id,
-                        name:            monitor.name,
-                        x:               monitor.x,
-                        y:               monitor.y,
-                        width:           monitor.width,
-                        height:          monitor.height,
-                        refreshRate:     monitor.refreshRate,
-                        scale:           monitor.scale,
-                        transform:       monitor.transform,
-                        description:     monitor.description,
-                        availableModes:  monitor.availableModes.map(mode => {
-                            const parts =  mode.split('x');
-                            const res =    parts[1].split('@');
-                            return {
-                                width:        parseInt(parts[0]),
-                                height:       parseInt(res[0]),
-                                refreshRate:  parseFloat(res[1].replace('Hz', ''))
-                            };
-                        })
-                    },
-                    background: {
-                        disabled: false,
-                        widgets: {
-                            clock: {
-                                enable: true,
-                                showOnlyWhenLocked: false,
-                                placementStrategy: "leastBusy",
-                                x: 100,
-                                y: 100,
-                                style: "cookie",
-                                styleLocked: "cookie",
-                                cookie: {
-                                    aiStyling: false,
-                                    sides: 14,
-                                    dialNumberStyle: "full",
-                                    hourHandStyle: "fill",
-                                    minuteHandStyle: "medium",
-                                    secondHandStyle: "dot",
-                                    dateStyle: "bubble",
-                                    timeIndicators: true,
-                                    hourMarks: false,
-                                    dateInClock: true,
-                                    constantlyRotate: false,
-                                    useSineCookie: false
-                                },
-                                digital: {
-                                    adaptiveAlignment: true,
-                                    showDate: true,
-                                    animateChange: true,
-                                    vertical: false,
-                                    font: {
-                                        family: "Google Sans Flex",
-                                        weight: 350,
-                                        width: 100,
-                                        size: 90,
-                                        roundness: 0
-                                    }
-                                },
-                                quote: {
-                                    enable: false,
-                                    text: ""
+    function mergeWithDefaults(existing, defaults) {
+        if (existing === undefined || existing === null) {
+            return defaults;
+        }
+        if (Array.isArray(defaults)) {
+            return Array.isArray(existing) ? existing : defaults;
+        }
+        if (typeof defaults !== "object") {
+            return existing !== undefined ? existing : defaults;
+        }
+
+        let merged = {};
+        for (let key in defaults) {
+            merged[key] = mergeWithDefaults(existing[key], defaults[key]);
+        }
+        for (let key in existing) {
+            if (merged[key] === undefined) {
+                merged[key] = existing[key];
+            }
+        }
+        return merged;
+    }
+
+    function defaultMonitorTemplate(monitor) {
+        return {
+            output: {
+                screen: {
+                    disabled:        monitor.disabled,
+                    id:              monitor.id,
+                    name:            monitor.name,
+                    x:               monitor.x,
+                    y:               monitor.y,
+                    width:           monitor.width,
+                    height:          monitor.height,
+                    refreshRate:     monitor.refreshRate,
+                    scale:           monitor.scale,
+                    transform:       monitor.transform,
+                    description:     monitor.description,
+                    availableModes:  monitor.availableModes.map(mode => {
+                        const parts = mode.split('x');
+                        const res = parts[1].split('@');
+                        return {
+                            width:        parseInt(parts[0]),
+                            height:       parseInt(res[0]),
+                            refreshRate:  parseFloat(res[1].replace('Hz', ''))
+                        };
+                    })
+                },
+                background: {
+                    disabled: false,
+                    widgets: {
+                        clock: {
+                            enable: true,
+                            showOnlyWhenLocked: false,
+                            placementStrategy: "leastBusy",
+                            x: 100,
+                            y: 100,
+                            style: "cookie",
+                            styleLocked: "cookie",
+                            cookie: {
+                                aiStyling: false,
+                                sides: 14,
+                                dialNumberStyle: "full",
+                                hourHandStyle: "fill",
+                                minuteHandStyle: "medium",
+                                secondHandStyle: "dot",
+                                dateStyle: "bubble",
+                                timeIndicators: true,
+                                hourMarks: false,
+                                dateInClock: true,
+                                constantlyRotate: false,
+                                useSineCookie: false
+                            },
+                            digital: {
+                                adaptiveAlignment: true,
+                                showDate: true,
+                                animateChange: true,
+                                vertical: false,
+                                font: {
+                                    family: "Google Sans Flex",
+                                    weight: 350,
+                                    width: 100,
+                                    size: 90,
+                                    roundness: 0
                                 }
                             },
-                            weather: {
+                            quote: {
                                 enable: false,
-                                placementStrategy: "free",
-                                x: 400,
-                                y: 100
+                                text: ""
                             }
                         },
-                        wallpaperPath: "",
-                        thumbnailPath: "",
-                        hideWhenFullscreen: true,
-                        parallax: {
-                            vertical: false,
-                            autoVertical: false,
-                            enableWorkspace: true,
-                            workspaceZoom: 1.07,
-                            enableSidebar: true,
-                            widgetsFactor: 1.2
+                        weather: {
+                            enable: false,
+                            placementStrategy: "free",
+                            x: 400,
+                            y: 100
                         }
                     },
-                    panel: {
-                        family: "ii",
-                        disabled: false,
-                        toolbars: [
-                            {
-                                ii: {
-                                    config: {
-                                        autoHide: {
-                                            enable: false,
-                                            hoverRegionWidth: 2,
-                                            pushWindows: false,
-                                            showWhenPressingSuper: {
-                                                enable: true,
-                                                delay: 140
-                                            }
-                                        },
-                                        bottom: false,
-                                        cornerStyle: 0,
-                                        floatStyleShadow: true,
-                                        borderless: false,
-                                        topLeftIcon: "spark",
-                                        showBackground: true,
-                                        verbose: true,
-                                        vertical: false,
-                                        resources: {
-                                            alwaysShowSwap: true,
-                                            alwaysShowCpu: true,
-                                            memoryWarningThreshold: 95,
-                                            swapWarningThreshold: 85,
-                                            cpuWarningThreshold: 90
-                                        },
-                                        utilButtons: {
-                                            showScreenSnip: true,
-                                            showColorPicker: false,
-                                            showMicToggle: false,
-                                            showKeyboardToggle: true,
-                                            showDarkModeToggle: true,
-                                            showPerformanceProfileToggle: false,
-                                            showScreenRecord: false
-                                        },
-                                        workspaces: {
-                                            monochromeIcons: true,
-                                            shown: 10,
-                                            showAppIcons: true,
-                                            alwaysShowNumbers: false,
-                                            showNumberDelay: 300,
-                                            numberMap: ["1", "2"],
-                                            useNerdFont: false
-                                        },
-                                        weather: {
-                                            enable: false,
-                                            enableGPS: true,
-                                            city: "",
-                                            useUSCS: false,
-                                            fetchInterval: 10
-                                        },
-                                        indicators: {
-                                            notifications: {
-                                                showUnreadCount: false
-                                            }
-                                        },
-                                        tooltips: {
-                                            clickToShow: false
+                    wallpaperPath: "",
+                    thumbnailPath: "",
+                    hideWhenFullscreen: true,
+                    parallax: {
+                        vertical: false,
+                        autoVertical: false,
+                        enableWorkspace: true,
+                        workspaceZoom: 1.07,
+                        enableSidebar: true,
+                        widgetsFactor: 1.2
+                    }
+                },
+                panel: {
+                    family: "ii",
+                    disabled: false,
+                    tools: [
+                        {
+                            bar: {
+                                name: "ii",
+                                config: {
+                                    autoHide: {
+                                        enable: false,
+                                        hoverRegionWidth: 2,
+                                        pushWindows: false,
+                                        showWhenPressingSuper: {
+                                            enable: true,
+                                            delay: 140
                                         }
-                                    }
-                                }
-                            },
-                            {
-                                waffle: {
-                                    config: {
-                                        tweaks: {
-                                            switchHandlePositionFix: true,
-                                            smootherMenuAnimations: true,
-                                            smootherSearchBar: true
-                                        },
-                                        bar: {
-                                            bottom: true,
-                                            leftAlignApps: false
-                                        },
-                                        actionCenter: {
-                                            toggles: [
-                                                "network", "bluetooth", "easyEffects", "powerProfile",
-                                                "idleInhibitor", "nightLight", "darkMode", "antiFlashbang",
-                                                "cloudflareWarp", "mic", "musicRecognition", "notifications",
-                                                "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker"
-                                            ]
-                                        },
-                                        calendar: {
-                                            force2CharDayOfWeek: true
+                                    },
+                                    bottom: false,
+                                    cornerStyle: 0,
+                                    floatStyleShadow: true,
+                                    borderless: false,
+                                    topLeftIcon: "spark",
+                                    showBackground: true,
+                                    verbose: true,
+                                    vertical: false,
+                                    resources: {
+                                        alwaysShowSwap: true,
+                                        alwaysShowCpu: true,
+                                        memoryWarningThreshold: 95,
+                                        swapWarningThreshold: 85,
+                                        cpuWarningThreshold: 90
+                                    },
+                                    utilButtons: {
+                                        showScreenSnip: true,
+                                        showColorPicker: false,
+                                        showMicToggle: false,
+                                        showKeyboardToggle: true,
+                                        showDarkModeToggle: true,
+                                        showPerformanceProfileToggle: false,
+                                        showScreenRecord: false
+                                    },
+                                    workspaces: {
+                                        monochromeIcons: true,
+                                        shown: 10,
+                                        showAppIcons: true,
+                                        alwaysShowNumbers: false,
+                                        showNumberDelay: 300,
+                                        numberMap: ["1", "2"],
+                                        useNerdFont: false
+                                    },
+                                    weather: {
+                                        enable: false,
+                                        enableGPS: true,
+                                        city: "",
+                                        useUSCS: false,
+                                        fetchInterval: 10
+                                    },
+                                    indicators: {
+                                        notifications: {
+                                            showUnreadCount: false
                                         }
+                                    },
+                                    tooltips: {
+                                        clickToShow: false
                                     }
                                 }
                             }
-                        ]
-                    }
+                        },
+                        {
+                            bar: {
+                                name: "waffle",
+                                config: {
+                                    tweaks: {
+                                        switchHandlePositionFix: true,
+                                        smootherMenuAnimations: true,
+                                        smootherSearchBar: true
+                                    },
+                                    bar: {
+                                        bottom: true,
+                                        leftAlignApps: false
+                                    },
+                                    actionCenter: {
+                                        toggles: [
+                                            "network", "bluetooth", "easyEffects", "powerProfile",
+                                            "idleInhibitor", "nightLight", "darkMode", "antiFlashbang",
+                                            "cloudflareWarp", "mic", "musicRecognition", "notifications",
+                                            "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker"
+                                        ]
+                                    },
+                                    calendar: {
+                                        force2CharDayOfWeek: true
+                                    }
+                                }
+                            }
+                        }
+                    ]
                 }
-            };
-        });
-        root.setNestedValue("monitor", monitors);
+            }
+        };
+    }
+
+    function listMonitors() {
+        root.setNestedValue("monitor", HyprlandData.monitors.map(monitor => {
+            return mergeWithDefaults(root.options.monitor.find(_monitor => _monitor.output.screen.id === monitor.id), defaultMonitorTemplate(monitor));
+        }));
     }
 
     Timer {
@@ -265,14 +293,13 @@ Singleton {
         path: root.filePath
         watchChanges: true
         blockWrites: root.blockWrites
-        onFileChanged: {
-            fileReloadTimer.restart()
-            root.listMonitors()
-        }
+        onFileChanged: fileReloadTimer.restart()
         onAdapterUpdated: fileWriteTimer.restart()
         onLoaded: {
             root.ready = true
-            root.listMonitors()
+            if (root.options.monitor.length === 0) {
+                root.listMonitors()
+            }
         }
         onLoadFailed: error => {
             if (error == FileViewError.FileNotFound) {
