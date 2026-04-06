@@ -16,9 +16,9 @@ AbstractBackgroundWidget {
     implicitHeight: contentColumn.implicitHeight
     implicitWidth: contentColumn.implicitWidth
 
-    readonly property string clockStyle: GlobalStates.screenLocked ? Config.options.background.widgets.clock.styleLocked : Config.options.background.widgets.clock.style
+    readonly property string clockStyle: GlobalStates.screenLocked ? Appearance.activeMonitorBackground.widgets.clock.styleLocked : Appearance.activeMonitorBackground.widgets.clock.style
     readonly property bool forceCenter: (GlobalStates.screenLocked && Config.options.lock.centerClock)
-    readonly property bool shouldShow: (!Config.options.background.widgets.clock.showOnlyWhenLocked || GlobalStates.screenLocked)
+    readonly property bool shouldShow: (!Appearance.activeMonitorBackground.widgets.clock.showOnlyWhenLocked || GlobalStates.screenLocked)
     property bool wallpaperSafetyTriggered: false
     needsColText: clockStyle === "digital"
     x: forceCenter ? ((root.screenWidth - root.width) / 2) : targetX
@@ -26,7 +26,7 @@ AbstractBackgroundWidget {
     visibleWhenLocked: true
 
     property var textHorizontalAlignment: {
-        if (!Config.options.background.widgets.clock.digital.adaptiveAlignment || root.forceCenter || Config.options.background.widgets.clock.digital.vertical) 
+        if (!Appearance.activeMonitorBackground.widgets.clock.digital.adaptiveAlignment || root.forceCenter || Appearance.activeMonitorBackground.widgets.clock.digital.vertical) 
             return Text.AlignHCenter;
         if (root.x < root.scaledScreenWidth / 3)
             return Text.AlignLeft;
@@ -52,7 +52,7 @@ AbstractBackgroundWidget {
                 }
                 FadeLoader {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    shown: Config.options.background.widgets.clock.quote.enable && Config.options.background.widgets.clock.quote.text !== ""
+                    shown: Appearance.activeMonitorBackground.widgets.clock.quote.enable && Appearance.activeMonitorBackground.widgets.clock.quote.text !== ""
                     sourceComponent: CookieQuote {}
                 }
             }

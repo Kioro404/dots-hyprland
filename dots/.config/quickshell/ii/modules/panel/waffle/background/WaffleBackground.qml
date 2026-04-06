@@ -40,7 +40,7 @@ Variants {
         property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)
         property var monitorBackground: {
             const monitor = Config.options.monitor.find(m => m.output.screen.name === monitor.name);
-            return monitor?.output.background || Config.options.background;
+            return monitor?.output.background || Appearance.activeMonitorBackground;
         }
 
         StyledImage {

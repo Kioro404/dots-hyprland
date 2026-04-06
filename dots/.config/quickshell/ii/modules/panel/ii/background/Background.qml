@@ -22,12 +22,6 @@ Variants {
     id: root
     model: Quickshell.screens
 
-    property var activeMonitorBackground: {
-        const monitorName = HyprlandData.activeWorkspace?.monitor;
-        const monitor = Config.options.monitor.find(m => m.output.screen.name === monitorName);
-        return monitor?.output.background || Config.options.background;
-    }
-
     PanelWindow {
         id: bgRoot
 
@@ -36,20 +30,16 @@ Variants {
         // Hide when fullscreen
         property list<HyprlandWorkspace> workspacesForMonitor: Hyprland.workspaces.values.filter(workspace => workspace.monitor && workspace.monitor.name == monitor.name)
         property var activeWorkspaceWithFullscreen: workspacesForMonitor.filter(workspace => ((workspace.toplevels.values.filter(window => window.wayland?.fullscreen)[0] != undefined) && workspace.active))[0]
-        visible: GlobalStates.screenLocked || (!(activeWorkspaceWithFullscreen != undefined)) || !monitorBackground.hideWhenFullscreen
+        visible: GlobalStates.screenLocked || (!(activeWorkspaceWithFullscreen != undefined)) || !Appearance.activeMonitorBackground.hideWhenFullscreen
 
         // Workspaces
         property HyprlandMonitor monitor: Hyprland.monitorFor(modelData)
-        property var monitorBackground: {
-            const monitor = Config.options.monitor.find(m => m.output.screen.name === monitor.name);
-            return monitor?.output.background || Config.options.background;
-        }
         property list<HyprlandWorkspace> allWorkspaces: workspacesForMonitor.sort((a, b) => a.id - b.id)
         property int firstWorkspaceId: allWorkspaces[0]?.id || 1
         property int lastWorkspaceId: allWorkspaces[allWorkspaces.length - 1]?.id || 10
         // Wallpaper
-        property bool wallpaperIsVideo: monitorBackground.wallpaperPath.endsWith(".mp4") || monitorBackground.wallpaperPath.endsWith(".webm") || monitorBackground.wallpaperPath.endsWith(".mkv") || monitorBackground.wallpaperPath.endsWith(".avi") || monitorBackground.wallpaperPath.endsWith(".mov")
-        property string wallpaperPath: wallpaperIsVideo ? monitorBackground.thumbnailPath : monitorBackground.wallpaperPath
+        property bool wallpaperIsVideo: Appearance.activeMonitorBackground.wallpaperPath.endsWith(".mp4") || Appearance.activeMonitorBackground.wallpaperPath.endsWith(".webm") || Appearance.activeMonitorBackground.wallpaperPath.endsWith(".mkv") || Appearance.activeMonitorBackground.wallpaperPath.endsWith(".avi") || Appearance.activeMonitorBackground.wallpaperPath.endsWith(".mov")
+        property string wallpaperPath: wallpaperIsVideo ? Appearance.activeMonitorBackground.thumbnailPath : Appearance.activeMonitorBackground.wallpaperPath
         property bool wallpaperSafetyTriggered: {
             const enabled = Config.options.workSafety.enable.wallpaper;
             const sensitiveWallpaper = (CF.StringUtils.stringListContainsSubstring(wallpaperPath.toLowerCase(), Config.options.workSafety.triggerCondition.fileKeywords));
@@ -57,13 +47,13 @@ Variants {
             return enabled && sensitiveWallpaper && sensitiveNetwork;
         }
         property real wallpaperToScreenRatio: Math.min(wallpaperWidth / screen.width, wallpaperHeight / screen.height)
-        property real preferredWallpaperScale: monitorBackground.parallax.workspaceZoom
+        property real preferredWallpaperScale: Appearance.activeMonitorBackground.parallax.workspaceZoom
         property real effectiveWallpaperScale: 1 // Some reasonable init value, to be updated
         property int wallpaperWidth: modelData.width // Some reasonable init value, to be updated
         property int wallpaperHeight: modelData.height // Some reasonable init value, to be updated
         property real movableXSpace: ((wallpaperWidth / wallpaperToScreenRatio * effectiveWallpaperScale) - screen.width) / 2
         property real movableYSpace: ((wallpaperHeight / wallpaperToScreenRatio * effectiveWallpaperScale) - screen.height) / 2
-        readonly property bool verticalParallax: (Config.options.background.parallax.autoVertical && wallpaperHeight > wallpaperWidth) || Config.options.background.parallax.vertical
+        readonly property bool verticalParallax: (Appearance.activeAppearance.activeMonitorBackground.parallax.autoVertical && wallpaperHeight > wallpaperWidth) || Appearance.activeAppearance.activeMonitorBackground.parallax.vertical
         // Colors
         property bool shouldBlur: (GlobalStates.screenLocked && Config.options.lock.blur.enable)
         property color dominantColor: Appearance.colors.colPrimary // Default, to be changed
@@ -149,20 +139,20 @@ Variants {
                 property int range: upper - lower
                 property real valueX: {
                     let result = 0.5;
-                    if (Config.options.background.parallax.enableWorkspace && !bgRoot.verticalParallax) {
+                    if (Appearance.activeAppearance.activeMonitorBackground.parallax.enableWorkspace && !bgRoot.verticalParallax) {
                         const wsId = bgRoot.monitor.activeWorkspace?.id;
                         if (wsId && range > 0) {
                         result = ((wsId - lower) / range);
                         }
                     }
-                    if (Config.options.background.parallax.enableSidebar) {
+                    if (Appearance.activeAppearance.activeMonitorBackground.parallax.enableSidebar) {
                         result += (0.15 * GlobalStates.sidebarRightOpen - 0.15 * GlobalStates.sidebarLeftOpen);
                     }
                     return result;
                 }
                 property real valueY: {
                     let result = 0.5;
-                    if (Config.options.background.parallax.enableWorkspace && bgRoot.verticalParallax) {
+                    if (Appearance.activeAppearance.activeMonitorBackground.parallax.enableWorkspace && bgRoot.verticalParallax) {
                         const wsId = bgRoot.monitor.activeWorkspace?.id;
                         if (wsId && range > 0) {
                         result = ((wsId - lower) / range);
@@ -231,7 +221,7 @@ Variants {
                     bottom: wallpaper.bottom
                     horizontalCenter: undefined
                     verticalCenter: undefined
-                    readonly property real parallaxFactor: Config.options.background.parallax.widgetsFactor
+                    readonly property real parallaxFactor: Appearance.activeAppearance.activeMonitorBackground.parallax.widgetsFactor
                     leftMargin: {
                         const xOnWallpaper = bgRoot.movableXSpace;
                         const extraMove = (wallpaper.effectiveValueX * 2 * bgRoot.movableXSpace) * (parallaxFactor - 1);
@@ -286,7 +276,7 @@ Variants {
                 }
 
                 FadeLoader {
-                    shown: Config.options.background.widgets.weather.enable
+                    shown: Appearance.activeAppearance.activeMonitorBackground.widgets.weather.enable
                     sourceComponent: WeatherWidget {
                         screenWidth: bgRoot.screen.width
                         screenHeight: bgRoot.screen.height
@@ -297,7 +287,7 @@ Variants {
                 }
 
                 FadeLoader {
-                    shown: Config.options.background.widgets.clock.enable
+                    shown: Appearance.activeAppearance.activeMonitorBackground.widgets.clock.enable
                     sourceComponent: ClockWidget {
                         screenWidth: bgRoot.screen.width
                         screenHeight: bgRoot.screen.height

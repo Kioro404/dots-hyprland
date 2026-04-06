@@ -47,7 +47,7 @@ LockScreen {
                 }
             }
             sourceSize: Qt.size(lockSurfaceItem.width, lockSurfaceItem.height)
-            source: Config.options.background.wallpaperPath
+            source: Appearance.activeMonitorBackground.wallpaperPath
             fillMode: Image.PreserveAspectCrop
 
             PropertyAnimation {

@@ -86,7 +86,7 @@ WMouseAreaButton {
                 sourceComponent: StyledImage {
                     cache: true
                     sourceSize: Qt.size(root.screenAspectRatio * root.wallpaperHeight, root.wallpaperHeight)
-                    source: Config.options.background.wallpaperPath
+                    source: Appearance.activeMonitorBackground.wallpaperPath
                     fillMode: Image.PreserveAspectCrop
 
                     Repeater {

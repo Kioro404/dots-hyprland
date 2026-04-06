@@ -21,7 +21,7 @@ Rectangle {
 
     StyledImage {
         anchors.fill: parent
-        source: Config.options.background.wallpaperPath
+        source: Appearance.activeMonitorBackground.wallpaperPath
         fillMode: Image.PreserveAspectCrop
 
         Rectangle {

@@ -9,7 +9,7 @@ ColumnLayout {
     id: clockColumn
     spacing: 0
     
-    property bool isVertical: Config.options && Config.options.background && Config.options.background.widgets && Config.options.background.widgets.clock && Config.options.background.widgets.clock.digital && Config.options.background.widgets.clock.digital.vertical ? Config.options.background.widgets.clock.digital.vertical : false
+    property bool isVertical: Config.options && Appearance.activeMonitorBackground && Appearance.activeMonitorBackground.widgets && Appearance.activeMonitorBackground.widgets.clock && Appearance.activeMonitorBackground.widgets.clock.digital && Appearance.activeMonitorBackground.widgets.clock.digital.vertical ? Appearance.activeMonitorBackground.widgets.clock.digital.vertical : false
     property color colText: Appearance.colors.colOnSecondaryContainer
     property var textHorizontalAlignment: Text.AlignHCenter
 
@@ -18,12 +18,12 @@ ColumnLayout {
         property int value: 0
         property color textColor: clockColumn.colText
         property var alignment: clockColumn.textHorizontalAlignment
-        property int fontSize: Config.options.background.widgets.clock.digital.font.size
-        property int fontWeight: Config.options.background.widgets.clock.digital.font.weight
-        property string fontFamily: Config.options.background.widgets.clock.digital.font.family
+        property int fontSize: Appearance.activeMonitorBackground.widgets.clock.digital.font.size
+        property int fontWeight: Appearance.activeMonitorBackground.widgets.clock.digital.font.weight
+        property string fontFamily: Appearance.activeMonitorBackground.widgets.clock.digital.font.family
         property var fontAxes: ({
-                "wdth": Config.options.background.widgets.clock.digital.font.width,
-                "ROND": Config.options.background.widgets.clock.digital.font.roundness
+                "wdth": Appearance.activeMonitorBackground.widgets.clock.digital.font.width,
+                "ROND": Appearance.activeMonitorBackground.widgets.clock.digital.font.roundness
             })
         spacing: 0
 
@@ -102,9 +102,9 @@ ColumnLayout {
                 text: ":"
                 color: clockColumn.colText
                 horizontalAlignment: clockColumn.textHorizontalAlignment
-                font.family: Config.options.background.widgets.clock.digital.font.family
-                font.pixelSize: Config.options.background.widgets.clock.digital.font.size
-                font.weight: Config.options.background.widgets.clock.digital.font.weight
+                font.family: Appearance.activeMonitorBackground.widgets.clock.digital.font.family
+                font.pixelSize: Appearance.activeMonitorBackground.widgets.clock.digital.font.size
+                font.weight: Appearance.activeMonitorBackground.widgets.clock.digital.font.weight
             }
             TimeDigits {
                 id: minuteHDigits
@@ -120,7 +120,7 @@ ColumnLayout {
             Layout.fillHeight: true
 
             ClockText {
-                visible: Config.options.background.widgets.clock.digital.showDate
+                visible: Appearance.activeMonitorBackground.widgets.clock.digital.showDate
                 Layout.alignment: Qt.AlignHCenter
                 text: DateTime.longDate
                 color: clockColumn.colText
@@ -128,10 +128,10 @@ ColumnLayout {
             }
 
             ClockText {
-                visible: Config.options.background.widgets.clock.quote.enable && Config.options.background.widgets.clock.quote.text.length > 0
+                visible: Appearance.activeMonitorBackground.widgets.clock.quote.enable && Appearance.activeMonitorBackground.widgets.clock.quote.text.length > 0
                 Layout.alignment: Qt.AlignHCenter
                 font.pixelSize: Appearance.font.pixelSize.normal
-                text: Config.options.background.widgets.clock.quote.text
+                text: Appearance.activeMonitorBackground.widgets.clock.quote.text
                 animateChange: false
                 color: clockColumn.colText
                 horizontalAlignment: Text.AlignHCenter

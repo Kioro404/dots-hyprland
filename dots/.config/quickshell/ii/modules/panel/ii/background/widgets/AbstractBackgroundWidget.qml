@@ -16,7 +16,7 @@ AbstractWidget {
     required property int scaledScreenHeight
     required property real wallpaperScale
     property bool visibleWhenLocked: false
-    property var configEntry: Config.options.background.widgets[configEntryName]
+    property var configEntry: Appearance.activeMonitorBackground.widgets[configEntryName]
     property string placementStrategy: configEntry.placementStrategy
     property real targetX: Math.max(0, Math.min(configEntry.x, scaledScreenWidth - width))
     property real targetY : Math.max(0, Math.min(configEntry.y, scaledScreenHeight - height))
