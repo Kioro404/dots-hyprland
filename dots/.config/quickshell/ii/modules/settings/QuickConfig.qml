@@ -14,11 +14,57 @@ ContentPage {
     Process {
         id: randomWallProc
         property string status: ""
-        property string scriptPath: `${Directories.scriptPath}/colors/random/random_konachan_wall.sh`
-        command: ["bash", "-c", FileUtils.trimFileProtocol(randomWallProc.scriptPath)]
+        property string scriptPath: ""
+        property string tag: ""
+        command: ["bash", "-c", FileUtils.trimFileProtocol(randomWallProc.scriptPath) + " setTag " + randomWallProc.tag]
         stdout: SplitParser {
             onRead: data => {
                 randomWallProc.status = data.trim();
+            }
+        }
+    }
+
+    Process {
+        id: listWallpaperTagsProc
+        running: true
+        property ListModel providers: ListModel {}
+        property string scriptPath: `${Directories.scriptPath}/colors/random/random_${Config.options.background.provider.name}.sh`
+        command: ["bash", "-c", FileUtils.trimFileProtocol(listWallpaperTagsProc.scriptPath) + " getTag"]
+        stdout: SplitParser {
+            onRead: data => {
+                try {
+                    let tags = JSON.parse(data);
+                    tags.forEach(tag => {
+                        listWallpaperTagsProc.providers.append({
+                            displayName: tag,
+                            value: tag
+                        });
+                    });
+                } catch (e) {
+                }
+            }
+        }
+    }
+
+    Process {
+        id: listRandomScriptsProc
+        running: true
+        property ListModel providers: ListModel {}
+        command: ["find", Directories.scriptPath + "/colors/random/", "-maxdepth", "1", "-type", "f", "-name", "random_*.sh", "-printf", "%f\\n"]
+        stdout: SplitParser {
+            onRead: data => {
+                data.trim().split('\\n').filter(line => line.trim()).forEach(fileName => {
+                    if (fileName.startsWith("random_") && fileName.endsWith(".sh")) {
+                        const cleanName = fileName.slice(7, -3);
+                        if (cleanName.length > 0) {
+                            const displayName = cleanName.split('_').join(' ');
+                            listRandomScriptsProc.providers.append({
+                                displayName: displayName,
+                                value: displayName
+                            });
+                        }
+                    }
+                });
             }
         }
     }
@@ -65,8 +111,8 @@ ContentPage {
             Layout.fillWidth: true
 
             Item {
-                implicitWidth: 340
-                implicitHeight: 200
+                implicitWidth: 360
+                implicitHeight: 220
                 
                 StyledImage {
                     id: wallpaperPreview
@@ -80,7 +126,7 @@ ContentPage {
                     layer.effect: OpacityMask {
                         maskSource: Rectangle {
                             width: 360
-                            height: 200
+                            height: 220
                             radius: Appearance.rounding.normal
                         }
                     }
@@ -88,34 +134,74 @@ ContentPage {
             }
 
             ColumnLayout {
-                RippleButtonWithIcon {
-                    enabled: !randomWallProc.running
-                    visible: Config.options.policies.weeb === 1
-                    Layout.fillWidth: true
-                    buttonRadius: Appearance.rounding.small
-                    materialIcon: "ifl"
-                    mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
-                    onClicked: {
-                        randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_konachan_wall.sh`;
-                        randomWallProc.running = true;
+                StyledComboBox {
+                    id: wallpaperProviderSelector
+                    buttonIcon: "swap_horiz"
+                    textRole: "displayName"
+                    model: listRandomScriptsProc.providers
+
+                    currentIndex: {
+                        let foundIndex = 0;
+                        for (let i = 0; i < model.count; i++) {
+                            if (model.get(i).value === Config.options.background.provider.name) {
+                                foundIndex = i;
+                                break;
+                            }
+                        }
+                        return foundIndex;
                     }
+
+                    onActivated: index => {
+                        Config.options.background.provider.name = model.get(index).value;
+
+                        listWallpaperTagsProc.running = false;
+                        listWallpaperTagsProc.providers.clear();
+
+                        listWallpaperTagsProc.scriptPath = `${Directories.scriptPath}/colors/random/random_${model.get(index).value}.sh`;
+                        listWallpaperTagsProc.running = true;
+                    }
+
                     StyledToolTip {
-                        text: Translation.tr("Random SFW Anime wallpaper from Konachan\nImage is saved to ~/Pictures/Wallpapers")
+                        text: Translation.tr("Wallpaper provider")
                     }
                 }
-                RippleButtonWithIcon {
-                    enabled: !randomWallProc.running
-                    visible: Config.options.policies.weeb === 1
-                    Layout.fillWidth: true
-                    buttonRadius: Appearance.rounding.small
-                    materialIcon: "ifl"
-                    mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: osu! seasonal")
-                    onClicked: {
-                        randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_osu_wall.sh`;
-                        randomWallProc.running = true;
+                RowLayout {
+                    StyledComboBox {
+                        id: tagSelector
+                        buttonIcon: "sell"
+                        textRole: "displayName"
+                        enabled: listWallpaperTagsProc.providers.count > 0
+                        model: listWallpaperTagsProc.providers
+
+                        currentIndex: {
+                            let foundIndex = 0;
+                            for (let i = 0; i < model.count; i++) {
+                                if (model.get(i).value === Config.options.background.provider.tag) {
+                                    foundIndex = i;
+                                    break;
+                                }
+                            }
+                            return foundIndex;
+                        }
+
+                        onActivated: index => {
+                            Config.options.background.provider.tag = model.get(index).value;
+                        }
+
                     }
-                    StyledToolTip {
-                        text: Translation.tr("Random osu! seasonal background\nImage is saved to ~/Pictures/Wallpapers")
+                    RippleButtonWithIcon {
+                        enabled: !randomWallProc.running
+                        visible: Config.options.policies.weeb === 1
+                        buttonRadius: Appearance.rounding.small
+                        materialIcon: "ifl"
+                        mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random")
+                        onClicked: {
+                            randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_${wallpaperProviderSelector.model.get(wallpaperProviderSelector.currentIndex).value}.sh`;
+                            randomWallProc.running = true;
+                        }
+                        StyledToolTip {
+                            text: Translation.tr("Random wallpaper\nImage is saved to %1").arg(`${Directories.pictures}/Wallpapers`)
+                        }
                     }
                 }
                 RippleButtonWithIcon {
@@ -230,7 +316,7 @@ ContentPage {
 
     ContentSection {
         icon: "screenshot_monitor"
-        title: Translation.tr("Bar & screen")
+        title: Translation.tr("Bar")
 
         ConfigRow {
             ContentSubsection {
@@ -266,7 +352,7 @@ ContentPage {
                 }
             }
             ContentSubsection {
-                title: Translation.tr("Bar style")
+                title: Translation.tr("%1 style").arg(Translation.tr("Bar"))
 
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.cornerStyle

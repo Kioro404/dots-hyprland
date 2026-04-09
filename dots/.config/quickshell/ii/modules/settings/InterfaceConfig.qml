@@ -254,13 +254,22 @@ ContentPage {
         icon: "notifications"
         title: Translation.tr("Notifications")
 
+        ConfigSwitch {
+            buttonIcon: "notifications_active"
+            text: Translation.tr("Enable %1").arg(Translation.tr("Notifications").toLowerCase())
+            checked: !Config.options.notifications.disabled
+            onCheckedChanged: {
+                Config.options.notifications.disabled = !checked
+            }
+        }
         ConfigSpinBox {
+            visible: !Config.options.notifications.disabled
             icon: "av_timer"
-            text: Translation.tr("Timeout duration (if not defined by notification) (ms)")
+            text: Translation.tr("Timeout duration (if not defined by notification) (s)")
             value: Config.options.notifications.timeout
-            from: 1000
-            to: 60000
-            stepSize: 1000
+            from: 1
+            to: 60
+            stepSize: 1
             onValueChanged: {
                 Config.options.notifications.timeout = value;
             }

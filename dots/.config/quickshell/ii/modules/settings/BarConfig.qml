@@ -37,26 +37,28 @@ ContentPage {
                     }
                     options: [
                         {
-                            displayName: Translation.tr("Top"),
-                            icon: "arrow_upward",
-                            value: 0 // bottom: false, vertical: false
+                            displayName: "Top",
+                            icon: "arrow_upward"
                         },
                         {
-                            displayName: Translation.tr("Left"),
-                            icon: "arrow_back",
-                            value: 2 // bottom: false, vertical: true
+                            displayName: "Bottom",
+                            icon: "arrow_downward"
                         },
                         {
-                            displayName: Translation.tr("Bottom"),
-                            icon: "arrow_downward",
-                            value: 1 // bottom: true, vertical: false
+                            displayName: "Left",
+                            icon: "arrow_back"
                         },
                         {
-                            displayName: Translation.tr("Right"),
-                            icon: "arrow_forward",
-                            value: 3 // bottom: true, vertical: true
+                            displayName: "Right",
+                            icon: "arrow_forward"
                         }
-                    ]
+                    ].map((position, index) => {
+                        return {
+                            displayName: position.displayName,
+                            icon: position.icon,
+                            value: position.index
+                        }
+                    })
                 }
             }
             ContentSubsection {
@@ -66,7 +68,7 @@ ContentPage {
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.autoHide.enable
                     onSelected: newValue => {
-                        Config.options.bar.autoHide.enable = newValue; // Update local copy
+                        Config.options.bar.autoHide.enable = newValue;
                     }
                     options: [
                         {
@@ -85,15 +87,14 @@ ContentPage {
         }
 
         ConfigRow {
-            
             ContentSubsection {
-                title: Translation.tr("Corner style")
+                title: Translation.tr("%1 style").arg(Translation.tr("Corner"))
                 Layout.fillWidth: true
 
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.cornerStyle
                     onSelected: newValue => {
-                        Config.options.bar.cornerStyle = newValue; // Update local copy
+                        Config.options.bar.cornerStyle = newValue;
                     }
                     options: [
                         {
@@ -116,13 +117,13 @@ ContentPage {
             }
 
             ContentSubsection {
-                title: Translation.tr("Group style")
+                title: Translation.tr("%1 style").arg(Translation.tr("Group"))
                 Layout.fillWidth: false
 
                 ConfigSelectionArray {
                     currentValue: Config.options.bar.borderless
                     onSelected: newValue => {
-                        Config.options.bar.borderless = newValue; // Update local copy
+                        Config.options.bar.borderless = newValue;
                     }
                     options: [
                         {
@@ -307,7 +308,7 @@ ContentPage {
         }
 
         ContentSubsection {
-            title: Translation.tr("Number style")
+            title: Translation.tr("%1 style").arg(Translation.tr("Number"))
 
             ConfigSelectionArray {
                 currentValue: JSON.stringify(Config.options.bar.workspaces.numberMap)
@@ -348,3 +349,4 @@ ContentPage {
         }
     }
 }
+

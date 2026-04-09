@@ -2,30 +2,30 @@ import QtQuick
 import Quickshell
 
 import qs.modules.common
-import qs.modules.ii.background
-import qs.modules.ii.bar
-import qs.modules.ii.cheatsheet
-import qs.modules.ii.dock
-import qs.modules.ii.lock
-import qs.modules.ii.mediaControls
-import qs.modules.ii.notificationPopup
-import qs.modules.ii.onScreenDisplay
-import qs.modules.ii.onScreenKeyboard
-import qs.modules.ii.overview
-import qs.modules.ii.polkit
-import qs.modules.ii.regionSelector
-import qs.modules.ii.screenCorners
-import qs.modules.ii.screenTranslator
-import qs.modules.ii.sessionScreen
-import qs.modules.ii.sidebarLeft
-import qs.modules.ii.sidebarRight
-import qs.modules.ii.overlay
-import qs.modules.ii.verticalBar
-import qs.modules.ii.wallpaperSelector
+import qs.modules.panel.ii.background
+import qs.modules.panel.ii.cheatsheet
+import qs.modules.panel.ii.dock
+import qs.modules.panel.ii.lock
+import qs.modules.panel.ii.mediaControls
+import qs.modules.panel.ii.notificationPopup
+import qs.modules.panel.ii.onScreenDisplay
+import qs.modules.panel.ii.onScreenKeyboard
+import qs.modules.panel.ii.overview
+import qs.modules.panel.ii.polkit
+import qs.modules.panel.ii.regionSelector
+import qs.modules.panel.ii.screenCorners
+import qs.modules.panel.ii.sessionScreen
+import qs.modules.panel.ii.sidebarLeft
+import qs.modules.panel.ii.sidebarRight
+import qs.modules.panel.ii.overlay
+import qs.modules.panel.ii.bar.horizontalBar
+import qs.modules.panel.ii.bar.verticalBar
+import qs.modules.panel.ii.wallpaperSelector
 
 Scope {
-    PanelLoader { extraCondition: !Config.options.bar.vertical; component: Bar {} }
     PanelLoader { component: Background {} }
+    PanelLoader { extraCondition: !Config.options.bar.vertical; component: HorizontalBar {} }
+    PanelLoader { extraCondition: Config.options.bar.vertical; component: VerticalBar {} }
     PanelLoader { component: Cheatsheet {} }
     PanelLoader { extraCondition: Config.options.dock.enable; component: Dock {} }
     PanelLoader { component: Lock {} }
@@ -38,10 +38,8 @@ Scope {
     PanelLoader { component: Polkit {} }
     PanelLoader { component: RegionSelector {} }
     PanelLoader { component: ScreenCorners {} }
-    PanelLoader { component: ScreenTranslator {} }
     PanelLoader { component: SessionScreen {} }
     PanelLoader { component: SidebarLeft {} }
     PanelLoader { component: SidebarRight {} }
-    PanelLoader { extraCondition: Config.options.bar.vertical; component: VerticalBar {} }
     PanelLoader { component: WallpaperSelector {} }
 }

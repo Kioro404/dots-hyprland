@@ -2,26 +2,25 @@ import QtQuick
 import Quickshell
 
 import qs.modules.common
-import qs.modules.waffle.actionCenter
-import qs.modules.waffle.background
-import qs.modules.waffle.bar
-import qs.modules.waffle.lock
-import qs.modules.waffle.notificationCenter
-import qs.modules.waffle.notificationPopup
-import qs.modules.waffle.onScreenDisplay
-// import qs.modules.waffle.overlay
-import qs.modules.waffle.polkit
-import qs.modules.waffle.screenSnip
-import qs.modules.waffle.startMenu
-import qs.modules.waffle.sessionScreen
-import qs.modules.waffle.taskView
+import qs.modules.panel.waffle.actionCenter
+import qs.modules.panel.waffle.background
+import qs.modules.panel.waffle.bar
+import qs.modules.panel.waffle.lock
+import qs.modules.panel.waffle.notificationCenter
+import qs.modules.panel.waffle.notificationPopup
+import qs.modules.panel.waffle.onScreenDisplay
+// import qs.modules.panel.waffle.overlay
+import qs.modules.panel.waffle.polkit
+import qs.modules.panel.waffle.screenSnip
+import qs.modules.panel.waffle.startMenu
+import qs.modules.panel.waffle.sessionScreen
+import qs.modules.panel.waffle.taskView
 
 // Fallbacks
-import qs.modules.ii.cheatsheet
-import qs.modules.ii.onScreenKeyboard
-import qs.modules.ii.overlay
-import qs.modules.ii.screenTranslator
-import qs.modules.ii.wallpaperSelector
+import qs.modules.panel.ii.cheatsheet
+import qs.modules.panel.ii.onScreenKeyboard
+import qs.modules.panel.ii.overlay
+import qs.modules.panel.ii.wallpaperSelector
 
 Scope {
     PanelLoader { component: WaffleActionCenter {} }

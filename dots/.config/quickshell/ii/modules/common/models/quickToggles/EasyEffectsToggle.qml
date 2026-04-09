@@ -26,5 +26,5 @@ QuickToggleModel {
         GlobalStates.sidebarRightOpen = false
     }
 
-    tooltipText: Translation.tr("EasyEffects | Right-click to configure")
+    tooltipText: Translation.tr("EasyEffects") + " | " + Translation.tr("Right-click to configure")
 }

@@ -24,5 +24,5 @@ QuickToggleModel {
         Hyprsunset.fetchState()
     }
     
-    tooltipText: Translation.tr("Night Light | Right-click to configure")
+    tooltipText: Translation.tr("Night Light") + " | " + Translation.tr("Right-click to configure")
 }

@@ -62,28 +62,24 @@ Singleton {
     }
 
     property var searchActions: [
+        ...["light", "dark"].map(mode => {
+            return {
+                action: mode,
+                execute: () => {
+                    Quickshell.execDetached([Directories.wallpaperSwitchScriptPath, "--mode", mode, "--noswitch"]);
+                }
+            }
+        }),
+        {
+            action: "randomwallpaper",
+            execute: () => {
+                Quickshell.execDetached([Quickshell.shellPath(`scripts/colors/random/random_${Config.options.background.provider.name}.sh`)]);
+            }
+        },
         {
             action: "accentcolor",
             execute: args => {
                 Quickshell.execDetached([Directories.wallpaperSwitchScriptPath, "--noswitch", "--color", ...(args != '' ? [`${args}`] : [])]);
-            }
-        },
-        {
-            action: "dark",
-            execute: () => {
-                Quickshell.execDetached([Directories.wallpaperSwitchScriptPath, "--mode", "dark", "--noswitch"]);
-            }
-        },
-        {
-            action: "konachanwallpaper",
-            execute: () => {
-                Quickshell.execDetached([Quickshell.shellPath("scripts/colors/random/random_konachan_wall.sh")]);
-            }
-        },
-        {
-            action: "light",
-            execute: () => {
-                Quickshell.execDetached([Directories.wallpaperSwitchScriptPath, "--mode", "light", "--noswitch"]);
             }
         },
         {

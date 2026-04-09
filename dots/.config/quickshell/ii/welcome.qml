@@ -44,10 +44,9 @@ ApplicationWindow {
     Process {
         id: konachanWallProc
         property string status: ""
-        command: ["bash", "-c", Quickshell.shellPath("scripts/colors/random/random_konachan_wall.sh")]
+        command: ["bash", "-c", Quickshell.shellPath(`scripts/colors/random/random_${Config.options.background.provider.name}.sh`)]
         stdout: SplitParser {
             onRead: data => {
-                console.log(`Konachan wall proc output: ${data}`);
                 konachanWallProc.status = data.trim();
             }
         }
@@ -145,7 +144,7 @@ ApplicationWindow {
                     title: Translation.tr("Language")
 
                     ContentSubsection {
-                        title: Translation.tr("Select language")
+                        title: Translation.tr("Select %1").arg(Translation.tr("Language"))
                         ConfigSelectionArray {
                             id: languageSelector
                             currentValue: Config.options.language.ui
@@ -235,7 +234,7 @@ ApplicationWindow {
                             }
                         }
                         ContentSubsection {
-                            title: Translation.tr("Bar style")
+                            title: Translation.tr("%1 style").arg(Translation.tr("Bar"))
 
                             ConfigSelectionArray {
                                 currentValue: Config.options.bar.cornerStyle
@@ -286,13 +285,13 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignHCenter
                             buttonRadius: Appearance.rounding.small
                             materialIcon: "ifl"
-                            mainText: konachanWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random: Konachan")
+                            mainText: konachanWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random")
                             onClicked: {
                                 console.log(konachanWallProc.command.join(" "));
                                 konachanWallProc.running = true;
                             }
                             StyledToolTip {
-                                text: Translation.tr("Random SFW Anime wallpaper from Konachan\nImage is saved to ~/Pictures/Wallpapers")
+                                text: Translation.tr("Random wallpaper\nImage is saved to %1").arg(`${Directories.pictures}/Wallpapers`)
                             }
                         }
                         RippleButtonWithIcon {
@@ -346,7 +345,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
 
                         ContentSubsection {
-                            title: "Weeb"
+                            title: Translation.tr("Weeb")
 
                             ConfigSelectionArray {
                                 currentValue: Config.options.policies.weeb
@@ -445,14 +444,14 @@ ApplicationWindow {
                             materialIcon: "help"
                             mainText: Translation.tr("Usage")
                             onClicked: {
-                                Qt.openUrlExternally("https://end-4.github.io/dots-hyprland-wiki/en/ii-qs/02usage/");
+                                Qt.openUrlExternally("https://ii.clsty.link/en/ii-qs/02usage/");
                             }
                         }
                         RippleButtonWithIcon {
                             materialIcon: "construction"
                             mainText: Translation.tr("Configuration")
                             onClicked: {
-                                Qt.openUrlExternally("https://end-4.github.io/dots-hyprland-wiki/en/ii-qs/03config/");
+                                Qt.openUrlExternally("https://ii.clsty.link/en/ii-qs/03config/");
                             }
                         }
                     }
@@ -470,14 +469,14 @@ ApplicationWindow {
                             nerdIcon: "󰊤"
                             mainText: Translation.tr("GitHub")
                             onClicked: {
-                                Qt.openUrlExternally("https://github.com/end-4/dots-hyprland");
+                                Qt.openUrlExternally("https://github.com/kioro404/dots-hyprland");
                             }
                         }
                         RippleButtonWithIcon {
                             materialIcon: "favorite"
-                            mainText: "Funny number"
+                            mainText: Translation.tr("Donate")
                             onClicked: {
-                                Qt.openUrlExternally("https://github.com/sponsors/end-4");
+                                Qt.openUrlExternally("https://ko-fi.com/R5R41W3ALQ");
                             }
                         }
                     }

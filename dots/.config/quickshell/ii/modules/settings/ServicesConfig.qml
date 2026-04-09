@@ -13,7 +13,7 @@ ContentPage {
 
         MaterialTextArea {
             Layout.fillWidth: true
-            placeholderText: Translation.tr("System prompt")
+            placeholderText: Translation.tr("System %1").arg(Translation.tr("Prompt").toLowerCase())
             text: Config.options.ai.systemPrompt
             wrapMode: TextEdit.Wrap
             onTextChanged: {
@@ -73,11 +73,11 @@ ContentPage {
 
         ConfigSpinBox {
             icon: "av_timer"
-            text: Translation.tr("Polling interval (ms)")
+            text: Translation.tr("Polling interval (s)")
             value: Config.options.resources.updateInterval
-            from: 100
-            to: 10000
-            stepSize: 100
+            from: 1
+            to: 60
+            stepSize: 1
             onValueChanged: {
                 Config.options.resources.updateInterval = value;
             }
@@ -203,31 +203,54 @@ ContentPage {
         }
     }
 
-    // There's no update indicator in ii for now so we shouldn't show this yet
-    // ContentSection {
-    //     icon: "deployed_code_update"
-    //     title: Translation.tr("System updates (Arch only)")
+    ContentSection {
+        icon: "deployed_code_update"
+        title: Translation.tr("System %1").arg(Translation.tr("(Arch Only) Updates"))
 
-    //     ConfigSwitch {
-    //         text: Translation.tr("Enable update checks")
-    //         checked: Config.options.updates.enableCheck
-    //         onCheckedChanged: {
-    //             Config.options.updates.enableCheck = checked;
-    //         }
-    //     }
+        ConfigSwitch {
+            text: Translation.tr("Enable %1").arg(Translation.tr("Update checks"))
+            checked: Config.options.updates.enableCheck
+            onCheckedChanged: {
+                Config.options.updates.enableCheck = checked;
+            }
+        }
 
-    //     ConfigSpinBox {
-    //         icon: "av_timer"
-    //         text: Translation.tr("Check interval (mins)")
-    //         value: Config.options.updates.checkInterval
-    //         from: 60
-    //         to: 1440
-    //         stepSize: 60
-    //         onValueChanged: {
-    //             Config.options.updates.checkInterval = value;
-    //         }
-    //     }
-    // }
+        ConfigSpinBox {
+            icon: "av_timer"
+            text: Translation.tr("Check interval (m)")
+            value: Config.options.updates.checkInterval
+            from: 60
+            to: 1440
+            stepSize: 60
+            onValueChanged: {
+                Config.options.updates.checkInterval = value;
+            }
+        }
+
+        ConfigSpinBox {
+            icon: "sync"
+            text: Translation.tr("Advise update threshold")
+            value: Config.options.updates.adviseUpdateThreshold
+            from: 1
+            to: 1000
+            stepSize: 1
+            onValueChanged: {
+                Config.options.updates.adviseUpdateThreshold = value;
+            }
+        }
+
+        ConfigSpinBox {
+            icon: "sync_disabled"
+            text: Translation.tr("Strongly advise update threshold")
+            value: Config.options.updates.stronglyAdviseUpdateThreshold
+            from: 1
+            to: 1000
+            stepSize: 1
+            onValueChanged: {
+                Config.options.updates.stronglyAdviseUpdateThreshold = value;
+            }
+        }
+    }
 
     ContentSection {
         icon: "weather_mix"

@@ -1,5 +1,6 @@
 pragma Singleton
 import Quickshell
+import qs.services
 
 Singleton {
     id: root
@@ -63,7 +64,7 @@ Singleton {
 
         // Less than 1 minute
         if (diffMs < 60000)
-            return 'Now';
+            return Translation.tr("Now");
 
         // Same day - show relative time
         if (messageTime.toDateString() === now.toDateString()) {

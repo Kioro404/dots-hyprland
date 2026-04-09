@@ -1,6 +1,6 @@
 This file contains information about the dependencies.
 
-It mainly describes about `sdata/dist-arch` which is actively maintained by the devs.
+It mainly describes about `sdata/dist/arch` which is actively maintained by the devs.
 
 Tips:
 - The packages which name has prefix `illogical-impulse-` are defined with local files `PKGBUILD`. There're two types:

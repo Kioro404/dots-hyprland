@@ -8,6 +8,7 @@ RippleButton {
     id: root
     property string buttonIcon
     property alias iconSize: iconWidget.iconSize
+    property int iconRotation: 0
 
     Layout.fillWidth: true
     implicitHeight: contentItem.implicitHeight + 8 * 2
@@ -20,6 +21,7 @@ RippleButton {
         OptionalMaterialSymbol {
             id: iconWidget
             icon: root.buttonIcon
+            rotation: root.iconRotation
             opacity: root.enabled ? 1 : 0.4
             iconSize: Appearance.font.pixelSize.larger
         }
@@ -40,4 +42,3 @@ RippleButton {
         }
     }
 }
-
