@@ -20,6 +20,7 @@ import qs.modules.panel.waffle.taskView
 import qs.modules.panel.ii.cheatsheet
 import qs.modules.panel.ii.onScreenKeyboard
 import qs.modules.panel.ii.overlay
+import qs.modules.panel.ii.screenTranslator
 import qs.modules.panel.ii.wallpaperSelector
 
 Scope {
