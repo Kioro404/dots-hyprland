@@ -10,8 +10,8 @@ import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.models.quickToggles
 import qs.modules.common.functions
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter.toggles
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter.toggles
 
 Item {
     id: root

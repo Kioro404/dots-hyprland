@@ -8,7 +8,7 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 BodyRectangle {
     id: root
@@ -57,7 +57,7 @@ BodyRectangle {
     component PageSection: ColumnLayout {
         id: pageSection
         required property string title
-        default property alias pageData: pageSectionContentArea.data
+        default property alias data: pageSectionContentArea.data
 
         spacing: 16
 

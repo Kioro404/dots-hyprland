@@ -52,7 +52,7 @@ Item { // Player instance
 
     Timer { // Force update for revision
         running: root.player?.playbackState == MprisPlaybackState.Playing
-        interval: Config.options.resources.updateInterval
+        interval: (Config.options.resources.updateInterval * 1000)
         repeat: true
         onTriggered: {
             root.player.positionChanged()
@@ -77,7 +77,7 @@ Item { // Player instance
         id: coverArtDownloader
         property string targetFile: root.artUrl
         property string artFilePath: root.artFilePath
-        command: [ "bash", "-c", `[ -f ${artFilePath} ] || curl -4 -sSL '${targetFile}' -o '${artFilePath}'` ]
+        command: [ "bash", "-c", `[ -f ${artFilePath} ] || curl -sSL '${targetFile}' -o '${artFilePath}'` ]
         onExited: (exitCode, exitStatus) => {
             root.downloaded = true
         }

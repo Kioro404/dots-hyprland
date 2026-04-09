@@ -7,7 +7,7 @@ echo -e "Syntax: $0 resetfirstrun [OPTIONS]
 Reset firstrun state.
 
 Options:
-  -h, --help       Show this help message and exit
+  -h, --help                     Show this help message and exit
 "
 }
 # `man getopt` to see more

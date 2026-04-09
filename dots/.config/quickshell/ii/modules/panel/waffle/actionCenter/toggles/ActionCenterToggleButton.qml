@@ -9,8 +9,8 @@ import qs.modules.common
 import qs.modules.common.models.quickToggles
 import qs.modules.common.functions
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter
 
 // It should be perfectly fine to use just a Column here, but somehow
 // using ColumnLayout prevents weird opening anim stutter

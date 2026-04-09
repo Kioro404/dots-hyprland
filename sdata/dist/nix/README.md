@@ -18,7 +18,7 @@ Partially works. See [Discussion #2382](https://github.com/end-4/dots-hyprland/d
 Note that this script must be idempotent.
 
 TODO:
-- [ ] Fix all TODOs inside `dist-nix`. ([search online](https://github.com/search?q=repo%3Aend-4%2Fdots-hyprland+path%3A%2F%5Esdata%5C%2Fdist-nix%5C%2F%2F+TODO&type=code))
+- [ ] Fix all TODOs inside `dist/nix`. ([search online](https://github.com/search?q=repo%3AKioro404%2Fdots-hyprland+path%3A%2F%5Esdata%5C%2Fdist%5C/nix%5C%2F%2F+TODO&type=code))
 - [ ] Since Nix uses a large number of inodes, need to warn user if inode-limited filesystem (typically ext4) is used.
 - [ ] Deal with error when running `systemctl --user enable ydotool --now`:
   ```plain

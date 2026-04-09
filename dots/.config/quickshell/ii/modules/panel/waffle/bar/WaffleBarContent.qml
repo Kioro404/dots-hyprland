@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Layouts
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.bar.tasks
-import qs.modules.waffle.bar.tray
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.bar.tasks
+import qs.modules.panel.waffle.bar.tray
 
 Rectangle {
     id: root

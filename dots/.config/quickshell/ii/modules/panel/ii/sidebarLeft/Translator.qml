@@ -2,7 +2,7 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import qs.modules.ii.sidebarLeft.translator
+import qs.modules.panel.ii.sidebarLeft.translator
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -63,7 +63,7 @@ Item {
 
     Process {
         id: translateProc
-        command: ["bash", "-c", `trans -brief -no-bidi`
+        command: ["bash", "-c", `trans -brief`
             + ` -source '${StringUtils.shellSingleQuoteEscape(root.sourceLanguage)}'`
             + ` -target '${StringUtils.shellSingleQuoteEscape(root.targetLanguage)}'`
             + ` '${StringUtils.shellSingleQuoteEscape(root.inputField.text.trim())}'`]
@@ -226,7 +226,7 @@ Item {
         z: 9999
         sourceComponent: SelectionDialog {
             id: languageSelectorDialog
-            titleText: Translation.tr("Select Language")
+            titleText: Translation.tr("Select %1").arg(Translation.tr("Language"))
             items: root.languages
             defaultChoice: root.languageSelectorTarget ? root.targetLanguage : root.sourceLanguage
             onCanceled: () => {

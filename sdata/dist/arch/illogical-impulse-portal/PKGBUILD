@@ -1,7 +1,6 @@
-groups=(illogical-impulse)
 pkgname=illogical-impulse-portal
 pkgver=1.0
-pkgrel=3
+pkgrel=2
 pkgdesc='Illogical Impulse XDG Desktop Portals'
 arch=(any)
 license=(None)

@@ -6,8 +6,8 @@ import Quickshell.Services.SystemTray
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.bar
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.bar
 
 BarIconButton {
     id: root

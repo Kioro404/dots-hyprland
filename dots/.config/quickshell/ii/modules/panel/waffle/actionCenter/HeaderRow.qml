@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter
 
 RowLayout {
     id: root

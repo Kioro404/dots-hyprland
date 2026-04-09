@@ -12,7 +12,7 @@ import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.utils
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 PanelWindow {
     id: root

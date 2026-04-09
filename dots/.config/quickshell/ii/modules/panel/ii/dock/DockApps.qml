@@ -170,13 +170,18 @@ Item {
 
                                 ButtonGroup {
                                     contentWidth: parent.width - anchors.margins * 2
-                                    StyledText {
-                                        Layout.margins: 5
+                                    WrapperRectangle {
                                         Layout.fillWidth: true
-                                        font.pixelSize: Appearance.font.pixelSize.small
-                                        text: windowButton.modelData?.title
-                                        elide: Text.ElideRight
-                                        color: Appearance.m3colors.m3onSurface
+                                        color: ColorUtils.transparentize(Appearance.colors.colSurfaceContainer)
+                                        radius: Appearance.rounding.small
+                                        margin: 5
+                                        StyledText {
+                                            Layout.fillWidth: true
+                                            font.pixelSize: Appearance.font.pixelSize.small
+                                            text: windowButton.modelData?.title
+                                            elide: Text.ElideRight
+                                            color: Appearance.m3colors.m3onSurface
+                                        }
                                     }
                                     GroupButton {
                                         id: closeButton

@@ -111,7 +111,7 @@ ColumnLayout {
                         }
                     }
                     StyledToolTip {
-                        text: Translation.tr("Save to Downloads")
+                        text: Translation.tr("Save to ~/Downloads")
                     }
                 }
             }

@@ -4,7 +4,7 @@ import Qt5Compat.GraphicalEffects
 import qs.services
 import qs.modules.common
 import qs.modules.common.functions
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 import Quickshell
 
 PopupWindow {

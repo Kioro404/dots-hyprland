@@ -29,11 +29,6 @@ Item {
     }
 
     function setExtraWindowAndGrabFocus(window) {
-        if (root.activeMenu && root.activeMenu !== window) {
-            if (typeof root.activeMenu.close === "function")
-                root.activeMenu.close();
-            root.activeMenu = null;
-        }
         root.activeMenu = window;
         root.grabFocus();
     }
@@ -144,14 +139,6 @@ Item {
                     root.setExtraWindowAndGrabFocus(qsWindow);
                 }
             }
-        }
-
-        StyledText {
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-            font.pixelSize: Appearance.font.pixelSize.larger
-            color: Appearance.colors.colSubtext
-            text: "•"
-            visible: root.showSeparator && SystemTray.items.values.length > 0
         }
     }
 }

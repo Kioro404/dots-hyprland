@@ -1,4 +1,5 @@
-import qs.modules.ii.bar.weather
+import qs.modules.panel.ii.bar.horizontalBar.weather
+import qs.modules.panel.ii.bar as Bar
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -59,8 +60,8 @@ Item { // Bar content region
         implicitWidth: leftSectionRowLayout.implicitWidth
         implicitHeight: Appearance.sizes.baseBarHeight
 
-        onScrollDown: Brightness.decreaseBrightness()
-        onScrollUp: Brightness.increaseBrightness()
+        onScrollDown: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness - 0.05)
+        onScrollUp: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness + 0.05)
         onMovedAway: GlobalStates.osdBrightnessOpen = false
         onPressed: event => {
             if (event.button === Qt.LeftButton)
@@ -70,7 +71,7 @@ Item { // Bar content region
         // Visual content
         ScrollHint {
             reveal: barLeftSideMouseArea.hovered
-            icon: Hyprsunset.gamma === 100 ? "light_mode" : "wb_twilight"
+            icon: "light_mode"
             tooltipText: Translation.tr("Scroll to change brightness")
             side: "left"
             anchors.left: parent.left
@@ -315,6 +316,17 @@ Item { // Bar content region
                         color: rightSidebarButton.colText
                     }
                 }
+            }
+
+            StyledText {
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                font.pixelSize: Appearance.font.pixelSize.larger
+                color: Appearance.colors.colSubtext
+                text: "•"
+            }
+
+            Bar.UpdatesButton{
+                Layout.alignment: Qt.AlignHCenter
             }
 
             SysTray {

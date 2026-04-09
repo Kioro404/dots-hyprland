@@ -48,7 +48,7 @@ function install_home-manager(){
   return 1
 }
 function hm_deps(){
-  SETUP_HM_DIR="${REPO_ROOT}/sdata/dist-nix/home-manager"
+  SETUP_HM_DIR="${REPO_ROOT}/sdata/dist/nix/home-manager"
   SETUP_USERNAME_NIXFILE="${SETUP_HM_DIR}/username.nix"
   echo "\"$(whoami)\"" > "${SETUP_USERNAME_NIXFILE}"
   x git add "${SETUP_USERNAME_NIXFILE}"

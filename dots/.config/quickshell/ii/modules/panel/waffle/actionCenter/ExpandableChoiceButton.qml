@@ -8,8 +8,8 @@ import qs.services.network
 import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter
 
 WChoiceButton {
     id: root

@@ -3,8 +3,8 @@ import Quickshell
 import qs
 import qs.services
 import qs.modules.common
-import qs.modules.waffle.looks
-import qs.modules.waffle.bar
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.bar
 
 WButton {
     id: root

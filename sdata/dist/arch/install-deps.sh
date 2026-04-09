@@ -15,17 +15,17 @@ install-yay(){
 remove_deprecated_dependencies(){
   printf "${STY_CYAN}[$0]: Removing deprecated dependencies:${STY_RST}\n"
   local list=()
-  list+=(illogical-impulse-{microtex,pymyc-aur,oneui4-icons-git})
+  list+=(illogical-impulse-{microtex,pymyc-aur})
   list+=(hyprland-qtutils)
   list+=({quickshell,hyprutils,hyprpicker,hyprlang,hypridle,hyprland-qt-support,hyprland-qtutils,hyprlock,xdg-desktop-portal-hyprland,hyprcursor,hyprwayland-scanner,hyprland}-git)
   list+=(matugen-bin)
   for i in ${list[@]};do try sudo pacman --noconfirm -Rdd $i;done
 }
 # NOTE: `implicitize_old_dependencies()` was for the old days when we just switch from dependencies.conf to local PKGBUILDs.
-# However, let's just keep it as references for other distros writing their `sdata/dist-<OS_GROUP_ID>/install-deps.sh`, if they need it.
+# However, let's just keep it as references for other distros writing their `sdata/dist/<OS_GROUP_ID>/install-deps.sh`, if they need it.
 implicitize_old_dependencies(){
 # Convert old dependencies to non explicit dependencies so that they can be orphaned if not in meta packages
-  remove_bashcomments_emptylines ./sdata/dist-arch/previous_dependencies.conf ./cache/old_deps_stripped.conf
+  remove_bashcomments_emptylines ./sdata/dist/arch/previous_dependencies.conf ./cache/old_deps_stripped.conf
   readarray -t old_deps_list < ./cache/old_deps_stripped.conf
   pacman -Qeq > ./cache/pacman_explicit_packages
   readarray -t explicitly_installed < ./cache/pacman_explicit_packages
@@ -90,11 +90,13 @@ install-local-pkgbuild() {
 }
 
 # Install core dependencies from the meta-packages
-metapkgs=(./sdata/dist-arch/illogical-impulse-{audio,backlight,basic,fonts-themes,kde,portal,python,screencapture,toolkit,widgets})
-metapkgs+=(./sdata/dist-arch/illogical-impulse-hyprland)
-metapkgs+=(./sdata/dist-arch/illogical-impulse-microtex-git)
-metapkgs+=(./sdata/dist-arch/illogical-impulse-quickshell-git)
-metapkgs+=(./sdata/dist-arch/illogical-impulse-bibata-modern-classic-bin)
+metapkgs=(./sdata/dist/arch/illogical-impulse-{audio,backlight,basic,fonts-themes,kde,portal,python,screencapture,toolkit,widgets})
+metapkgs+=(./sdata/dist/arch/illogical-impulse-hyprland)
+metapkgs+=(./sdata/dist/arch/illogical-impulse-microtex-git)
+metapkgs+=(./sdata/dist/arch/illogical-impulse-quickshell-git)
+# metapkgs+=(./sdata/dist/arch/packages/illogical-impulse-oneui4-icons-git)
+[[ -f /usr/share/icons/Bibata-Modern-Classic/index.theme ]] || \
+  metapkgs+=(./sdata/dist/arch/illogical-impulse-bibata-modern-classic-bin)
 
 for i in "${metapkgs[@]}"; do
   metainstallflags="--needed"
@@ -108,7 +110,7 @@ case $SKIP_PLASMAINTG in
   true) sleep 0;;
   *)
     if $ask;then
-      echo -e "${STY_YELLOW}[$0]: NOTE: The size of \"plasma-browser-integration\" is ~600 KiB, but if you don't yet have KDE on your system it'll pull an extra ~600MiB of packages.${STY_RST}"
+      echo -e "${STY_YELLOW}[$0]: NOTE: The size of \"plasma-browser-integration\" is about 600 MiB.${STY_RST}"
       echo -e "${STY_YELLOW}It is needed if you want playtime of media in Firefox to be shown on the music controls widget.${STY_RST}"
       echo -e "${STY_YELLOW}Install it? [y/N]${STY_RST}"
       read -p "====> " p

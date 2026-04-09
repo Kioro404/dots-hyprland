@@ -8,7 +8,7 @@ function import_ebuild(){
 	ename="$3"
 	x sudo rm -rf "${ebuild_dir}/${to_dir}/${ename}"
 	x sudo mkdir -p "${ebuild_dir}/${to_dir}/${ename}"
-	v sudo cp ./sdata/dist-gentoo/${from_dir}/${ename}*.ebuild "${ebuild_dir}/${to_dir}/${ename}"
+	v sudo cp ./sdata/dist/gentoo/${from_dir}/${ename}*.ebuild "${ebuild_dir}/${to_dir}/${ename}"
 	v sudo ebuild "${ebuild_dir}/${to_dir}/${ename}/${ename}"*.ebuild digest
 }
 
@@ -19,3 +19,6 @@ import_ebuild "${FT_DIR}" "media-fonts" "rubik-vf"
 import_ebuild "${FT_DIR}" "media-fonts" "space-grotesk"
 import_ebuild "${FT_DIR}" "kde-plasma" "breeze-plus"
 import_ebuild "${FT_DIR}" "x11-themes" "darkly"
+
+############### WIDGETS
+import_ebuild "${WIDGETS_DIR}" "app-misc" "songrec"

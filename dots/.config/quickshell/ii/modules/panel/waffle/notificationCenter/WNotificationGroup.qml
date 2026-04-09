@@ -6,7 +6,7 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 // TODO: Swipe to dismiss
 MouseArea {
@@ -88,7 +88,7 @@ MouseArea {
                     if (root.notifications.length <= 1)
                         return "";
                     if (!root.expanded)
-                        return Translation.tr("+%1 notifications").arg(root.notifications.length - 1);
+                        return "+" + Translation.tr("%1 notifications").arg(root.notifications.length - 1);
                     if (index === root.notifications.length - 1)
                         return Translation.tr("See fewer");
                     return "";

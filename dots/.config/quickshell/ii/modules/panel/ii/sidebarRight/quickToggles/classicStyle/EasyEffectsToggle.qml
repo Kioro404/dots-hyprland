@@ -26,6 +26,6 @@ QuickToggleButton {
     }
 
     StyledToolTip {
-        text: Translation.tr("EasyEffects | Right-click to configure")
+        text: Translation.tr("EasyEffects") + " | " + Translation.tr("Right-click to configure")
     }
 }

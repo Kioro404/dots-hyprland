@@ -5,7 +5,7 @@ import QtQuick.Layouts
 import Quickshell.Widgets
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 ProgressBar {
     id: root

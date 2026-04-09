@@ -2,7 +2,7 @@ import QtQuick
 import qs
 import qs.modules.common
 import qs.modules.common.functions
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 MouseArea {
     id: root

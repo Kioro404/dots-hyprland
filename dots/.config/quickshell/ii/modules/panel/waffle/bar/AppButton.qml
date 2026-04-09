@@ -4,7 +4,7 @@ import Qt5Compat.GraphicalEffects
 import org.kde.kirigami as Kirigami
 import qs.services
 import qs.modules.common
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 BarButton {
     id: root

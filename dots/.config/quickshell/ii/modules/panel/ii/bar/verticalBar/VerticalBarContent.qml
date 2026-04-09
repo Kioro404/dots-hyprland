@@ -1,3 +1,4 @@
+import "../UpdatesButton.qml"
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -8,9 +9,10 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import qs.modules.ii.bar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as HorizontalBar
+import qs.modules.panel.ii.bar as Bar
 
-Item { // Bar content region
+Item { // HorizontalBar content region
     id: root
 
     property var screen: root.QsWindow.window?.screen
@@ -54,8 +56,8 @@ Item { // Bar content region
         height: (root.height - middleSection.height) / 2
         width: Appearance.sizes.verticalBarWidth
 
-        onScrollDown: Brightness.decreaseBrightness()
-        onScrollUp: Brightness.increaseBrightness()
+        onScrollDown: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness - 0.05)
+        onScrollUp: root.brightnessMonitor.setBrightness(root.brightnessMonitor.brightness + 0.05)
         onMovedAway: GlobalStates.osdBrightnessOpen = false
         onPressed: event => {
             if (event.button === Qt.LeftButton)
@@ -67,7 +69,7 @@ Item { // Bar content region
             anchors.fill: parent
             spacing: 10
 
-            Bar.LeftSidebarButton { // Left sidebar button
+            HorizontalBar.LeftSidebarButton { // Left sidebar button
                 Layout.alignment: Qt.AlignHCenter
                 Layout.topMargin: (Appearance.sizes.baseVerticalBarWidth - implicitWidth) / 2 + Appearance.sizes.hyprlandGapsOut
                 colBackground: barTopSectionMouseArea.hovered ? Appearance.colors.colLayer1Hover : ColorUtils.transparentize(Appearance.colors.colLayer1Hover, 1)
@@ -85,7 +87,7 @@ Item { // Bar content region
         anchors.centerIn: parent
         spacing: 4
 
-        Bar.BarGroup {
+        HorizontalBar.BarGroup {
             vertical: true
             padding: 8
             Resources {
@@ -105,12 +107,12 @@ Item { // Bar content region
             visible: Config.options?.bar.borderless
         }
 
-        Bar.BarGroup {
+        HorizontalBar.BarGroup {
             id: middleCenterGroup
             vertical: true
             padding: 6
 
-            Bar.Workspaces {
+            HorizontalBar.Workspaces {
                 id: workspacesWidget
                 vertical: true
                 MouseArea {
@@ -131,7 +133,7 @@ Item { // Bar content region
             visible: Config.options?.bar.borderless
         }
 
-        Bar.BarGroup {
+        HorizontalBar.BarGroup {
             vertical: true
             padding: 8
             
@@ -185,16 +187,28 @@ Item { // Bar content region
             anchors.fill: parent
             spacing: 4
 
-            Item { 
+            Item {
                 Layout.fillWidth: true
-                Layout.fillHeight: true 
+                Layout.fillHeight: true
             }
 
-            Bar.SysTray {
+            HorizontalBar.SysTray {
                 vertical: true
                 Layout.fillWidth: true
                 Layout.fillHeight: false
                 invertSide: Config?.options.bar.bottom
+            }
+
+            Bar.UpdatesButton{
+                Layout.alignment: Qt.AlignHCenter
+            }
+
+            StyledText {
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                font.pixelSize: Appearance.font.pixelSize.larger
+                color: Appearance.colors.colSubtext
+                text: "•"
+                visible: root.showSeparator && SystemTray.items.values.length > 0
             }
 
             RippleButton { // Right sidebar button
@@ -259,7 +273,7 @@ Item { // Bar content region
                             color: rightSidebarButton.colText
                         }
                     }
-                    Bar.HyprlandXkbIndicator {
+                    HorizontalBar.HyprlandXkbIndicator {
                         vertical: true
                         Layout.alignment: Qt.AlignHCenter
                         Layout.bottomMargin: indicatorsColumnLayout.realSpacing
@@ -275,7 +289,7 @@ Item { // Bar content region
                         Behavior on Layout.bottomMargin {
                             animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
                         }
-                        Bar.NotificationUnreadCount {
+                        HorizontalBar.NotificationUnreadCount {
                             id: notificationUnreadCount
                         }
                     }

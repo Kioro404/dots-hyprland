@@ -1,6 +1,6 @@
 import QtQuick
 import Quickshell
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 Item {
     id: root

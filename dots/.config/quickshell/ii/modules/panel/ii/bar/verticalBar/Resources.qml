@@ -2,7 +2,7 @@ import qs.services
 import qs.modules.common
 import QtQuick
 import QtQuick.Layouts
-import qs.modules.ii.bar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as Bar
 
 MouseArea {
     id: root

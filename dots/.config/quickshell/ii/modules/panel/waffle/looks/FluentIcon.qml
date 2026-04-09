@@ -1,7 +1,7 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
 import qs.modules.common
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 Kirigami.Icon {
     id: root

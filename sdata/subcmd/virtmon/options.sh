@@ -14,11 +14,11 @@ echo -e "Syntax: $0 virtmon [OPTIONS]
 Create virtual monitor for testing multi-monitors.
 
 Options:
-  -h, --help       Show this help message and exit
-  -c, --clean      Clean all tester monitors and wayvnc sessions and exit
-  -d, --daemon     Run in background
-      --no-guard   Disable hypr_mon_guard. Tip: this process can
-                   also be terminated using ${STY_BOLD}pkill hypr_mon_guard${STY_RST}
+  -h, --help                     Show this help message and exit
+  -c, --clean                    Clean all tester monitors and wayvnc sessions and exit
+  -d, --daemon                   Run in background
+      --no-guard                 Disable hypr_mon_guard. Tip: this process can
+                                 also be terminated using ${STY_BOLD}pkill hypr_mon_guard${STY_RST}
 
 For the syntax of following options, see also Hyprland Wiki:
   https://wiki.hypr.land/Configuring/Monitors

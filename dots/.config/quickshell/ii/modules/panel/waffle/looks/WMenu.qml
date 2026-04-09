@@ -6,7 +6,7 @@ import Quickshell
 import Quickshell.Hyprland
 import qs.modules.common
 import qs.modules.common.functions
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 Menu {
     id: root

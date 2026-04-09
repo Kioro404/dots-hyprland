@@ -13,8 +13,8 @@ import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.widgets
 import qs.modules.common.panels.lock
-import qs.modules.waffle.looks
-import qs.modules.waffle.sessionScreen as SessionScreen
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.sessionScreen as SessionScreen
 
 LockScreen {
     id: root
@@ -185,7 +185,7 @@ LockScreen {
         id: iconIndicator
         required property string baseIcon
         required property string icon
-        default property alias indicatorData: iconWidget.data
+        default property alias data: iconWidget.data
         implicitWidth: 40
         implicitHeight: 40
         FluentIcon {

@@ -2,7 +2,7 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import qs.modules.ii.sidebarRight.quickToggles
+import qs.modules.panel.ii.sidebarRight.quickToggles
 import qs
 import QtQuick
 import Quickshell
@@ -18,6 +18,6 @@ QuickToggleButton {
         GlobalStates.sidebarRightOpen = false
     }
     StyledToolTip {
-        text: Translation.tr("%1 | Right-click to configure").arg(Network.networkName)
+        text: (Translation.tr("%1").arg(Network.networkName) + " | " + Translation.tr("Right-click to configure"))
     }
 }

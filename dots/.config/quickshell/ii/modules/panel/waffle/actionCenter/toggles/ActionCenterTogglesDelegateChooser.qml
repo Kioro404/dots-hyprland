@@ -8,11 +8,11 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.models.quickToggles
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter.bluetooth
-import qs.modules.waffle.actionCenter.nightLight
-import qs.modules.waffle.actionCenter.volumeControl
-import qs.modules.waffle.actionCenter.wifi
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter.bluetooth
+import qs.modules.panel.waffle.actionCenter.nightLight
+import qs.modules.panel.waffle.actionCenter.volumeControl
+import qs.modules.panel.waffle.actionCenter.wifi
 
 DelegateChooser {
     id: root

@@ -8,7 +8,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Mpris
 
-import qs.modules.ii.bar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as Bar
 
 MouseArea {
     id: root
@@ -22,7 +22,7 @@ MouseArea {
 
     Timer {
         running: activePlayer?.playbackState == MprisPlaybackState.Playing
-        interval: Config.options.resources.updateInterval
+        interval: (Config.options.resources.updateInterval * 1000)
         repeat: true
         onTriggered: activePlayer.positionChanged()
     }

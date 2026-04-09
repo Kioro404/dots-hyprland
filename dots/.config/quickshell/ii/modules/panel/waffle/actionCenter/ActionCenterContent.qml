@@ -7,8 +7,8 @@ import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.functions
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter.mainPage
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter.mainPage
 
 WBarAttachedPanelContent {
     id: root

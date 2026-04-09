@@ -4,7 +4,7 @@ import qs.modules.common.widgets
 
 import QtQuick
 import QtQuick.Layouts
-import qs.modules.ii.bar
+import qs.modules.panel.ii.bar.horizontalBar
 
 StyledPopup {
     id: root

@@ -1,6 +1,6 @@
 pragma ComponentBehavior: Bound
 import QtQuick
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 WButton {
     id: root

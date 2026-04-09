@@ -7,8 +7,8 @@ import qs
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.notificationCenter
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.notificationCenter
 
 Scope {
     id: notificationPopup

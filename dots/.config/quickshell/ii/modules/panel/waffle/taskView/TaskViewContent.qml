@@ -9,7 +9,7 @@ import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.models
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 import "window-layout.js" as WindowLayout
 
 Rectangle {

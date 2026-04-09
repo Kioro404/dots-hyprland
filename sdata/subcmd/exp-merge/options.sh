@@ -8,10 +8,10 @@ Experimental config merging using git rebase.
 Merges upstream changes with your quickshell config.
 
 Options:
-  -n, --dry-run      Show what would be done
-  -h, --help         Show this help
-  -s, --skip-notice  Skip notice about script being experimental
-  --skip-fetch       Skip fetching from remote
+  -n, --dry-run                  Show what would be done
+  -h, --help                     Show this help
+  -s, --skip-notice              Skip notice about script being experimental
+  --skip-fetch                   Skip fetching from remote
 
 How it works:
   1. Fetch from upstream

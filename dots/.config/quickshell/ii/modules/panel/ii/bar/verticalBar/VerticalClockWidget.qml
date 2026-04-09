@@ -3,7 +3,7 @@ import qs.modules.common.widgets
 import qs.services
 import QtQuick
 import QtQuick.Layouts
-import qs.modules.ii.bar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as Bar
 
 Item {
     id: root

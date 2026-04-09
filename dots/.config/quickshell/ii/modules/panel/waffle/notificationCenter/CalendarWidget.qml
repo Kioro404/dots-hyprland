@@ -9,7 +9,7 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 BodyRectangle {
     id: root
@@ -79,7 +79,7 @@ BodyRectangle {
         id: dayButton
         required property var model
         checked: model.today
-        enabled: hovered || checked || model.month === calendarView.focusedMonth
+        enabled: hovered || calendarView.scrolling || checked || model.month === calendarView.focusedMonth
         implicitWidth: calendarView.buttonSize
         implicitHeight: calendarView.buttonSize
         radius: height / 2

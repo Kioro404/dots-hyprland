@@ -240,7 +240,7 @@ Item {
                         }
                     }
 
-                    z: Drag.active ? root.windowDraggingZ : (root.windowZ + windowData?.floating + windowData?.fullscreen * 2)
+                    z: Drag.active ? root.windowDraggingZ : (root.windowZ + windowData?.floating)
                     Drag.hotSpot.x: width / 2
                     Drag.hotSpot.y: height / 2
                     MouseArea {

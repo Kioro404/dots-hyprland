@@ -5,8 +5,8 @@ import Qt5Compat.GraphicalEffects
 import qs.services
 import qs.modules.common
 import qs.modules.common.functions
-import qs.modules.waffle.looks
-import qs.modules.waffle.bar
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.bar
 import Quickshell
 
 Button {

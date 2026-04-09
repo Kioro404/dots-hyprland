@@ -10,8 +10,8 @@ import qs.services.network
 import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.widgets
-import qs.modules.waffle.looks
-import qs.modules.waffle.actionCenter
+import qs.modules.panel.waffle.looks
+import qs.modules.panel.waffle.actionCenter
 
 Item {
     id: root
@@ -84,12 +84,12 @@ Item {
         }
 
         ToggleItem {
-            name: Translation.tr("Enable now")
+            name: Translation.tr("Enable %1").arg(Translation.tr("Now").toLowerCase())
             description: Translation.tr("More comfortable viewing at night")
             iconName: WIcons.nightLightIcon
-            checked: Hyprsunset.temperatureActive
+            checked: Hyprsunset.active
             onCheckedChanged: {
-                Hyprsunset.toggleTemperature(checked);
+                Hyprsunset.toggle(checked);
             }
         }
 

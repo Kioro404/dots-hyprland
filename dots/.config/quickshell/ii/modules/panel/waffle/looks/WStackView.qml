@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import qs.modules.waffle.looks
+import qs.modules.panel.waffle.looks
 
 StackView {
     id: root

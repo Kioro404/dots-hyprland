@@ -18,6 +18,8 @@ Scope {
     Variants {
         // For each monitor
         model: {
+            if (Config.options.bar.disabled)
+                return [];
             const screens = Quickshell.screens;
             const list = Config.options.bar.screenList;
             if (!list || list.length === 0)
@@ -58,8 +60,8 @@ Scope {
                 exclusionMode: ExclusionMode.Ignore
                 exclusiveZone: (Config?.options.bar.autoHide.enable && (!mustShow || !Config?.options.bar.autoHide.pushWindows)) ? 0 :
                     Appearance.sizes.baseVerticalBarWidth + (Config.options.bar.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut : 0)
+                WlrLayershell.layer: WlrLayer.Bottom
                 WlrLayershell.namespace: "quickshell:verticalBar"
-                // WlrLayershell.layer: WlrLayer.Overlay // TODO enable this when bar can hide when fullscreen
                 implicitWidth: Appearance.sizes.verticalBarWidth + Appearance.rounding.screenRounding
                 mask: Region {
                     item: hoverMaskRegion
