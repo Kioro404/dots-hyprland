@@ -24,10 +24,10 @@ import qs.modules.panel.ii.wallpaperSelector
 
 Scope {
     PanelLoader { component: Background {} }
-    PanelLoader { extraCondition: !Config.options.bar.vertical; component: HorizontalBar {} }
-    PanelLoader { extraCondition: Config.options.bar.vertical; component: VerticalBar {} }
+    PanelLoader { extraCondition: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical; component: HorizontalBar {} }
+    PanelLoader { extraCondition: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical; component: VerticalBar {} }
     PanelLoader { component: Cheatsheet {} }
-    PanelLoader { extraCondition: Config.options.dock.enable; component: Dock {} }
+    PanelLoader { extraCondition: Config.options.panel.dock.enable; component: Dock {} }
     PanelLoader { component: Lock {} }
     PanelLoader { component: MediaControls {} }
     PanelLoader { component: NotificationPopup {} }
