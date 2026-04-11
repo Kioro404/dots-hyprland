@@ -30,6 +30,6 @@ MouseArea {
         text: Translation.tr("Get the latest features and security improvements with\nthe newest feature update.\n\n%1 packages").arg(Updates.count)
         extraVisibleCondition: root.containsMouse
         alternativeVisibleCondition: extraVisibleCondition
-        anchorEdges: (!Config.options.bar.bottom && !Config.options.bar.vertical) ? Edges.Bottom : Edges.Top
+        anchorEdges: (!Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom && !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical) ? Edges.Bottom : Edges.Top
     }
 }

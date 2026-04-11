@@ -46,12 +46,12 @@ MouseArea {
             trayItemMenuHandle: root.item.menu
             anchor {
                 window: root.QsWindow.window
-                rect.x: root.x + (Config.options.bar.vertical ? 0 : QsWindow.window?.width)
-                rect.y: root.y + (Config.options.bar.vertical ? QsWindow.window?.height : 0)
+                rect.x: root.x + (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical ? 0 : QsWindow.window?.width)
+                rect.y: root.y + (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical ? QsWindow.window?.height : 0)
                 rect.height: root.height
                 rect.width: root.width
-                edges: Config.options.bar.bottom ? (Edges.Top | Edges.Left) : (Edges.Bottom | Edges.Right)
-                gravity: Config.options.bar.bottom ? (Edges.Top | Edges.Left) : (Edges.Bottom | Edges.Right)
+                edges: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? (Edges.Top | Edges.Left) : (Edges.Bottom | Edges.Right)
+                gravity: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? (Edges.Top | Edges.Left) : (Edges.Bottom | Edges.Right)
             }
             onMenuOpened: (window) => root.menuOpened(window);
             onMenuClosed: {
@@ -93,7 +93,7 @@ MouseArea {
         id: tooltip
         extraVisibleCondition: root.containsMouse
         alternativeVisibleCondition: extraVisibleCondition
-        anchorEdges: (!Config.options.bar.bottom && !Config.options.bar.vertical) ? Edges.Bottom : Edges.Top
+        anchorEdges: (!Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom && !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical) ? Edges.Bottom : Edges.Top
     }
 
 }

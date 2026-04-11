@@ -12,15 +12,15 @@ import qs.modules.common.widgets
 
 Scope {
     id: bar
-    property bool showBarBackground: Config.options.bar.showBackground
+    property bool showBarBackground: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.showBackground
 
     Variants {
         // For each monitor
         model: {
-            if (Config.options.bar.disabled)
+            if (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.disabled)
                 return [];
             const screens = Quickshell.screens;
-            const list = Config.options.bar.screenList;
+            const list = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.screenList;
             if (!list || list.length === 0)
                 return screens;
             return screens.filter(screen => list.includes(screen.name));
@@ -35,7 +35,7 @@ Scope {
 
                 Timer {
                     id: showBarTimer
-                    interval: (Config?.options.bar.autoHide.showWhenPressingSuper.delay ?? 100)
+                    interval: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.showWhenPressingSuper.delay ?? 100)
                     repeat: false
                     onTriggered: {
                         barRoot.superShow = true
@@ -44,7 +44,7 @@ Scope {
                 Connections {
                     target: GlobalStates
                     function onSuperDownChanged() {
-                        if (!Config?.options.bar.autoHide.showWhenPressingSuper.enable) return;
+                        if (!Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.showWhenPressingSuper.enable) return;
                         if (GlobalStates.superDown) showBarTimer.restart();
                         else {
                             showBarTimer.stop();
@@ -55,8 +55,8 @@ Scope {
                 property bool superShow: false
                 property bool mustShow: hoverRegion.containsMouse || superShow
                 exclusionMode: ExclusionMode.Ignore
-                exclusiveZone: (Config?.options.bar.autoHide.enable && (!mustShow || !Config?.options.bar.autoHide.pushWindows)) ? 0 :
-                    Appearance.sizes.baseBarHeight + (Config.options.bar.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut : 0)
+                exclusiveZone: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.enable && (!mustShow || !Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.pushWindows)) ? 0 :
+                    Appearance.sizes.baseBarHeight + (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut : 0)
                 WlrLayershell.layer: WlrLayer.Bottom
                 WlrLayershell.namespace: "quickshell:horizontalBar"
                 implicitHeight: Appearance.sizes.barHeight + Appearance.rounding.screenRounding
@@ -67,8 +67,8 @@ Scope {
 
                 // Positioning
                 anchors {
-                    top: !Config.options.bar.bottom
-                    bottom: Config.options.bar.bottom
+                    top: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                    bottom: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
                     left: true
                     right: true
                 }
@@ -99,8 +99,8 @@ Scope {
                         id: hoverMaskRegion
                         anchors {
                             fill: barContent
-                            topMargin: -Config.options.bar.autoHide.hoverRegionWidth
-                            bottomMargin: -Config.options.bar.autoHide.hoverRegionWidth
+                            topMargin: -Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.hoverRegionWidth
+                            bottomMargin: -Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.hoverRegionWidth
                         }
                     }
 
@@ -113,7 +113,7 @@ Scope {
                             left: parent.left
                             top: parent.top
                             bottom: undefined
-                            topMargin: (Config?.options.bar.autoHide.enable && !mustShow) ? -Appearance.sizes.barHeight : 0
+                            topMargin: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.enable && !mustShow) ? -Appearance.sizes.barHeight : 0
                             bottomMargin: (Config.options.interactions.deadPixelWorkaround.enable && barRoot.anchors.bottom) * -1
                             rightMargin: (Config.options.interactions.deadPixelWorkaround.enable && barRoot.anchors.right) * -1
                         }
@@ -126,7 +126,7 @@ Scope {
 
                         states: State {
                             name: "bottom"
-                            when: Config.options.bar.bottom
+                            when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
                             AnchorChanges {
                                 target: barContent
                                 anchors {
@@ -139,7 +139,7 @@ Scope {
                             PropertyChanges {
                                 target: barContent
                                 anchors.topMargin: 0
-                                anchors.bottomMargin: (Config?.options.bar.autoHide.enable && !mustShow) ? -Appearance.sizes.barHeight : 0
+                                anchors.bottomMargin: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.enable && !mustShow) ? -Appearance.sizes.barHeight : 0
                             }
                         }
                     }
@@ -154,11 +154,11 @@ Scope {
                             bottom: undefined
                         }
                         height: Appearance.rounding.screenRounding
-                        active: showBarBackground && Config.options.bar.cornerStyle === 0 // Hug
+                        active: showBarBackground && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 0 // Hug
 
                         states: State {
                             name: "bottom"
-                            when: Config.options.bar.bottom
+                            when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
                             AnchorChanges {
                                 target: roundDecorators
                                 anchors {
@@ -186,7 +186,7 @@ Scope {
                                 corner: RoundCorner.CornerEnum.TopLeft
                                 states: State {
                                     name: "bottom"
-                                    when: Config.options.bar.bottom
+                                    when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
                                     PropertyChanges {
                                         leftCorner.corner: RoundCorner.CornerEnum.BottomLeft
                                     }
@@ -196,8 +196,8 @@ Scope {
                                 id: rightCorner
                                 anchors {
                                     right: parent.right
-                                    top: !Config.options.bar.bottom ? parent.top : undefined
-                                    bottom: Config.options.bar.bottom ? parent.bottom : undefined
+                                    top: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? parent.top : undefined
+                                    bottom: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? parent.bottom : undefined
                                 }
                                 implicitSize: Appearance.rounding.screenRounding
                                 color: showBarBackground ? Appearance.colors.colLayer0 : "transparent"
@@ -205,7 +205,7 @@ Scope {
                                 corner: RoundCorner.CornerEnum.TopRight
                                 states: State {
                                     name: "bottom"
-                                    when: Config.options.bar.bottom
+                                    when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
                                     PropertyChanges {
                                         rightCorner.corner: RoundCorner.CornerEnum.BottomRight
                                     }

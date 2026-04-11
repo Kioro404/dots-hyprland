@@ -2,14 +2,14 @@ import qs.services
 import qs.modules.common
 import QtQuick
 import QtQuick.Layouts
-import qs.modules.panel.ii.bar.horizontalBar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as HorizontalBar
 
 MouseArea {
     id: root
     property bool alwaysShowAllResources: false
     implicitHeight: columnLayout.implicitHeight
     implicitWidth: columnLayout.implicitWidth
-    hoverEnabled: !Config.options.bar.tooltips.clickToShow
+    hoverEnabled: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow
 
     ColumnLayout {
         id: columnLayout
@@ -20,26 +20,26 @@ MouseArea {
             Layout.alignment: Qt.AlignHCenter
             iconName: "memory"
             percentage: ResourceUsage.memoryUsedPercentage
-            warningThreshold: Config.options.bar.resources.memoryWarningThreshold
+            warningThreshold: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.resources.memoryWarningThreshold
         }
 
         Resource {
             Layout.alignment: Qt.AlignHCenter
             iconName: "swap_horiz"
             percentage: ResourceUsage.swapUsedPercentage
-            warningThreshold: Config.options.bar.resources.swapWarningThreshold
+            warningThreshold: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.resources.swapWarningThreshold
         }
 
         Resource {
             Layout.alignment: Qt.AlignHCenter
             iconName: "planner_review"
             percentage: ResourceUsage.cpuUsage
-            warningThreshold: Config.options.bar.resources.cpuWarningThreshold
+            warningThreshold: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.resources.cpuWarningThreshold
         }
 
     }
 
-    Bar.ResourcesPopup {
+    HorizontalBar.ResourcesPopup {
         hoverTarget: root
     }
 }

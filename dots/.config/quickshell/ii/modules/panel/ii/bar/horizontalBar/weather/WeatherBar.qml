@@ -14,7 +14,7 @@ MouseArea {
     implicitHeight: Appearance.sizes.barHeight
 
     acceptedButtons: Qt.LeftButton | Qt.RightButton
-    hoverEnabled: !Config.options.bar.tooltips.clickToShow
+    hoverEnabled: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow
 
     onPressed: {
         if (mouse.button === Qt.RightButton) {

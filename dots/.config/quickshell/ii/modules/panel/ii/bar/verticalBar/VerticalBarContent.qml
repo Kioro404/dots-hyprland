@@ -28,7 +28,7 @@ Item { // HorizontalBar content region
 
     // Background shadow
     Loader {
-        active: Config.options.bar.showBackground && Config.options.bar.cornerStyle === 1
+        active: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.showBackground && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 1
         anchors.fill: barBackground
         sourceComponent: StyledRectangularShadow {
             anchors.fill: undefined // The loader's anchors act on this, and this should not have any anchor
@@ -40,11 +40,11 @@ Item { // HorizontalBar content region
         id: barBackground
         anchors {
             fill: parent
-            margins: Config.options.bar.cornerStyle === 1 ? (Appearance.sizes.hyprlandGapsOut) : 0 // idk why but +1 is needed
+            margins: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 1 ? (Appearance.sizes.hyprlandGapsOut) : 0 // idk why but +1 is needed
         }
-        color: Config.options.bar.showBackground ? Appearance.colors.colLayer0 : "transparent"
-        radius: Config.options.bar.cornerStyle === 1 ? Appearance.rounding.windowRounding : 0
-        border.width: Config.options.bar.cornerStyle === 1 ? 1 : 0
+        color: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.showBackground ? Appearance.colors.colLayer0 : "transparent"
+        radius: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 1 ? Appearance.rounding.windowRounding : 0
+        border.width: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 1 ? 1 : 0
         border.color: Appearance.colors.colLayer0Border
     }
 
@@ -104,7 +104,7 @@ Item { // HorizontalBar content region
         }
 
         HorizontalBarSeparator {
-            visible: Config.options?.bar.borderless
+            visible: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.borderless
         }
 
         HorizontalBar.BarGroup {
@@ -130,7 +130,7 @@ Item { // HorizontalBar content region
         }
 
         HorizontalBarSeparator {
-            visible: Config.options?.bar.borderless
+            visible: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.borderless
         }
 
         HorizontalBar.BarGroup {
@@ -196,7 +196,7 @@ Item { // HorizontalBar content region
                 vertical: true
                 Layout.fillWidth: true
                 Layout.fillHeight: false
-                invertSide: Config?.options.bar.bottom
+                invertSide: Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
             }
 
             Bar.UpdatesButton{

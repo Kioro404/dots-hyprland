@@ -3,11 +3,11 @@ import qs.modules.common.widgets
 import qs.services
 import QtQuick
 import QtQuick.Layouts
-import qs.modules.panel.ii.bar.horizontalBar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as HorizontalBar
 
 Item {
     id: root
-    property bool borderless: Config.options.bar.borderless
+    property bool borderless: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.borderless
     implicitHeight: clockColumn.implicitHeight
     implicitWidth: Appearance.sizes.verticalBarWidth
 
@@ -33,9 +33,9 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
-        hoverEnabled: !Config.options.bar.tooltips.clickToShow
+        hoverEnabled: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow
 
-        Bar.ClockWidgetPopup {
+        HorizontalBar.ClockWidgetPopup {
             hoverTarget: mouseArea
         }
     }

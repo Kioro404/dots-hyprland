@@ -8,7 +8,7 @@ import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
 import qs.modules.common.panels.lock
-import qs.modules.panel.ii.bar.horizontalBar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as HorizontalBar
 import Quickshell
 import Quickshell.Services.SystemTray
 
@@ -282,7 +282,7 @@ MouseArea {
         }
 
         // Keyboard layout (Fcitx)
-        Bar.SysTray {
+        HorizontalBar.SysTray {
             Layout.rightMargin: 10
             Layout.alignment: Qt.AlignVCenter
             showSeparator: false

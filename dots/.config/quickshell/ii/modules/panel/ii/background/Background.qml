@@ -133,7 +133,7 @@ Variants {
                 cache: false
                 smooth: false
                 // Range = groups that workspaces span on
-                property int chunkSize: Config?.options.bar.workspaces.shown ?? 10
+                property int chunkSize: Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.shown ?? 10
                 property int lower: Math.floor(bgRoot.firstWorkspaceId / chunkSize) * chunkSize
                 property int upper: Math.ceil(bgRoot.lastWorkspaceId / chunkSize) * chunkSize
                 property int range: upper - lower

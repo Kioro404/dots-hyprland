@@ -97,8 +97,8 @@ Scope {
             WlrLayershell.namespace: "quickshell:onScreenDisplay"
             WlrLayershell.layer: WlrLayer.Overlay
             anchors {
-                top: !Config.options.bar.bottom
-                bottom: Config.options.bar.bottom
+                top: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                bottom: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
             }
             mask: Region {
                 item: osdValuesWrapper

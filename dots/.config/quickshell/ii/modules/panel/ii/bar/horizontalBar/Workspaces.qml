@@ -15,12 +15,12 @@ import Qt5Compat.GraphicalEffects
 Item {
     id: root
     property bool vertical: false
-    property bool borderless: Config.options.bar.borderless
+    property bool borderless: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.borderless
     readonly property HyprlandMonitor monitor: Hyprland.monitorFor(root.QsWindow.window?.screen)
     readonly property Toplevel activeWindow: ToplevelManager.activeToplevel
     readonly property int effectiveActiveWorkspaceId: monitor?.activeWorkspace?.id ?? 1
     
-    readonly property int workspacesShown: Config.options.bar.workspaces.shown
+    readonly property int workspacesShown: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.shown
     readonly property int workspaceGroup: Math.floor((effectiveActiveWorkspaceId - 1) / root.workspacesShown)
     property list<bool> workspaceOccupied: []
     property int widgetPadding: 4
@@ -35,7 +35,7 @@ Item {
     property bool showNumbers: false
     Timer {
         id: showNumbersTimer
-        interval: (Config?.options.bar.autoHide.showWhenPressingSuper.delay ?? 100)
+        interval: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.showWhenPressingSuper.delay ?? 100)
         repeat: false
         onTriggered: {
             root.showNumbers = true
@@ -44,7 +44,7 @@ Item {
     Connections {
         target: GlobalStates
         function onSuperDownChanged() {
-            if (!Config?.options.bar.autoHide.showWhenPressingSuper.enable) return;
+            if (!Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.showWhenPressingSuper.enable) return;
             if (GlobalStates.superDown) showNumbersTimer.restart();
             else {
                 showNumbersTimer.stop();
@@ -212,8 +212,8 @@ Item {
 
                     StyledText { // Workspace number text
                         opacity: root.showNumbers
-                            || ((Config.options?.bar.workspaces.alwaysShowNumbers && (!Config.options?.bar.workspaces.showAppIcons || !workspaceButtonBackground.biggestWindow || root.showNumbers))
-                            || (root.showNumbers && !Config.options?.bar.workspaces.showAppIcons)
+                            || ((Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.alwaysShowNumbers && (!Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons || !workspaceButtonBackground.biggestWindow || root.showNumbers))
+                            || (root.showNumbers && !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons)
                             )  ? 1 : 0
                         z: 3
 
@@ -222,9 +222,9 @@ Item {
                         verticalAlignment: Text.AlignVCenter
                         font {
                             pixelSize: Appearance.font.pixelSize.small - ((text.length - 1) * (text !== "10") * 2)
-                            family: Config.options?.bar.workspaces.useNerdFont ? Appearance.font.family.iconNerd : defaultFont
+                            family: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.useNerdFont ? Appearance.font.family.iconNerd : defaultFont
                         }
-                        text: Config.options?.bar.workspaces.numberMap[button.workspaceValue - 1] || button.workspaceValue
+                        text: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.numberMap[button.workspaceValue - 1] || button.workspaceValue
                         elide: Text.ElideRight
                         color: (root.effectiveActiveWorkspaceId == button.workspaceValue) ? 
                             Appearance.m3colors.m3onPrimary : 
@@ -237,9 +237,9 @@ Item {
                     }
                     Rectangle { // Dot instead of ws number
                         id: wsDot
-                        opacity: (Config.options?.bar.workspaces.alwaysShowNumbers
+                        opacity: (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.alwaysShowNumbers
                             || root.showNumbers
-                            || (Config.options?.bar.workspaces.showAppIcons && workspaceButtonBackground.biggestWindow)
+                            || (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons && workspaceButtonBackground.biggestWindow)
                             ) ? 0 : 1
                         visible: opacity > 0
                         anchors.centerIn: parent
@@ -259,21 +259,21 @@ Item {
                         anchors.centerIn: parent
                         width: workspaceButtonWidth
                         height: workspaceButtonWidth
-                        opacity: !Config.options?.bar.workspaces.showAppIcons ? 0 :
-                            (workspaceButtonBackground.biggestWindow && !root.showNumbers && Config.options?.bar.workspaces.showAppIcons) ? 
+                        opacity: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons ? 0 :
+                            (workspaceButtonBackground.biggestWindow && !root.showNumbers && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons) ? 
                             1 : workspaceButtonBackground.biggestWindow ? workspaceIconOpacityShrinked : 0
                             visible: opacity > 0
                         IconImage {
                             id: mainAppIcon
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
-                            anchors.bottomMargin: (!root.showNumbers && Config.options?.bar.workspaces.showAppIcons) ? 
+                            anchors.bottomMargin: (!root.showNumbers && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons) ? 
                                 (workspaceButtonWidth - workspaceIconSize) / 2 : workspaceIconMarginShrinked
-                            anchors.rightMargin: (!root.showNumbers && Config.options?.bar.workspaces.showAppIcons) ? 
+                            anchors.rightMargin: (!root.showNumbers && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons) ? 
                                 (workspaceButtonWidth - workspaceIconSize) / 2 : workspaceIconMarginShrinked
 
                             source: workspaceButtonBackground.mainAppIconSource
-                            implicitSize: (!root.showNumbers && Config.options?.bar.workspaces.showAppIcons) ? workspaceIconSize : workspaceIconSizeShrinked
+                            implicitSize: (!root.showNumbers && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons) ? workspaceIconSize : workspaceIconSizeShrinked
 
                             Behavior on opacity {
                                 animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
@@ -290,7 +290,7 @@ Item {
                         }
 
                         Loader {
-                            active: Config.options.bar.workspaces.monochromeIcons
+                            active: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.monochromeIcons
                             anchors.fill: mainAppIcon
                             sourceComponent: Item {
                                 Desaturate {

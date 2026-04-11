@@ -8,11 +8,11 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.Mpris
 
-import qs.modules.panel.ii.bar.horizontalBar as Bar
+import qs.modules.panel.ii.bar.horizontalBar as HorizontalBar
 
 MouseArea {
     id: root
-    property bool borderless: Config.options.bar.borderless
+    property bool borderless: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.borderless
     readonly property MprisPlayer activePlayer: MprisController.activePlayer
     readonly property string cleanedTitle: StringUtils.cleanMusicTitle(activePlayer?.trackTitle) || Translation.tr("No media")
 
@@ -28,7 +28,7 @@ MouseArea {
     }
 
     acceptedButtons: Qt.MiddleButton | Qt.BackButton | Qt.ForwardButton | Qt.RightButton | Qt.LeftButton
-    hoverEnabled: !Config.options.bar.tooltips.clickToShow
+    hoverEnabled: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow
     onPressed: (event) => {
         if (event.button === Qt.MiddleButton) {
             activePlayer.togglePlaying();
@@ -66,7 +66,7 @@ MouseArea {
         }
     }
 
-    Bar.StyledPopup {
+    HorizontalBar.StyledPopup {
         hoverTarget: root
         active: GlobalStates.mediaControlsOpen ? false : root.containsMouse
 
@@ -74,7 +74,7 @@ MouseArea {
             anchors.centerIn: parent
             spacing: 4
 
-            Bar.StyledPopupHeaderRow {
+            HorizontalBar.StyledPopupHeaderRow {
                 icon: "music_note"
                 label: Translation.tr("Media")
             }
