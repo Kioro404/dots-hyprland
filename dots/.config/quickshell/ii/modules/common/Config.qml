@@ -13,6 +13,21 @@ Singleton {
     property int readWriteDelay: 50 // milliseconds
     property bool blockWrites: false
 
+    property int panelFamilyIndexII: {
+        let tools = Config.options?.panel?.tools;
+        if (!tools || tools.length === 0) return -1;
+        let index = tools.findIndex(tool => tool?.bar?.name === "ii");
+
+        return (index !== -1) ? index : 0;
+    }
+    property int panelFamilyIndexWAFFLE: {
+        let tools = Config.options?.panel?.tools;
+        if (!tools || tools.length === 0) return -1;
+        let index = tools.findIndex(tool => tool?.bar?.name === "waffle");
+
+        return (index !== -1) ? index : 1;
+    }
+
     function setNestedValue(nestedKey, value) {
         let keys = nestedKey.split(".");
         let obj = root.options;
@@ -78,7 +93,113 @@ Singleton {
         JsonAdapter {
             id: configOptionsJsonAdapter
 
-            property string panelFamily: "ii" // "ii", "waffle"
+            property JsonObject panel: JsonObject {
+                property string family: "ii"
+                property bool disabled: false
+                property JsonObject dock: JsonObject {
+                    property bool enable: false
+                    property bool monochromeIcons: true
+                    property real height: 60
+                    property real hoverRegionHeight: 2
+                    property bool pinnedOnStartup: false
+                    property bool hoverToReveal: true // When false, only reveals on empty workspace
+                    property list<string> pinnedApps: ["org.kde.dolphin", "kitty"] // IDs of pinned entries
+                    property list<string> ignoredAppRegexes: []
+                }
+                property list<var> tools: [
+                    {
+                        bar: {
+                            name: "ii",
+                            config: {
+                                autoHide: {
+                                    enable: false,
+                                    hoverRegionWidth: 2,
+                                    pushWindows: false,
+                                    showWhenPressingSuper: {
+                                        enable: true,
+                                        delay: 140
+                                    }
+                                },
+                                bottom: false,
+                                cornerStyle: 0,
+                                floatStyleShadow: true,
+                                borderless: false,
+                                topLeftIcon: "spark",
+                                showBackground: true,
+                                verbose: true,
+                                vertical: false,
+                                resources: {
+                                    alwaysShowSwap: true,
+                                    alwaysShowCpu: true,
+                                    memoryWarningThreshold: 95,
+                                    swapWarningThreshold: 85,
+                                    cpuWarningThreshold: 90
+                                },
+                                utilButtons: {
+                                    showScreenSnip: true,
+                                    showColorPicker: false,
+                                    showMicToggle: false,
+                                    showKeyboardToggle: true,
+                                    showDarkModeToggle: true,
+                                    showPerformanceProfileToggle: false,
+                                    showScreenRecord: false
+                                },
+                                workspaces: {
+                                    monochromeIcons: true,
+                                    shown: 10,
+                                    showAppIcons: true,
+                                    alwaysShowNumbers: false,
+                                    showNumberDelay: 300,
+                                    numberMap: ["1", "2"],
+                                    useNerdFont: false
+                                },
+                                weather: {
+                                    enable: false,
+                                    enableGPS: true,
+                                    city: "",
+                                    useUSCS: false,
+                                    fetchInterval: 10
+                                },
+                                indicators: {
+                                    notifications: {
+                                        showUnreadCount: false
+                                    }
+                                },
+                                tooltips: {
+                                    clickToShow: false
+                                }
+                            }
+                        }
+                    },
+                    {
+                        bar: {
+                            name: "waffle",
+                            config: {
+                                tweaks: {
+                                    switchHandlePositionFix: true,
+                                    smootherMenuAnimations: true,
+                                    smootherSearchBar: true
+                                },
+                                bar: {
+                                    bottom: true,
+                                    leftAlignApps: false
+                                },
+                                actionCenter: {
+                                    toggles: [
+                                        "network", "bluetooth", "easyEffects", "powerProfile",
+                                        "idleInhibitor", "nightLight", "darkMode", "antiFlashbang",
+                                        "cloudflareWarp", "mic", "musicRecognition", "notifications",
+                                        "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker"
+                                    ]
+                                },
+                                calendar: {
+                                    force2CharDayOfWeek: true
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
 
             property JsonObject policies: JsonObject {
                 property int ai: 1 // 0: No | 1: Yes | 2: Local
@@ -228,68 +349,6 @@ Singleton {
                 }
             }
 
-            property JsonObject bar: JsonObject {
-                property JsonObject autoHide: JsonObject {
-                    property bool enable: false
-                    property int hoverRegionWidth: 2
-                    property bool pushWindows: false
-                    property JsonObject showWhenPressingSuper: JsonObject {
-                        property bool enable: true
-                        property int delay: 140
-                    }
-                }
-                property bool bottom: false // Instead of top
-                property int cornerStyle: 0 // 0: Hug | 1: Float | 2: Plain rectangle
-                property bool floatStyleShadow: true // Show shadow behind bar when cornerStyle == 1 (Float)
-                property bool borderless: false // true for no grouping of items
-                property string topLeftIcon: "spark" // Options: "distro" or any icon name in ~/.config/quickshell/ii/assets/icons
-                property bool showBackground: true
-                property bool verbose: true
-                property bool vertical: false
-                property JsonObject resources: JsonObject {
-                    property bool alwaysShowSwap: true
-                    property bool alwaysShowCpu: true
-                    property int memoryWarningThreshold: 95
-                    property int swapWarningThreshold: 85
-                    property int cpuWarningThreshold: 90
-                }
-                property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
-                property bool disabled: false
-                property JsonObject utilButtons: JsonObject {
-                    property bool showScreenSnip: true
-                    property bool showColorPicker: false
-                    property bool showMicToggle: false
-                    property bool showKeyboardToggle: true
-                    property bool showDarkModeToggle: true
-                    property bool showPerformanceProfileToggle: false
-                    property bool showScreenRecord: false
-                }
-                property JsonObject workspaces: JsonObject {
-                    property bool monochromeIcons: true
-                    property int shown: 10
-                    property bool showAppIcons: true
-                    property bool alwaysShowNumbers: false
-                    property int showNumberDelay: 300 // milliseconds
-                    property list<string> numberMap: ["1", "2"] // Characters to show instead of numbers on workspace indicator
-                    property bool useNerdFont: false
-                }
-                property JsonObject weather: JsonObject {
-                    property bool enable: false
-                    property bool enableGPS: true // gps based location
-                    property string city: "" // When 'enableGPS' is false
-                    property bool useUSCS: false // Instead of metric (SI) units
-                    property int fetchInterval: 10 // minutes
-                }
-                property JsonObject indicators: JsonObject {
-                    property JsonObject notifications: JsonObject {
-                        property bool showUnreadCount: false
-                    }
-                }
-                property JsonObject tooltips: JsonObject {
-                    property bool clickToShow: false
-                }
-            }
-
             property JsonObject battery: JsonObject {
                 property int low: 20
                 property int critical: 5
@@ -326,18 +385,6 @@ Singleton {
             property JsonObject crosshair: JsonObject {
                 // Valorant crosshair format. Use https://www.vcrdb.net/builder
                 property string code: "0;P;d;1;0l;10;0o;2;1b;0"
-            }
-
-            property JsonObject dock: JsonObject {
-                property bool enable: false
-                property bool monochromeIcons: true
-                property real height: 60
-                property real hoverRegionHeight: 2
-                property bool pinnedOnStartup: false
-                property bool hoverToReveal: true // When false, only reveals on empty workspace
-                property list<string> pinnedApps: [ // IDs of pinned entries
-                    "org.kde.dolphin", "kitty",]
-                property list<string> ignoredAppRegexes: []
             }
 
             property JsonObject interactions: JsonObject {
@@ -585,11 +632,11 @@ Singleton {
                 property int adviseUpdateThreshold: 75 // packages
                 property int stronglyAdviseUpdateThreshold: 200 // packages
             }
-            
+
             property JsonObject wallpaperSelector: JsonObject {
                 property bool useSystemFileDialog: false
             }
-            
+
             property JsonObject windows: JsonObject {
                 property bool showTitlebar: true // Client-side decoration for shell apps
                 property bool centerTitle: true
@@ -608,27 +655,6 @@ Singleton {
                     property list<string> networkNameKeywords: ["airport", "cafe", "college", "company", "eduroam", "free", "guest", "public", "school", "university"]
                     property list<string> fileKeywords: ["anime", "booru", "ecchi", "hentai", "yande.re", "konachan", "breast", "nipples", "pussy", "nsfw", "spoiler", "girl"]
                     property list<string> linkKeywords: ["hentai", "porn", "sukebei", "hitomi.la", "rule34", "gelbooru", "fanbox", "dlsite"]
-                }
-            }
-
-            property JsonObject waffles: JsonObject {
-                // Some spots are kinda janky/awkward. Setting the following to
-                // false will make (some) stuff also be like that for accuracy. 
-                // Example: the right-click menu of the Start button
-                property JsonObject tweaks: JsonObject {
-                    property bool switchHandlePositionFix: true
-                    property bool smootherMenuAnimations: true
-                    property bool smootherSearchBar: true
-                }
-                property JsonObject bar: JsonObject {
-                    property bool bottom: true
-                    property bool leftAlignApps: false
-                }
-                property JsonObject actionCenter: JsonObject {
-                    property list<string> toggles: [ "network", "bluetooth", "easyEffects", "powerProfile", "idleInhibitor", "nightLight", "darkMode", "antiFlashbang", "cloudflareWarp", "mic", "musicRecognition", "notifications", "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker" ]
-                }
-                property JsonObject calendar: JsonObject {
-                    property bool force2CharDayOfWeek: true
                 }
             }
         }
