@@ -26,7 +26,7 @@ RowLayout {
 
         iconName: "chevron-down"
         iconMonochrome: true
-        iconRotation: (Config.options.waffles.bar.bottom ? 180 : 0) + (root.overflowOpen ? 180 : 0)
+        iconRotation: (Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom ? 180 : 0) + (root.overflowOpen ? 180 : 0)
         Behavior on iconRotation {
             animation: Looks.transition.rotate.createObject(this)
         }

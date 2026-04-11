@@ -4,7 +4,7 @@ import qs.modules.common
 
 WToolbarButton {
     id: root
-    implicitWidth: height
+    override property real implicitWidth: height
     contentItem: Item {
         FluentIcon {
             anchors.centerIn: parent

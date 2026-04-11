@@ -31,8 +31,8 @@ Scope {
             color: "transparent"
 
             anchors {
-                bottom: Config.options.waffles.bar.bottom
-                top: !Config.options.waffles.bar.bottom
+                bottom: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
+                top: !Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
                 right: true
             }
 

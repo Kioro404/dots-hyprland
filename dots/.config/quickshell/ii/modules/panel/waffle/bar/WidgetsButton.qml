@@ -9,8 +9,8 @@ import qs.modules.panel.waffle.looks
 AppButton {
     id: root
 
-    readonly property bool expandedForm: Config.options.waffles.bar.leftAlignApps
-    leftInset: Config.options.waffles.bar.leftAlignApps ? 0 : 12
+    readonly property bool expandedForm: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps
+    leftInset: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps ? 0 : 12
     implicitWidth: expandedForm ? 148 : (height - topInset - bottomInset + leftInset + rightInset)
     iconName: "widgets"
 

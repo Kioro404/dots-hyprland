@@ -14,7 +14,7 @@ BarIconButton {
 
     required property SystemTrayItem item
     property alias menuOpen: menu.visible
-    readonly property bool barAtBottom: Config.options.waffles.bar.bottom
+    readonly property bool barAtBottom: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
     iconSource: item.icon
     iconScale: 0
     Component.onCompleted: {

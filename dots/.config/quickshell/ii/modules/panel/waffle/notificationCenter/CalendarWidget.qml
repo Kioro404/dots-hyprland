@@ -54,7 +54,7 @@ BodyRectangle {
                         anchors.centerIn: parent
                         text: {
                             var result = dayOfWeekItem.model.shortName;
-                            if (Config.options.waffles.calendar.force2CharDayOfWeek) result = result.substring(0,2);
+                            if (Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.calendar.force2CharDayOfWeek) result = result.substring(0,2);
                             return result;
                         }
                         color: Looks.colors.fg

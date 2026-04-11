@@ -33,9 +33,9 @@ Scope {
             color: "transparent"
 
             anchors {
-                bottom: Config.options.waffles.bar.bottom
-                top: !Config.options.waffles.bar.bottom
-                left: Config.options.waffles.bar.leftAlignApps
+                bottom: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
+                top: !Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
+                left: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps
             }
 
             implicitWidth: content.implicitWidth

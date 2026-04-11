@@ -34,7 +34,7 @@ PopupWindow {
     }
 
     ///////////////////// Internals /////////////////////
-    readonly property bool bottom: Config.options.waffles.bar.bottom
+    readonly property bool bottom: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
     property real visualMargin: 12
     property real ambientShadowWidth: 1
 

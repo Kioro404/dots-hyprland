@@ -13,7 +13,7 @@ import qs.modules.panel.waffle.actionCenter.mainPage
 WBarAttachedPanelContent {
     id: root
 
-    readonly property bool barAtBottom: Config.options.waffles.bar.bottom
+    readonly property bool barAtBottom: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
     
     contentItem: ColumnLayout {
         // This somewhat sophisticated anchoring is needed to make opening anim not jump abruptly when stuff appear

@@ -30,11 +30,11 @@ FooterRectangle {
     color: searching ? Looks.colors.bgPanelBody : Looks.colors.bgPanelFooter
 
     Behavior on horizontalPadding {
-        enabled: Config.options.waffles.tweaks.smootherSearchBar
+        enabled: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherSearchBar
         animation: Looks.transition.move.createObject(this)
     }
     Behavior on verticalPadding {
-        enabled: Config.options.waffles.tweaks.smootherSearchBar
+        enabled: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherSearchBar
         animation: Looks.transition.move.createObject(this)
     }
 

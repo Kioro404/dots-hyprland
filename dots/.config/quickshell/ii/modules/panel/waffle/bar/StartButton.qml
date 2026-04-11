@@ -11,7 +11,7 @@ import qs.modules.panel.waffle.looks
 AppButton {
     id: root
 
-    leftInset: Config.options.waffles.bar.leftAlignApps ? 12 : 0
+    leftInset: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps ? 12 : 0
     iconName: down ? "start-here-pressed" : "start-here"
 
     checked: GlobalStates.searchOpen && LauncherSearch.query === ""

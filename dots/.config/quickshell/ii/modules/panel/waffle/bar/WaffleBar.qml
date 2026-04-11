@@ -23,13 +23,13 @@ Scope {
                 exclusionMode: ExclusionMode.Ignore
                 exclusiveZone: implicitHeight
                 WlrLayershell.layer: WlrLayer.Bottom
-                WlrLayershell.namespace: "quickshell:bar"
+                WlrLayershell.namespace: "quickshell:waffleBar"
 
                 anchors {
                     left: true
                     right: true
-                    bottom: Config.options.waffles.bar.bottom
-                    top: !Config.options.waffles.bar.bottom
+                    bottom: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
+                    top: !Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
                 }
 
                 color: "transparent"
