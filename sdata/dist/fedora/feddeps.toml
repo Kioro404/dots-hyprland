@@ -65,7 +65,6 @@ packages = [
   "breeze-plus-icon-theme",
   "darkly",
   "eza",
-  "fish",
   "fontconfig",
   "kitty",
   "matugen",
@@ -200,7 +199,6 @@ packages = [
 # Extra
 [groups.extra]
 packages = [
-  "mpvpaper",
   "plasma-systemmonitor",
   "unzip"
 ]

@@ -27,7 +27,7 @@ sys-apps/ripgrep pcre
 ################### FONTS & THEMES ################### 
 #kde-plasma/breeze (nothing needed)
 sys-apps/eza git
-app-shell/fish nls 
+app-shell/zsh nls
 media-libs/fontconfig nls
 x11-terms/kitty X wayland
 #x11-misc/matugen

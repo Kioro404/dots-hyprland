@@ -17,7 +17,7 @@ RDEPEND="
 	kde-plasma/breeze-plus
 	x11-themes/darkly
 	sys-apps/eza
-	app-shells/fish
+	app-shells/zsh
 	media-libs/fontconfig
 	x11-terms/kitty
 	x11-misc/matugen
