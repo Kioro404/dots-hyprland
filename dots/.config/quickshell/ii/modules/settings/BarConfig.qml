@@ -12,7 +12,7 @@ ContentPage {
         buttonIcon: "toast"
         iconRotation: 180
         text: Translation.tr("Enable %1").arg(Translation.tr("Bar").toLowerCase())
-        Component.onCompleted: checked = !Config.options.panel.disabled
+        checked: !Config.options.panel.disabled
         onCheckedChanged: {
             Config.options.panel.disabled = !checked;
         }
@@ -87,7 +87,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "counter_2"
                     text: Translation.tr("Unread indicator: show count")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.indicators.notifications.showUnreadCount
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.indicators.notifications.showUnreadCount
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.indicators.notifications.showUnreadCount = checked;
                     }
@@ -221,7 +221,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "keep"
                     text: Translation.tr('Make icons pinned by default')
-                    Component.onCompleted: checked = Config.options.tray.invertPinnedItems
+                    checked: Config.options.tray.invertPinnedItems
                     onCheckedChanged: {
                         Config.options.tray.invertPinnedItems = checked;
                     }
@@ -230,7 +230,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "colors"
                     text: Translation.tr('Tint icons')
-                    Component.onCompleted: checked = Config.options.tray.monochromeIcons
+                    checked: Config.options.tray.monochromeIcons
                     onCheckedChanged: {
                         Config.options.tray.monochromeIcons = checked;
                     }
@@ -246,7 +246,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "content_cut"
                         text: Translation.tr("Screen snip")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showScreenSnip
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showScreenSnip
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showScreenSnip = checked;
                         }
@@ -254,7 +254,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "colorize"
                         text: Translation.tr("Color picker")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showColorPicker
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showColorPicker
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showColorPicker = checked;
                         }
@@ -265,7 +265,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "keyboard"
                         text: Translation.tr("Keyboard toggle")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showKeyboardToggle
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showKeyboardToggle
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showKeyboardToggle = checked;
                         }
@@ -273,7 +273,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "mic"
                         text: Translation.tr("Mic toggle")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showMicToggle
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showMicToggle
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showMicToggle = checked;
                         }
@@ -284,7 +284,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "dark_mode"
                         text: Translation.tr("Dark/Light toggle")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showDarkModeToggle
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showDarkModeToggle
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showDarkModeToggle = checked;
                         }
@@ -292,7 +292,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "speed"
                         text: Translation.tr("Performance Profile toggle")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showPerformanceProfileToggle
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showPerformanceProfileToggle
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showPerformanceProfileToggle = checked;
                         }
@@ -303,7 +303,7 @@ ContentPage {
                     ConfigSwitch {
                         buttonIcon: "videocam"
                         text: Translation.tr("Record")
-                        Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showScreenRecord
+                        checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showScreenRecord
                         onCheckedChanged: {
                             Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.utilButtons.showScreenRecord = checked;
                         }
@@ -317,7 +317,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "check"
                     text: Translation.tr("Enable")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.enable
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.enable
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.enable = checked;
                     }
@@ -331,7 +331,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "counter_1"
                     text: Translation.tr('Always show numbers')
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.alwaysShowNumbers
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.alwaysShowNumbers
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.alwaysShowNumbers = checked;
                     }
@@ -340,7 +340,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "award_star"
                     text: Translation.tr('Show app icons')
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showAppIcons = checked;
                     }
@@ -349,7 +349,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "colors"
                     text: Translation.tr('Tint app icons')
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.monochromeIcons
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.monochromeIcons
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.monochromeIcons = checked;
                     }
@@ -358,7 +358,7 @@ ContentPage {
                 ConfigSpinBox {
                     icon: "view_column"
                     text: Translation.tr("Workspaces shown")
-                    Component.onCompleted: value = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.shown
+                    value: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.shown
                     from: 1
                     to: 30
                     stepSize: 1
@@ -370,7 +370,7 @@ ContentPage {
                 ConfigSpinBox {
                     icon: "touch_long"
                     text: Translation.tr("Number show delay when pressing Super (ms)")
-                    Component.onCompleted: value = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showNumberDelay
+                    value: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.workspaces.showNumberDelay
                     from: 0
                     to: 1000
                     stepSize: 50
@@ -414,7 +414,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "ads_click"
                     text: Translation.tr("Click to show")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.tooltips.clickToShow = checked;
                     }
@@ -432,7 +432,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "inbox_customize"
                     text: Translation.tr("Handle position fix")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.switchHandlePositionFix
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.switchHandlePositionFix
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.switchHandlePositionFix = checked;
                     }
@@ -440,7 +440,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "inbox_customize"
                     text: Translation.tr("Smoother menu animations")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherMenuAnimations
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherMenuAnimations
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherMenuAnimations = checked;
                     }
@@ -448,7 +448,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "inbox_customize"
                     text: Translation.tr("Smoother search bar")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherSearchBar
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherSearchBar
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.tweaks.smootherSearchBar = checked;
                     }
@@ -461,7 +461,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "density_large"
                     text: Translation.tr("Bottom position")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.bottom = checked;
                     }
@@ -469,7 +469,7 @@ ContentPage {
                 ConfigSwitch {
                     buttonIcon: "inbox_customize"
                     text: Translation.tr("Left align apps")
-                    Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps
+                    checked: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps
                     onCheckedChanged: {
                         Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.bar.leftAlignApps = checked;
                     }
@@ -479,7 +479,7 @@ ContentPage {
             ConfigSwitch {
                 buttonIcon: "density_large"
                 text: Translation.tr("Bottom position")
-                Component.onCompleted: checked = Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.calendar.force2CharDayOfWeek
+                checked: Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.calendar.force2CharDayOfWeek
                 onCheckedChanged: {
                     Config.options.panel.tools[Config.panelFamilyIndexWAFFLE].bar.config.calendar.force2CharDayOfWeek = checked;
                 }
