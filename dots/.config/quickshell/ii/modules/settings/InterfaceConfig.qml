@@ -266,13 +266,11 @@ ContentPage {
             visible: !Config.options.notifications.disabled
             icon: "av_timer"
             text: Translation.tr("Timeout duration (if not defined by notification) (s)")
-            value: Config.options.notifications.timeout
+            value: (Config.options.notifications.timeout / 1000)
             from: 1
             to: 60
             stepSize: 1
-            onValueChanged: {
-                Config.options.notifications.timeout = value;
-            }
+            onValueChanged: Config.options.notifications.timeout = (value * 1000);
         }
     }
 
@@ -785,20 +783,6 @@ ContentPage {
                         value: 1
                     }
                 ]
-            }
-        }
-    }
-
-    ContentSection {
-        icon: "wallpaper_slideshow"
-        title: Translation.tr("Wallpaper selector")
-
-        ConfigSwitch {
-            buttonIcon: "ad"
-            text: Translation.tr('Use system file picker')
-            checked: Config.options.wallpaperSelector.useSystemFileDialog
-            onCheckedChanged: {
-                Config.options.wallpaperSelector.useSystemFileDialog = checked;
             }
         }
     }

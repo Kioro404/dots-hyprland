@@ -11,63 +11,63 @@ import qs.modules.common.functions
 ContentPage {
     forceWidth: true
 
-    Process {
-        id: randomWallProc
-        property string status: ""
-        property string scriptPath: ""
-        property string tag: ""
-        command: ["bash", "-c", FileUtils.trimFileProtocol(randomWallProc.scriptPath) + " setTag " + randomWallProc.tag]
-        stdout: SplitParser {
-            onRead: data => {
-                randomWallProc.status = data.trim();
-            }
-        }
-    }
+    // Process {
+    //     id: randomWallProc
+    //     property string status: ""
+    //     property string scriptPath: ""
+    //     property string tag: ""
+    //     command: ["bash", "-c", FileUtils.trimFileProtocol(randomWallProc.scriptPath) + " setTag " + randomWallProc.tag]
+    //     stdout: SplitParser {
+    //         onRead: data => {
+    //             randomWallProc.status = data.trim();
+    //         }
+    //     }
+    // }
 
-    Process {
-        id: listWallpaperTagsProc
-        running: true
-        property ListModel providers: ListModel {}
-        property string scriptPath: `${Directories.scriptPath}/colors/random/random_${Config.options.background.provider.name}.sh`
-        command: ["bash", "-c", FileUtils.trimFileProtocol(listWallpaperTagsProc.scriptPath) + " getTag"]
-        stdout: SplitParser {
-            onRead: data => {
-                try {
-                    let tags = JSON.parse(data);
-                    tags.forEach(tag => {
-                        listWallpaperTagsProc.providers.append({
-                            displayName: tag,
-                            value: tag
-                        });
-                    });
-                } catch (e) {
-                }
-            }
-        }
-    }
+    // Process {
+    //     id: listWallpaperTagsProc
+    //     running: true
+    //     property ListModel providers: ListModel {}
+    //     property string scriptPath: `${Directories.scriptPath}/colors/random/random_${Config.options.background.provider.name}.sh`
+    //     command: ["bash", "-c", FileUtils.trimFileProtocol(listWallpaperTagsProc.scriptPath) + " getTag"]
+    //     stdout: SplitParser {
+    //         onRead: data => {
+    //             try {
+    //                 let tags = JSON.parse(data);
+    //                 tags.forEach(tag => {
+    //                     listWallpaperTagsProc.providers.append({
+    //                         displayName: tag,
+    //                         value: tag
+    //                     });
+    //                 });
+    //             } catch (e) {
+    //             }
+    //         }
+    //     }
+    // }
 
-    Process {
-        id: listRandomScriptsProc
-        running: true
-        property ListModel providers: ListModel {}
-        command: ["find", Directories.scriptPath + "/colors/random/", "-maxdepth", "1", "-type", "f", "-name", "random_*.sh", "-printf", "%f\\n"]
-        stdout: SplitParser {
-            onRead: data => {
-                data.trim().split('\\n').filter(line => line.trim()).forEach(fileName => {
-                    if (fileName.startsWith("random_") && fileName.endsWith(".sh")) {
-                        const cleanName = fileName.slice(7, -3);
-                        if (cleanName.length > 0) {
-                            const displayName = cleanName.split('_').join(' ');
-                            listRandomScriptsProc.providers.append({
-                                displayName: displayName,
-                                value: displayName
-                            });
-                        }
-                    }
-                });
-            }
-        }
-    }
+    // Process {
+    //     id: listRandomScriptsProc
+    //     running: true
+    //     property ListModel providers: ListModel {}
+    //     command: ["find", Directories.scriptPath + "/colors/random/", "-maxdepth", "1", "-type", "f", "-name", "random_*.sh", "-printf", "%f\\n"]
+    //     stdout: SplitParser {
+    //         onRead: data => {
+    //             data.trim().split('\\n').filter(line => line.trim()).forEach(fileName => {
+    //                 if (fileName.startsWith("random_") && fileName.endsWith(".sh")) {
+    //                     const cleanName = fileName.slice(7, -3);
+    //                     if (cleanName.length > 0) {
+    //                         const displayName = cleanName.split('_').join(' ');
+    //                         listRandomScriptsProc.providers.append({
+    //                             displayName: displayName,
+    //                             value: displayName
+    //                         });
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
 
     component SmallLightDarkPreferenceButton: RippleButton {
         id: smallLightDarkPreferenceButton
@@ -101,218 +101,218 @@ ContentPage {
         }
     }
 
-    // Wallpaper selection
-    ContentSection {
-        icon: "format_paint"
-        title: Translation.tr("Wallpaper & Colors")
-        Layout.fillWidth: true
+    //// Wallpaper selection
+    // ContentSection {
+    //     icon: "format_paint"
+    //     title: Translation.tr("Wallpaper & Colors")
+    //     Layout.fillWidth: true
 
-        RowLayout {
-            Layout.fillWidth: true
+    //     RowLayout {
+    //         Layout.fillWidth: true
 
-            Item {
-                implicitWidth: 360
-                implicitHeight: 220
+    //         Item {
+    //             implicitWidth: 360
+    //             implicitHeight: 220
                 
-                StyledImage {
-                    id: wallpaperPreview
-                    anchors.fill: parent
-                    sourceSize.width: parent.implicitWidth
-                    sourceSize.height: parent.implicitHeight
-                    fillMode: Image.PreserveAspectCrop
-                    source: Config.options.background.wallpaperPath
-                    cache: false
-                    layer.enabled: true
-                    layer.effect: OpacityMask {
-                        maskSource: Rectangle {
-                            width: 360
-                            height: 220
-                            radius: Appearance.rounding.normal
-                        }
-                    }
-                }
-            }
+    //             StyledImage {
+    //                 id: wallpaperPreview
+    //                 anchors.fill: parent
+    //                 sourceSize.width: parent.implicitWidth
+    //                 sourceSize.height: parent.implicitHeight
+    //                 fillMode: Image.PreserveAspectCrop
+    //                 source: Config.options.background.wallpaperPath
+    //                 cache: false
+    //                 layer.enabled: true
+    //                 layer.effect: OpacityMask {
+    //                     maskSource: Rectangle {
+    //                         width: 360
+    //                         height: 220
+    //                         radius: Appearance.rounding.normal
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-            ColumnLayout {
-                StyledComboBox {
-                    id: wallpaperProviderSelector
-                    buttonIcon: "swap_horiz"
-                    textRole: "displayName"
-                    model: listRandomScriptsProc.providers
+    //         ColumnLayout {
+    //             StyledComboBox {
+    //                 id: wallpaperProviderSelector
+    //                 buttonIcon: "swap_horiz"
+    //                 textRole: "displayName"
+    //                 model: listRandomScriptsProc.providers
 
-                    currentIndex: {
-                        let foundIndex = 0;
-                        for (let i = 0; i < model.count; i++) {
-                            if (model.get(i).value === Config.options.background.provider.name) {
-                                foundIndex = i;
-                                break;
-                            }
-                        }
-                        return foundIndex;
-                    }
+    //                 currentIndex: {
+    //                     let foundIndex = 0;
+    //                     for (let i = 0; i < model.count; i++) {
+    //                         if (model.get(i).value === Config.options.background.provider.name) {
+    //                             foundIndex = i;
+    //                             break;
+    //                         }
+    //                     }
+    //                     return foundIndex;
+    //                 }
 
-                    onActivated: index => {
-                        Config.options.background.provider.name = model.get(index).value;
+    //                 onActivated: index => {
+    //                     Config.options.background.provider.name = model.get(index).value;
 
-                        listWallpaperTagsProc.running = false;
-                        listWallpaperTagsProc.providers.clear();
+    //                     listWallpaperTagsProc.running = false;
+    //                     listWallpaperTagsProc.providers.clear();
 
-                        listWallpaperTagsProc.scriptPath = `${Directories.scriptPath}/colors/random/random_${model.get(index).value}.sh`;
-                        listWallpaperTagsProc.running = true;
-                    }
+    //                     listWallpaperTagsProc.scriptPath = `${Directories.scriptPath}/colors/random/random_${model.get(index).value}.sh`;
+    //                     listWallpaperTagsProc.running = true;
+    //                 }
 
-                    StyledToolTip {
-                        text: Translation.tr("Wallpaper provider")
-                    }
-                }
-                RowLayout {
-                    StyledComboBox {
-                        id: tagSelector
-                        buttonIcon: "sell"
-                        textRole: "displayName"
-                        enabled: listWallpaperTagsProc.providers.count > 0
-                        model: listWallpaperTagsProc.providers
+    //                 StyledToolTip {
+    //                     text: Translation.tr("Wallpaper provider")
+    //                 }
+    //             }
+    //             RowLayout {
+    //                 StyledComboBox {
+    //                     id: tagSelector
+    //                     buttonIcon: "sell"
+    //                     textRole: "displayName"
+    //                     enabled: listWallpaperTagsProc.providers.count > 0
+    //                     model: listWallpaperTagsProc.providers
 
-                        currentIndex: {
-                            let foundIndex = 0;
-                            for (let i = 0; i < model.count; i++) {
-                                if (model.get(i).value === Config.options.background.provider.tag) {
-                                    foundIndex = i;
-                                    break;
-                                }
-                            }
-                            return foundIndex;
-                        }
+    //                     currentIndex: {
+    //                         let foundIndex = 0;
+    //                         for (let i = 0; i < model.count; i++) {
+    //                             if (model.get(i).value === Config.options.background.provider.tag) {
+    //                                 foundIndex = i;
+    //                                 break;
+    //                             }
+    //                         }
+    //                         return foundIndex;
+    //                     }
 
-                        onActivated: index => {
-                            Config.options.background.provider.tag = model.get(index).value;
-                        }
+    //                     onActivated: index => {
+    //                         Config.options.background.provider.tag = model.get(index).value;
+    //                     }
 
-                    }
-                    RippleButtonWithIcon {
-                        enabled: !randomWallProc.running
-                        visible: Config.options.policies.weeb === 1
-                        buttonRadius: Appearance.rounding.small
-                        materialIcon: "ifl"
-                        mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random")
-                        onClicked: {
-                            randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_${wallpaperProviderSelector.model.get(wallpaperProviderSelector.currentIndex).value}.sh`;
-                            randomWallProc.running = true;
-                        }
-                        StyledToolTip {
-                            text: Translation.tr("Random wallpaper\nImage is saved to %1").arg(`${Directories.pictures}/Wallpapers`)
-                        }
-                    }
-                }
-                RippleButtonWithIcon {
-                    Layout.fillWidth: true
-                    materialIcon: "wallpaper"
-                    StyledToolTip {
-                        text: Translation.tr("Pick wallpaper image on your system")
-                    }
-                    onClicked: {
-                        Quickshell.execDetached(`${Directories.wallpaperSwitchScriptPath}`);
-                    }
-                    mainContentComponent: Component {
-                        RowLayout {
-                            spacing: 10
-                            StyledText {
-                                font.pixelSize: Appearance.font.pixelSize.small
-                                text: Translation.tr("Choose file")
-                                color: Appearance.colors.colOnSecondaryContainer
-                            }
-                            RowLayout {
-                                spacing: 3
-                                KeyboardKey {
-                                    key: "Ctrl"
-                                }
-                                KeyboardKey {
-                                    key: Config.options.cheatsheet.superKey ?? "󰖳"
-                                }
-                                StyledText {
-                                    Layout.alignment: Qt.AlignVCenter
-                                    text: "+"
-                                }
-                                KeyboardKey {
-                                    key: "T"
-                                }
-                            }
-                        }
-                    }
-                }
-                RowLayout {
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    uniformCellSizes: true
+    //                 }
+    //                 RippleButtonWithIcon {
+    //                     enabled: !randomWallProc.running
+    //                     visible: Config.options.policies.weeb === 1
+    //                     buttonRadius: Appearance.rounding.small
+    //                     materialIcon: "ifl"
+    //                     mainText: randomWallProc.running ? Translation.tr("Be patient...") : Translation.tr("Random")
+    //                     onClicked: {
+    //                         randomWallProc.scriptPath = `${Directories.scriptPath}/colors/random/random_${wallpaperProviderSelector.model.get(wallpaperProviderSelector.currentIndex).value}.sh`;
+    //                         randomWallProc.running = true;
+    //                     }
+    //                     StyledToolTip {
+    //                         text: Translation.tr("Random wallpaper\nImage is saved to %1").arg(`${Directories.pictures}/Wallpapers`)
+    //                     }
+    //                 }
+    //             }
+    //             RippleButtonWithIcon {
+    //                 Layout.fillWidth: true
+    //                 materialIcon: "wallpaper"
+    //                 StyledToolTip {
+    //                     text: Translation.tr("Pick wallpaper image on your system")
+    //                 }
+    //                 onClicked: {
+    //                     Quickshell.execDetached(`${Directories.wallpaperSwitchScriptPath}`);
+    //                 }
+    //                 mainContentComponent: Component {
+    //                     RowLayout {
+    //                         spacing: 10
+    //                         StyledText {
+    //                             font.pixelSize: Appearance.font.pixelSize.small
+    //                             text: Translation.tr("Choose file")
+    //                             color: Appearance.colors.colOnSecondaryContainer
+    //                         }
+    //                         RowLayout {
+    //                             spacing: 3
+    //                             KeyboardKey {
+    //                                 key: "Ctrl"
+    //                             }
+    //                             KeyboardKey {
+    //                                 key: Config.options.cheatsheet.superKey ?? "󰖳"
+    //                             }
+    //                             StyledText {
+    //                                 Layout.alignment: Qt.AlignVCenter
+    //                                 text: "+"
+    //                             }
+    //                             KeyboardKey {
+    //                                 key: "T"
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //             RowLayout {
+    //                 Layout.alignment: Qt.AlignHCenter
+    //                 Layout.fillWidth: true
+    //                 Layout.fillHeight: true
+    //                 uniformCellSizes: true
 
-                    SmallLightDarkPreferenceButton {
-                        Layout.fillHeight: true
-                        dark: false
-                    }
-                    SmallLightDarkPreferenceButton {
-                        Layout.fillHeight: true
-                        dark: true
-                    }
-                }
-            }
-        }
+    //                 SmallLightDarkPreferenceButton {
+    //                     Layout.fillHeight: true
+    //                     dark: false
+    //                 }
+    //                 SmallLightDarkPreferenceButton {
+    //                     Layout.fillHeight: true
+    //                     dark: true
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        ConfigSelectionArray {
-            currentValue: Config.options.appearance.palette.type
-            onSelected: newValue => {
-                Config.options.appearance.palette.type = newValue;
-                Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperSwitchScriptPath} --noswitch`]);
-            }
-            options: [
-                {
-                    "value": "auto",
-                    "displayName": Translation.tr("Auto")
-                },
-                {
-                    "value": "scheme-content",
-                    "displayName": Translation.tr("Content")
-                },
-                {
-                    "value": "scheme-expressive",
-                    "displayName": Translation.tr("Expressive")
-                },
-                {
-                    "value": "scheme-fidelity",
-                    "displayName": Translation.tr("Fidelity")
-                },
-                {
-                    "value": "scheme-fruit-salad",
-                    "displayName": Translation.tr("Fruit Salad")
-                },
-                {
-                    "value": "scheme-monochrome",
-                    "displayName": Translation.tr("Monochrome")
-                },
-                {
-                    "value": "scheme-neutral",
-                    "displayName": Translation.tr("Neutral")
-                },
-                {
-                    "value": "scheme-rainbow",
-                    "displayName": Translation.tr("Rainbow")
-                },
-                {
-                    "value": "scheme-tonal-spot",
-                    "displayName": Translation.tr("Tonal Spot")
-                }
-            ]
-        }
+    //     ConfigSelectionArray {
+    //         currentValue: Config.options.appearance.palette.type
+    //         onSelected: newValue => {
+    //             Config.options.appearance.palette.type = newValue;
+    //             Quickshell.execDetached(["bash", "-c", `${Directories.wallpaperSwitchScriptPath} --noswitch`]);
+    //         }
+    //         options: [
+    //             {
+    //                 "value": "auto",
+    //                 "displayName": Translation.tr("Auto")
+    //             },
+    //             {
+    //                 "value": "scheme-content",
+    //                 "displayName": Translation.tr("Content")
+    //             },
+    //             {
+    //                 "value": "scheme-expressive",
+    //                 "displayName": Translation.tr("Expressive")
+    //             },
+    //             {
+    //                 "value": "scheme-fidelity",
+    //                 "displayName": Translation.tr("Fidelity")
+    //             },
+    //             {
+    //                 "value": "scheme-fruit-salad",
+    //                 "displayName": Translation.tr("Fruit Salad")
+    //             },
+    //             {
+    //                 "value": "scheme-monochrome",
+    //                 "displayName": Translation.tr("Monochrome")
+    //             },
+    //             {
+    //                 "value": "scheme-neutral",
+    //                 "displayName": Translation.tr("Neutral")
+    //             },
+    //             {
+    //                 "value": "scheme-rainbow",
+    //                 "displayName": Translation.tr("Rainbow")
+    //             },
+    //             {
+    //                 "value": "scheme-tonal-spot",
+    //                 "displayName": Translation.tr("Tonal Spot")
+    //             }
+    //         ]
+    //     }
 
-        ConfigSwitch {
-            buttonIcon: "ev_shadow"
-            text: Translation.tr("Transparency")
-            checked: Config.options.appearance.transparency.enable
-            onCheckedChanged: {
-                Config.options.appearance.transparency.enable = checked;
-            }
-        }
-    }
+    //     ConfigSwitch {
+    //         buttonIcon: "ev_shadow"
+    //         text: Translation.tr("Transparency")
+    //         checked: Config.options.appearance.transparency.enable
+    //         onCheckedChanged: {
+    //             Config.options.appearance.transparency.enable = checked;
+    //         }
+    //     }
+    // }
 
     ContentSection {
         icon: "screenshot_monitor"

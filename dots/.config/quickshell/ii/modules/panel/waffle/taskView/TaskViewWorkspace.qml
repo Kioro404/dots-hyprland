@@ -79,34 +79,6 @@ WMouseAreaButton {
                 }
             }
 
-            // Workspace content
-            Loader {
-                anchors.fill: parent
-                active: !root.newWorkspace
-                sourceComponent: StyledImage {
-                    cache: true
-                    sourceSize: Qt.size(root.screenAspectRatio * root.wallpaperHeight, root.wallpaperHeight)
-                    source: Config.options.background.wallpaperPath
-                    fillMode: Image.PreserveAspectCrop
-
-                    Repeater {
-                        model: ScriptModel {
-                            values: HyprlandData.toplevelsForWorkspace(root.workspace)
-                        }
-                        delegate: ScreencopyView {
-                            required property var modelData
-                            readonly property var hyprlandWindowData: HyprlandData.windowByAddress[`0x${modelData.HyprlandToplevel?.address}`]
-                            captureSource: modelData
-                            live: true
-                            width: hyprlandWindowData?.size[0] * root.windowScale
-                            height: hyprlandWindowData?.size[1] * root.windowScale
-                            x: hyprlandWindowData?.at[0] * root.windowScale
-                            y: hyprlandWindowData?.at[1] * root.windowScale
-                        }
-                    }
-                }
-            }
-
             // New plus icon
             Loader {
                 anchors.centerIn: parent

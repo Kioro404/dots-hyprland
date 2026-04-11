@@ -74,13 +74,11 @@ ContentPage {
         ConfigSpinBox {
             icon: "av_timer"
             text: Translation.tr("Polling interval (s)")
-            value: Config.options.resources.updateInterval
+            value: (Config.options.resources.updateInterval / 1000)
             from: 1
             to: 60
             stepSize: 1
-            onValueChanged: {
-                Config.options.resources.updateInterval = value;
-            }
+            onValueChanged: Config.options.resources.updateInterval = (value * 1000);
         }
         
     }
@@ -248,53 +246,6 @@ ContentPage {
             stepSize: 1
             onValueChanged: {
                 Config.options.updates.stronglyAdviseUpdateThreshold = value;
-            }
-        }
-    }
-
-    ContentSection {
-        icon: "weather_mix"
-        title: Translation.tr("Weather")
-        ConfigRow {
-            ConfigSwitch {
-                buttonIcon: "assistant_navigation"
-                text: Translation.tr("Enable GPS based location")
-                checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.enableGPS
-                onCheckedChanged: {
-                    Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.enableGPS = checked;
-                }
-            }
-            ConfigSwitch {
-                buttonIcon: "thermometer"
-                text: Translation.tr("Fahrenheit unit")
-                checked: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.useUSCS
-                onCheckedChanged: {
-                    Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.useUSCS = checked;
-                }
-                StyledToolTip {
-                    text: Translation.tr("It may take a few seconds to update")
-                }
-            }
-        }
-        
-        MaterialTextArea {
-            Layout.fillWidth: true
-            placeholderText: Translation.tr("City name")
-            text: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.city
-            wrapMode: TextEdit.Wrap
-            onTextChanged: {
-                Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.city = text;
-            }
-        }
-        ConfigSpinBox {
-            icon: "av_timer"
-            text: Translation.tr("Polling interval (m)")
-            value: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.fetchInterval
-            from: 5
-            to: 50
-            stepSize: 5
-            onValueChanged: {
-                Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.fetchInterval = value;
             }
         }
     }

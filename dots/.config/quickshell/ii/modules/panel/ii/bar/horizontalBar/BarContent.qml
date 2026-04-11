@@ -340,16 +340,6 @@ Item { // Bar content region
                 Layout.fillWidth: true
                 Layout.fillHeight: true
             }
-
-            // Weather
-            Loader {
-                Layout.leftMargin: 4
-                active: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.weather.enable
-
-                sourceComponent: BarGroup {
-                    WeatherBar {}
-                }
-            }
         }
     }
 }

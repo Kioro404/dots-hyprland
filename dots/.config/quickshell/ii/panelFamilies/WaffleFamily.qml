@@ -3,9 +3,7 @@ import Quickshell
 
 import qs.modules.common
 import qs.modules.panel.waffle.actionCenter
-import qs.modules.panel.waffle.background
 import qs.modules.panel.waffle.bar
-import qs.modules.panel.waffle.lock
 import qs.modules.panel.waffle.notificationCenter
 import qs.modules.panel.waffle.notificationPopup
 import qs.modules.panel.waffle.onScreenDisplay
@@ -21,13 +19,10 @@ import qs.modules.panel.ii.cheatsheet
 import qs.modules.panel.ii.onScreenKeyboard
 import qs.modules.panel.ii.overlay
 import qs.modules.panel.ii.screenTranslator
-import qs.modules.panel.ii.wallpaperSelector
 
 Scope {
     PanelLoader { component: WaffleActionCenter {} }
     PanelLoader { component: WaffleBar {} }
-    PanelLoader { component: WaffleBackground {} }
-    PanelLoader { component: WaffleLock {} }
     PanelLoader { component: WaffleNotificationCenter {} }
     PanelLoader { component: WaffleNotificationPopup {} }
     PanelLoader { component: WaffleOSD {} }
@@ -42,5 +37,4 @@ Scope {
     PanelLoader { component: OnScreenKeyboard {} }
     PanelLoader { component: Overlay {} }
     PanelLoader { component: ScreenTranslator {} }
-    PanelLoader { component: WallpaperSelector {} }
 }
