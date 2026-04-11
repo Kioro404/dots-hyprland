@@ -204,10 +204,10 @@ ApplicationWindow {
                         ContentSubsection {
                             title: Translation.tr("Bar position")
                             ConfigSelectionArray {
-                                currentValue: (Config.options.bar.bottom ? 1 : 0) | (Config.options.bar.vertical ? 2 : 0)
+                                currentValue: (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? 1 : 0) | (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical ? 2 : 0)
                                 onSelected: newValue => {
-                                    Config.options.bar.bottom = (newValue & 1) !== 0;
-                                    Config.options.bar.vertical = (newValue & 2) !== 0;
+                                    Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom = (newValue & 1) !== 0;
+                                    Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.vertical = (newValue & 2) !== 0;
                                 }
                                 options: [
                                     {
@@ -237,9 +237,9 @@ ApplicationWindow {
                             title: Translation.tr("%1 style").arg(Translation.tr("Bar"))
 
                             ConfigSelectionArray {
-                                currentValue: Config.options.bar.cornerStyle
+                                currentValue: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle
                                 onSelected: newValue => {
-                                    Config.options.bar.cornerStyle = newValue; // Update local copy
+                                    Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle = newValue; // Update local copy
                                 }
                                 options: [
                                     {

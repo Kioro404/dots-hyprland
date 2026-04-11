@@ -78,10 +78,6 @@ Singleton {
             }
         }
 
-        // Yesterday
-        if (messageTime.toDateString() === new Date(now.getTime() - 86400000).toDateString())
-            return 'Yesterday';
-
         // Older dates
         return Qt.formatDateTime(messageTime, "MMMM dd");
     }
