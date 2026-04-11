@@ -48,30 +48,30 @@ Item {
         }
     }
 
-    Rectangle {
-        id: activeIndicator
-        z: 0
-        color: Appearance.colors.colSecondaryContainer
-        implicitWidth: contentItem.children[root.currentIndex]?.implicitWidth ?? 0
-        implicitHeight: contentItem.children[root.currentIndex]?.implicitHeight ?? 0
-        radius: height / 2
-        // Animation
-        property Item targetItem: contentItem.children[root.currentIndex]
-        AnimatedTabIndexPair {
-            id: leftBound
-            idx1Duration: 50
-            idx2Duration: 200
-            index: activeIndicator.targetItem.x
-        }
-        AnimatedTabIndexPair {
-            id: rightBound
-            idx1Duration: 50
-            idx2Duration: 200
-            index: activeIndicator.targetItem.x + activeIndicator.targetItem.width
-        }
-        x: Math.min(leftBound.idx1, leftBound.idx2)
-        width: Math.max(rightBound.idx1, rightBound.idx2) - x
-    }
+    // Rectangle {
+    //     id: activeIndicator
+    //     z: 0
+    //     color: Appearance.colors.colSecondaryContainer
+    //     implicitWidth: contentItem.children[root.currentIndex]?.implicitWidth ?? 0
+    //     implicitHeight: contentItem.children[root.currentIndex]?.implicitHeight ?? 0
+    //     radius: height / 2
+    //     // Animation
+    //     property Item targetItem: contentItem.children[root.currentIndex]
+    //     AnimatedTabIndexPair {
+    //         id: leftBound
+    //         idx1Duration: 50
+    //         idx2Duration: 200
+    //         index: activeIndicator.targetItem.x
+    //     }
+    //     AnimatedTabIndexPair {
+    //         id: rightBound
+    //         idx1Duration: 50
+    //         idx2Duration: 200
+    //         index: activeIndicator.targetItem.x + activeIndicator.targetItem.width
+    //     }
+    //     x: Math.min(leftBound.idx1, leftBound.idx2)
+    //     width: Math.max(rightBound.idx1, rightBound.idx2) - x
+    // }
 
     MouseArea {
         anchors.fill: parent
