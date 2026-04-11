@@ -153,13 +153,6 @@ Singleton {
                                     numberMap: ["1", "2"],
                                     useNerdFont: false
                                 },
-                                weather: {
-                                    enable: false,
-                                    enableGPS: true,
-                                    city: "",
-                                    useUSCS: false,
-                                    fetchInterval: 10
-                                },
                                 indicators: {
                                     notifications: {
                                         showUnreadCount: false
@@ -283,70 +276,8 @@ Singleton {
             }
 
             property JsonObject background: JsonObject {
-                property bool disabled: false
-                property JsonObject provider: JsonObject {
-                    property string name: "Konachan"
-                    property string tag: "Anime"
-                }
-                property JsonObject widgets: JsonObject {
-                    property JsonObject clock: JsonObject {
-                        property bool enable: true
-                        property bool showOnlyWhenLocked: false
-                        property string placementStrategy: "leastBusy" // "free", "leastBusy", "mostBusy"
-                        property real x: 100
-                        property real y: 100
-                        property string style: "cookie"        // Options: "cookie", "digital"
-                        property string styleLocked: "cookie"  // Options: "cookie", "digital"
-                        property JsonObject cookie: JsonObject {
-                            property bool aiStyling: false
-                            property int sides: 14
-                            property string dialNumberStyle: "full"   // Options: "dots" , "numbers", "full" , "none"
-                            property string hourHandStyle: "fill"     // Options: "classic", "fill", "hollow", "hide"
-                            property string minuteHandStyle: "medium" // Options "classic", "thin", "medium", "bold", "hide"
-                            property string secondHandStyle: "dot"    // Options: "dot", "line", "classic", "hide"
-                            property string dateStyle: "bubble"       // Options: "border", "rect", "bubble" , "hide"
-                            property bool timeIndicators: true
-                            property bool hourMarks: false
-                            property bool dateInClock: true
-                            property bool constantlyRotate: false
-                            property bool useSineCookie: false
-                        }
-                        property JsonObject digital: JsonObject {
-                            property bool adaptiveAlignment: true
-                            property bool showDate: true
-                            property bool animateChange: true
-                            property bool vertical: false
-                            property JsonObject font: JsonObject {
-                                property string family: "Google Sans Flex"
-                                property real weight: 350
-                                property real width: 100
-                                property real size: 90
-                                property real roundness: 0
-                            }
-                        }
-                        property JsonObject quote: JsonObject {
-                            property bool enable: false
-                            property string text: ""
-                        }
-                    }
-                    property JsonObject weather: JsonObject {
-                        property bool enable: false
-                        property string placementStrategy: "free" // "free", "leastBusy", "mostBusy"
-                        property real x: 400
-                        property real y: 100
-                    }
-                }
                 property string wallpaperPath: ""
                 property string thumbnailPath: ""
-                property bool hideWhenFullscreen: true
-                property JsonObject parallax: JsonObject {
-                    property bool vertical: false
-                    property bool autoVertical: false
-                    property bool enableWorkspace: true
-                    property real workspaceZoom: 1.0 // Relative to wallpaper size
-                    property bool enableSidebar: true
-                    property real widgetsFactor: 1.2
-                }
             }
 
             property JsonObject battery: JsonObject {
@@ -631,10 +562,6 @@ Singleton {
                 property int checkInterval: 120 // minutes
                 property int adviseUpdateThreshold: 75 // packages
                 property int stronglyAdviseUpdateThreshold: 200 // packages
-            }
-
-            property JsonObject wallpaperSelector: JsonObject {
-                property bool useSystemFileDialog: false
             }
 
             property JsonObject windows: JsonObject {
