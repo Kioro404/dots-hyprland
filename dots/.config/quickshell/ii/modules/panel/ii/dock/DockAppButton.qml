@@ -90,7 +90,7 @@ DockButton {
             }
 
             Loader {
-                active: Config.options.dock.monochromeIcons
+                active: Config.options.panel.dock.monochromeIcons
                 anchors.fill: iconImageLoader
                 sourceComponent: Item {
                     Desaturate {

@@ -170,7 +170,9 @@ Item {
 
                                 ButtonGroup {
                                     contentWidth: parent.width - anchors.margins * 2
-                                    WrapperRectangle {
+                                    // WARN qt.qml.propertyCache.append: Member implicitWidth of the object WrapperRectangle_QMLTYPE_2518 overrides a member of the base object. Consider renaming it or adding final or override specifier
+                                    // WARN qt.qml.propertyCache.append: Member implicitHeight of the object WrapperRectangle_QMLTYPE_2518 overrides a member of the base object. Consider renaming it or adding final or override specifier
+                                    WrapperRectangle { // Comment to solve WARN implicitWidth and implicitHeight
                                         Layout.fillWidth: true
                                         color: ColorUtils.transparentize(Appearance.colors.colSurfaceContainer)
                                         radius: Appearance.rounding.small

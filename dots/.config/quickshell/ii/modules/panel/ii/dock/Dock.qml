@@ -14,7 +14,7 @@ import Quickshell.Hyprland
 
 Scope { // Scope
     id: root
-    property bool pinned: Config.options?.dock.pinnedOnStartup ?? false
+    property bool pinned: Config.options.panel?.dock.pinnedOnStartup ?? false
 
     Variants {
         // For each monitor
@@ -27,7 +27,7 @@ Scope { // Scope
             screen: modelData
             visible: !GlobalStates.screenLocked
 
-            property bool reveal: root.pinned || (Config.options?.dock.hoverToReveal && dockMouseArea.containsMouse) || dockApps.requestDockShow || (!ToplevelManager.activeToplevel?.activated)
+            property bool reveal: root.pinned || (Config.options.panel?.dock.hoverToReveal && dockMouseArea.containsMouse) || dockApps.requestDockShow || (!ToplevelManager.activeToplevel?.activated)
 
             anchors {
                 bottom: true
@@ -41,7 +41,7 @@ Scope { // Scope
             WlrLayershell.namespace: "quickshell:dock"
             color: "transparent"
 
-            implicitHeight: (Config.options?.dock.height ?? 70) + Appearance.sizes.elevationMargin + Appearance.sizes.hyprlandGapsOut
+            implicitHeight: (Config.options.panel?.dock.height ?? 70) + Appearance.sizes.elevationMargin + Appearance.sizes.hyprlandGapsOut
 
             mask: Region {
                 item: dockMouseArea
@@ -52,7 +52,7 @@ Scope { // Scope
                 height: parent.height
                 anchors {
                     top: parent.top
-                    topMargin: dockRoot.reveal ? 0 : Config.options?.dock.hoverToReveal ? (dockRoot.implicitHeight - Config.options.dock.hoverRegionHeight) : (dockRoot.implicitHeight + 1)
+                    topMargin: dockRoot.reveal ? 0 : Config.options.panel?.dock.hoverToReveal ? (dockRoot.implicitHeight - Config.options.panel.dock.hoverRegionHeight) : (dockRoot.implicitHeight + 1)
                     horizontalCenter: parent.horizontalCenter
                 }
                 implicitWidth: dockHoverRegion.implicitWidth + Appearance.sizes.elevationMargin * 2
