@@ -14,6 +14,7 @@ TabButton {
     property string buttonText
     property bool expanded: false
     property bool showToggledHighlight: true
+    readonly property int labelFontPixelSize: 14
     readonly property real visualWidth: root.expanded ? root.baseSize + 20 + itemText.implicitWidth : root.baseSize
 
     property real baseSize: 56
@@ -21,7 +22,7 @@ TabButton {
     property real highlightCollapsedTopMargin: 8
     padding: 0
 
-    // The navigation item’s target area always spans the full width of the
+    // The navigation item's target area always spans the full width of the
     // nav rail, even if the item container hugs its contents.
     Layout.fillWidth: true
     // implicitWidth: contentItem.implicitWidth
@@ -142,7 +143,7 @@ TabButton {
                 }
             }
             text: buttonText
-            font.pixelSize: 14
+            font.pixelSize: root.labelFontPixelSize
             color: Appearance.colors.colOnLayer1
         }
     }

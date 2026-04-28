@@ -1,11 +1,8 @@
 import QtQuick
 import qs.modules.common
 
-Rectangle {
+Item {
     id: root
-
-    radius: Appearance.rounding.normal
-    color: Appearance.colors.colLayer1
 
     signal openAudioOutputDialog()
     signal openAudioInputDialog()

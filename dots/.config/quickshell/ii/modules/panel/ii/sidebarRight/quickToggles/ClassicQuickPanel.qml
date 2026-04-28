@@ -12,13 +12,11 @@ AbstractQuickPanel {
     Layout.alignment: Qt.AlignHCenter
     implicitWidth: buttonGroup.implicitWidth
     implicitHeight: buttonGroup.implicitHeight
-    color: "transparent"
 
     ButtonGroup {
         id: buttonGroup
         spacing: 5
         padding: 5
-        color: Appearance.colors.colLayer1
 
         NetworkToggle {
             altAction: () => {
