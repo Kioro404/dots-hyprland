@@ -54,13 +54,12 @@ Singleton {
                         : "signal_wifi_bad"
 
     // Control
-    function enableWifi(enabled = true): void {
-        const cmd = enabled ? "on" : "off";
-        enableWifiProc.exec(["nmcli", "radio", "wifi", cmd]);
+    function setWifiStatus(enable: bool): void {
+        enableWifiProc.exec(["nmcli", "radio", "wifi", ((enable) ? "on" : "off")]);
     }
 
     function toggleWifi(): void {
-        enableWifi(!wifiEnabled);
+        setWifiStatus(!wifiEnabled);
     }
 
     function rescanWifi(): void {
@@ -251,7 +250,7 @@ Singleton {
         })
         stdout: StdioCollector {
             onStreamFinished: {
-                root.wifiEnabled = text.trim() === "enabled";
+                root.wifiEnabled = (text.trim() === "enabled");
             }
         }
     }
