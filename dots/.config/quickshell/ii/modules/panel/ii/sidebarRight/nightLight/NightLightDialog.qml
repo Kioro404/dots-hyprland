@@ -13,8 +13,6 @@ import Quickshell.Hyprland
 
 WindowDialog {
     id: root
-    property var screen: root.QsWindow.window?.screen
-    property var brightnessMonitor: Brightness.getMonitorForScreen(screen)
     backgroundHeight: 600
 
     WindowDialogTitle {
@@ -44,10 +42,8 @@ WindowDialog {
             iconSize: Appearance.font.pixelSize.larger
             buttonIcon: "lightbulb"
             text: Translation.tr("Enable %1").arg(Translation.tr("Now").toLowerCase())
-            checked: Hyprsunset.active
-            onCheckedChanged: {
-                Hyprsunset.toggle(checked)
-            }
+            checked: Config.options?.light?.night?.enabled
+            onCheckedChanged: Hyprsunset.setTemperatureState(checked)
         }
 
         ConfigSwitch {
@@ -114,35 +110,10 @@ WindowDialog {
         }
     }
 
-    WindowDialogSectionHeader {
-        text: Translation.tr("Brightness")
-    }
-
-    WindowDialogSeparator {
-        Layout.topMargin: -22
-        Layout.leftMargin: 0
-        Layout.rightMargin: 0
-    }
-
-    Column {
-        id: brightnessColumn
-        Layout.topMargin: -16
-        Layout.fillWidth: true
+    Item { // temporal
         Layout.fillHeight: true
-
-        WindowDialogSlider {
-            anchors {
-                left: parent.left
-                right: parent.right
-                leftMargin: 4
-                rightMargin: 4
-            }
-            // text: Translation.tr("Brightness")
-            value: root.brightnessMonitor.brightness
-            onMoved: root.brightnessMonitor.setBrightness(value)
-        }
     }
-    
+
     WindowDialogButtonRow {
         Layout.fillWidth: true
 
