@@ -62,6 +62,35 @@ ApplicationWindow {
     ]
     property int currentPage: 0
 
+    property int navButtonLabelFontPixelSize: {
+        let tempButton = Qt.createQmlObject(
+            'import qs.modules.common.widgets; NavigationRailButton { visible: false }',
+            root,
+            "tempNavButton"
+        );
+        let size = tempButton.labelFontPixelSize;
+        tempButton.destroy();
+        return size;
+    }
+
+    FontMetrics {
+        id: navFontMetrics
+        font.pixelSize: root.navButtonLabelFontPixelSize
+    }
+
+    property real maxNavButtonWidth: {
+        let _ = Translation.languageCode;
+        let maxWidth = 0;
+        const baseSize = 56;
+        const textOffset = 20;
+        const horizontalPadding = 24;
+        for (let i = 0; i < pages.length; i++) {
+            const textWidth = navFontMetrics.advanceWidth(pages[i].name);
+            maxWidth = Math.max(maxWidth, baseSize + textOffset + textWidth + horizontalPadding);
+        }
+        return maxWidth;
+    }
+
     visible: true
     onClosing: Qt.quit()
     title: "illogical-impulse Settings"
@@ -152,10 +181,7 @@ ApplicationWindow {
                 id: navRailWrapper
                 Layout.fillHeight: true
                 Layout.margins: 5
-                implicitWidth: navRail.expanded ? 250 : fab.baseSize
-                Behavior on implicitWidth {
-                    animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
-                }
+                implicitWidth: ((navRail.expanded) ? Math.max(root.maxNavButtonWidth, fab.implicitWidth) + 10 : fab.baseSize)
                 NavigationRail { // Window content with navigation rail and content pane
                     id: navRail
                     anchors {
@@ -295,3 +321,4 @@ ApplicationWindow {
         }
     }
 }
+
