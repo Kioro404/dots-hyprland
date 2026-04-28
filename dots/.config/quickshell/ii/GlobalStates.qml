@@ -31,10 +31,22 @@ Singleton {
     property bool wallpaperSelectorOpen: false
     property bool workspaceShowNumbers: false
 
+    property bool showAudioOutputDialog: false
+    property bool showAudioInputDialog: false
+    property bool showBluetoothDialog: false
+    property bool showNightLightDialog: false
+    property bool showWifiDialog: false
+
     onSidebarRightOpenChanged: {
         if (GlobalStates.sidebarRightOpen) {
             Notifications.timeoutAll();
             Notifications.markAllRead();
+        } else {
+            root.showWifiDialog = false;
+            root.showBluetoothDialog = false;
+            root.showAudioOutputDialog = false;
+            root.showAudioInputDialog = false;
+            root.showNightLightDialog = false;
         }
     }
 
