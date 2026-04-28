@@ -1,6 +1,7 @@
 pragma Singleton
 pragma ComponentBehavior: Bound
 
+import qs.modules.common
 import Quickshell
 import Quickshell.Bluetooth
 import Quickshell.Io
@@ -14,6 +15,23 @@ Singleton {
     readonly property BluetoothDevice firstActiveDevice: Bluetooth.defaultAdapter?.devices.values.find(device => device.connected) ?? null
     readonly property int activeDeviceCount: Bluetooth.defaultAdapter?.devices.values.filter(device => device.connected).length ?? 0
     readonly property bool connected: Bluetooth.devices.values.some(d => d.connected)
+
+    Binding {
+        target: Bluetooth.defaultAdapter
+        property: "enabled"
+        value: (Config.options?.networking?.bluetoothEnabled ?? false)
+        when: ((Bluetooth.defaultAdapter !== null) && (Config.options !== undefined))
+        restoreMode: Binding.RestoreNone
+    }
+
+    function setBluetoothState(enable: bool): void {
+        Config.options.networking.bluetoothEnabled = enable;
+        Bluetooth.defaultAdapter.enabled = enable;
+    }
+
+    function toggleBluetooth(): void {
+        setBluetoothState(!root.enabled);
+    }
 
     function sortFunction(a, b) {
         // Ones with meaningful names before MAC addresses

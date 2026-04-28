@@ -3,7 +3,7 @@ import qs.services
 
 QuickToggleButton {
     id: root
-    toggled: Idle.inhibit
+    toggled: Config.options?.battery?.idleInhibit
     buttonIcon: "coffee"
     onClicked: {
         Idle.toggleInhibit()

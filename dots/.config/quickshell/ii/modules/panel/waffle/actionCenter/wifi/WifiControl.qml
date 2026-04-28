@@ -46,9 +46,9 @@ Item {
                         WSwitch {
                             id: toggleSwitch
                             Layout.rightMargin: 12
-                            checked: Network.wifiStatus !== "disabled"
+                            checked: Network.wifiStatus !== "disconnected"
                             onCheckedChanged: {
-                                Network.enableWifi(checked);
+                                Network.setWifiStatus(checked);
                                 Network.rescanWifi();
                             }
                         }

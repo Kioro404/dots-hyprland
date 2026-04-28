@@ -10,31 +10,23 @@ import Quickshell.Wayland
 Singleton {
     id: root
 
-    property alias inhibit: idleInhibitor.enabled
-    inhibit: false
-
     Connections {
         target: Persistent
         function onReadyChanged() {
-            if (!Persistent.isNewHyprlandInstance) {
-                root.inhibit = Persistent.states.idle.inhibit;
-            } else {
-                Persistent.states.idle.inhibit = root.inhibit;
-            }
+            if (!Persistent.isNewHyprlandInstance) Config.setNestedValue("battery.idleInhibit", Persistent.states.idle.inhibit);
+            else Persistent.states.idle.inhibit = Config.options?.battery?.idleInhibit ?? false;
         }
     }
 
     function toggleInhibit(active = null) {
-        if (active !== null) {
-            root.inhibit = active;
-        } else {
-            root.inhibit = !root.inhibit;
-        }
-        Persistent.states.idle.inhibit = root.inhibit;
+        const newValue = active !== null ? active : !(Config.options?.battery?.idleInhibit ?? false);
+        Config.setNestedValue("battery.idleInhibit", newValue);
+        Persistent.states.idle.inhibit = newValue;
     }
 
     IdleInhibitor {
         id: idleInhibitor
+        enabled: Config.options?.battery?.idleInhibit ?? false
         window: PanelWindow {
             // Inhibitor requires a "visible" surface
             // Actually not lol

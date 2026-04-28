@@ -9,7 +9,7 @@ import qs.modules.common.widgets
 QuickToggleModel {
     name: Translation.tr("Keep awake")
 
-    toggled: Idle.inhibit
+    toggled: Config.options?.battery?.idleInhibit
     icon: "coffee"
     mainAction: () => {
         Idle.toggleInhibit()
