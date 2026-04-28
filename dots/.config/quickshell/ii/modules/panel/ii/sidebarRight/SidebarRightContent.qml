@@ -22,24 +22,8 @@ Item {
     property int sidebarWidth: Appearance.sizes.sidebarWidth
     property int sidebarPadding: 10
     property string settingsQmlPath: Quickshell.shellPath("settings.qml")
-    property bool showAudioOutputDialog: false
-    property bool showAudioInputDialog: false
-    property bool showBluetoothDialog: false
-    property bool showNightLightDialog: false
-    property bool showWifiDialog: false
     property bool editMode: false
-
-    Connections {
-        target: GlobalStates
-        function onSidebarRightOpenChanged() {
-            if (!GlobalStates.sidebarRightOpen) {
-                root.showWifiDialog = false;
-                root.showBluetoothDialog = false;
-                root.showAudioOutputDialog = false;
-                root.showAudioInputDialog = false;
-            }
-        }
-    }
+    property var brightnessMonitor: Brightness.getMonitorForScreen(root.QsWindow.window?.screen)
 
     implicitHeight: sidebarRightBackground.implicitHeight
     implicitWidth: sidebarRightBackground.implicitWidth
@@ -84,15 +68,49 @@ Item {
                 sourceComponent: QuickSliders {}
             }
 
-            LoaderedQuickPanelImplementation {
-                styleName: "classic"
-                sourceComponent: ClassicQuickPanel {}
-            }
+            Rectangle {
+                Layout.fillWidth: true
+                color: Appearance.colors.colLayer1
+                radius: Appearance.rounding.normal
+                implicitHeight: (quickTogglesLayout.implicitHeight + 16)
 
-            LoaderedQuickPanelImplementation {
-                styleName: "android"
-                sourceComponent: AndroidQuickPanel {
-                    editMode: root.editMode
+                ColumnLayout {
+                    id: quickTogglesLayout
+                    anchors.fill: parent
+                    anchors.margins: 8
+                    spacing: 8
+
+                    LoaderedQuickPanelImplementation {
+                        styleName: "classic"
+                        sourceComponent: ClassicQuickPanel {}
+                    }
+
+                    LoaderedQuickPanelImplementation {
+                        styleName: "android"
+                        sourceComponent: AndroidQuickPanel {
+                            editMode: root.editMode
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.leftMargin: 7.5
+                        Layout.rightMargin: 7.5
+                        spacing: 15
+
+                        MaterialSymbol {
+                            text: {
+                                const percent = Math.round(root.brightnessMonitor?.brightness * 100);
+                                return (percent >= 75) ? "brightness_7" : (percent >= 50) ? "brightness_medium" : (percent >= 25) ? "brightness_empty" : "brightness_1";
+                            }
+                            iconSize: 28
+                        }
+
+                        StyledSlider {
+                            Layout.fillWidth: true
+                            value: (root.brightnessMonitor?.brightness ?? 1)
+                            onMoved: root.brightnessMonitor?.setBrightness(value)
+                        }
+                    }
                 }
             }
 
@@ -148,7 +166,7 @@ Item {
         dialog: WifiDialog {}
         onShownChanged: {
             if (!shown) return;
-            Network.enableWifi();
+            Network.setWifiStatus(true);
             Network.rescanWifi();
         }
     }
@@ -157,7 +175,7 @@ Item {
         id: toggleDialogLoader
         required property string shownPropertyString
         property alias dialog: toggleDialogLoader.sourceComponent
-        readonly property bool shown: root[shownPropertyString]
+        readonly property bool shown: GlobalStates[toggleDialogLoader.shownPropertyString]
         anchors.fill: parent
 
         onShownChanged: if (shown) toggleDialogLoader.active = true;
@@ -172,10 +190,10 @@ Item {
             target: toggleDialogLoader.item
             function onDismiss() {
                 toggleDialogLoader.item.show = false
-                root[toggleDialogLoader.shownPropertyString] = false;
+                GlobalStates[toggleDialogLoader.shownPropertyString] = false;
             }
             function onVisibleChanged() {
-                if (!toggleDialogLoader.item.visible && !root[toggleDialogLoader.shownPropertyString]) toggleDialogLoader.active = false;
+                if (!toggleDialogLoader.item.visible && !GlobalStates[toggleDialogLoader.shownPropertyString]) toggleDialogLoader.active = false;
             }
         }
     }
@@ -190,19 +208,19 @@ Item {
         Connections {
             target: quickPanelImplLoader.item
             function onOpenAudioOutputDialog() {
-                root.showAudioOutputDialog = true;
+                GlobalStates.showAudioOutputDialog = true;
             }
             function onOpenAudioInputDialog() {
-                root.showAudioInputDialog = true;
+                GlobalStates.showAudioInputDialog = true;
             }
             function onOpenBluetoothDialog() {
-                root.showBluetoothDialog = true;
+                GlobalStates.showBluetoothDialog = true;
             }
             function onOpenNightLightDialog() {
-                root.showNightLightDialog = true;
+                GlobalStates.showNightLightDialog = true;
             }
             function onOpenWifiDialog() {
-                root.showWifiDialog = true;
+                GlobalStates.showWifiDialog = true;
             }
         }
     }
