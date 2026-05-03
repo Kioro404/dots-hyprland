@@ -204,9 +204,9 @@ ContentPage {
                 }
 
                 ConfigSelectionArray {
-                    currentValue: Config.options.policies.ai
+                    currentValue: Config.options.sidebar.left.ai.option.ai
                     onSelected: newValue => {
-                        Config.options.policies.ai = newValue;
+                        Config.options.sidebar.left.ai.option.ai = newValue;
                     }
                     options: [
                         {
