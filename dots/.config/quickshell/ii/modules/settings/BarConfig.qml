@@ -7,6 +7,48 @@ import qs.modules.common.widgets
 ContentPage {
     forceWidth: true
 
+    ContentSection {
+        icon: "call_to_action"
+        title: Translation.tr("Dock")
+
+        ConfigSwitch {
+            buttonIcon: "check"
+            text: Translation.tr("Enable")
+            checked: Config.options.panel.dock.enable
+            onCheckedChanged: {
+                Config.options.panel.dock.enable = checked;
+            }
+        }
+
+        ConfigRow {
+            uniform: true
+            ConfigSwitch {
+                buttonIcon: "highlight_mouse_cursor"
+                text: Translation.tr("Hover to reveal")
+                checked: Config.options.panel.dock.hoverToReveal
+                onCheckedChanged: {
+                    Config.options.panel.dock.hoverToReveal = checked;
+                }
+            }
+            ConfigSwitch {
+                buttonIcon: "keep"
+                text: Translation.tr("Pinned on startup")
+                checked: Config.options.panel.dock.pinnedOnStartup
+                onCheckedChanged: {
+                    Config.options.panel.dock.pinnedOnStartup = checked;
+                }
+            }
+        }
+        ConfigSwitch {
+            buttonIcon: "colors"
+            text: Translation.tr("Tint app icons")
+            checked: Config.options.panel.dock.monochromeIcons
+            onCheckedChanged: {
+                Config.options.panel.dock.monochromeIcons = checked;
+            }
+        }
+    }
+
     ConfigSwitch {
         id: panelSwitch
         buttonIcon: "toast"
@@ -20,27 +62,6 @@ ContentPage {
 
     ContentSection {
         visible: panelSwitch.checked
-
-        // ContentSection {
-        //     icon: "family_restroom"
-        //     title: Translation.tr("Panel family")
-
-        //     ColumnLayout {
-        //         ConfigSelectionArray {
-        //             id: panelFamilyOptions
-        //             currentValue: Config.options.panel.tools.findIndex(tool => tool.bar.name === Config.options.panel.family);
-        //             onSelected: index => {
-        //                 Config.options.panel.family = Config.options.panel.tools[index].bar.name;
-        //             }
-        //             options: Config.options.panel.tools.map((tool, index) => {
-        //                 return {
-        //                     displayName: tool.bar.name,
-        //                     value: index
-        //                 };
-        //             })
-        //         }
-        //     }
-        // }
 
         ContentSection {
             icon: "family_restroom"
