@@ -34,10 +34,20 @@ ApplicationWindow {
             component: "modules/settings/GeneralConfig.qml"
         },
         {
+            name: Translation.tr("App"),
+            icon: "apps",
+            component: "modules/settings/AppConfig.qml"
+        },
+        {
             name: Translation.tr("Bar"),
             icon: "toast",
             iconRotation: 180,
             component: "modules/settings/BarConfig.qml"
+        },
+        {
+            name: Translation.tr("Sidebars"),
+            icon: "side_navigation",
+            component: "modules/settings/SidebarConfig.qml"
         },
         {
             name: Translation.tr("Interface"),
