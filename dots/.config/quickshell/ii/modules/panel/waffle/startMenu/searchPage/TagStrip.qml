@@ -73,7 +73,7 @@ RowLayout {
                 icon.name: "people-settings"
                 text: Translation.tr("Manage accounts")
                 onTriggered: {
-                    Quickshell.execDetached(["bash", "-c", Config.options.apps.manageUser])
+                    Quickshell.execDetached(["bash", "-c", Config.options.apps.find(app => app.type.name === "Manage User").type.provider])
                     GlobalStates.searchOpen = false;
                 }
             }

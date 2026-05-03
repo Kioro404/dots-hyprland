@@ -14,7 +14,7 @@ MouseArea {
     implicitHeight: 20
 
     onClicked: {
-        Quickshell.execDetached(["bash", "-c", Config.options.apps.update]);
+        Quickshell.execDetached(["bash", "-c", Config.options.apps.find(app => app.type.name === "Update").type.provider]);
     }
 
     MaterialSymbol {

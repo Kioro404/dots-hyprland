@@ -63,7 +63,7 @@ Item {
 
                 onClicked: {
                     Quickshell.execDetached(["qs", "-p", Quickshell.shellPath(""), "ipc", "call", "sidebarLeft", "toggle"]);
-                    Quickshell.execDetached(["bash", "-c", Config.options.apps.volumeMixer]);
+                    Quickshell.execDetached(["bash", "-c", Config.options.apps.find(app => app.type.name === "Volume Mixer").type.provider]);
                 }
 
                 contentItem: Item {

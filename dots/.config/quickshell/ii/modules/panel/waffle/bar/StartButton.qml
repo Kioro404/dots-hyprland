@@ -36,13 +36,13 @@ AppButton {
             {
                 text: Translation.tr("Terminal"),
                 action: () => {
-                    Quickshell.execDetached(["bash", "-c", Config.options.apps.terminal]);
+                    Quickshell.execDetached(["bash", "-c", Config.options.apps.find(app => app.type.name === "Terminal").type.provider]);
                 }
             },
             {
                 text: Translation.tr("Task Manager"),
                 action: () => {
-                    Quickshell.execDetached(["bash", "-c", Config.options.apps.taskManager]);
+                    Quickshell.execDetached(["bash", "-c", Config.options.apps.find(app => app.type.name === "Task Manager").type.provider]);
                 }
             },
             {
