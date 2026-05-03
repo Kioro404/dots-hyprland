@@ -411,7 +411,7 @@ Singleton {
                 xhr.setRequestHeader("User-Agent", defaultUserAgent)
             }
             else if (currentProvider == "zerochan") {
-                const userAgent = Config.options?.sidebar?.booru?.zerochan?.username ? `Desktop sidebar booru viewer - username: ${Config.options.sidebar.booru.zerochan.username}` : defaultUserAgent
+                const userAgent = Config.options?.sidebar?.left?.booru?.zerochan?.username ? `Desktop sidebar booru viewer - username: ${Config.options.sidebar.left.booru.zerochan.username}` : defaultUserAgent
                 xhr.setRequestHeader("User-Agent", userAgent)
             }
             root.runningRequests++;
