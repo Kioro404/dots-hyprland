@@ -63,9 +63,9 @@ Scope {
             Loader {
                 id: sidebarCornerOpenInteractionLoader
                 active: {
-                    if (!Config.options.sidebar.cornerOpen.enable) return false;
+                    if (!Config.options.sidebar.right.cornerOpen.enable) return false;
                     if (cornerPanelWindow.fullscreen) return false;
-                    return (Config.options.sidebar.cornerOpen.bottom == cornerWidget.isBottom);
+                    return (Config.options.sidebar.right.cornerOpen.bottom == cornerWidget.isBottom);
                 }
                 anchors {
                     top: (cornerWidget.isTopLeft || cornerWidget.isTopRight) ? parent.top : undefined
@@ -76,26 +76,26 @@ Scope {
 
                 sourceComponent: FocusedScrollMouseArea {
                     id: mouseArea
-                    implicitWidth: Config.options.sidebar.cornerOpen.cornerRegionWidth
-                    implicitHeight: Config.options.sidebar.cornerOpen.cornerRegionHeight
+                    implicitWidth: Config.options.sidebar.right.cornerOpen.cornerRegionWidth
+                    implicitHeight: Config.options.sidebar.right.cornerOpen.cornerRegionHeight
                     hoverEnabled: true
                     onPositionChanged: {
-                        if (!Config.options.sidebar.cornerOpen.clicklessCornerEnd) return;
-                        const verticalOffset = Config.options.sidebar.cornerOpen.clicklessCornerVerticalOffset;
+                        if (!Config.options.sidebar.right.cornerOpen.clicklessCornerEnd) return;
+                        const verticalOffset = Config.options.sidebar.right.cornerOpen.clicklessCornerVerticalOffset;
                         const correctX = (cornerWidget.isRight && mouseArea.mouseX >= mouseArea.width - 2) || (cornerWidget.isLeft && mouseArea.mouseX <= 2);
                         const correctY = (cornerWidget.isTop && mouseArea.mouseY > verticalOffset || cornerWidget.isBottom && mouseArea.mouseY < mouseArea.height - verticalOffset);
                         if (correctX && correctY)
                             screenCorners.actionForCorner[cornerPanelWindow.corner]();
                     }
                     onEntered: {
-                        if (Config.options.sidebar.cornerOpen.clickless)
+                        if (Config.options.sidebar.right.cornerOpen.clickless)
                             screenCorners.actionForCorner[cornerPanelWindow.corner]();
                     }
                     onPressed: {
                         screenCorners.actionForCorner[cornerPanelWindow.corner]();
                     }
                     onScrollDown: {
-                        if (!Config.options.sidebar.cornerOpen.valueScroll)
+                        if (!Config.options.sidebar.right.cornerOpen.valueScroll)
                             return;
                         if (cornerWidget.isLeft)
                             cornerPanelWindow.brightnessMonitor.setBrightness(cornerPanelWindow.brightnessMonitor.brightness - 0.05);
@@ -106,7 +106,7 @@ Scope {
                         }
                     }
                     onScrollUp: {
-                        if (!Config.options.sidebar.cornerOpen.valueScroll)
+                        if (!Config.options.sidebar.right.cornerOpen.valueScroll)
                             return;
                         if (cornerWidget.isLeft)
                             cornerPanelWindow.brightnessMonitor.setBrightness(cornerPanelWindow.brightnessMonitor.brightness + 0.05);
@@ -117,7 +117,7 @@ Scope {
                         }
                     }
                     onMovedAway: {
-                        if (!Config.options.sidebar.cornerOpen.valueScroll)
+                        if (!Config.options.sidebar.right.cornerOpen.valueScroll)
                             return;
                         if (cornerWidget.isLeft)
                             GlobalStates.osdBrightnessOpen = false;
@@ -126,7 +126,7 @@ Scope {
                     }
 
                     Loader {
-                        active: Config.options.sidebar.cornerOpen.visualize
+                        active: Config.options.sidebar.right.cornerOpen.visualize
                         anchors.fill: parent
                         sourceComponent: Rectangle {
                             color: Appearance.colors.colPrimary
