@@ -195,41 +195,70 @@ Singleton {
             }
 
             property JsonObject policies: JsonObject {
-                property int ai: 1 // 0: No | 1: Yes | 2: Local
                 property int weeb: 1 // 0: No | 1: Open | 2: Closet
-            }
-
-            property JsonObject ai: JsonObject {
-                property string systemPrompt: "## Style\n- Use casual tone, don't be formal! Make sure you answer precisely without hallucination and prefer bullet points over walls of text. You can have a friendly greeting at the beginning of the conversation, but don't repeat the user's question\n\n## Context (ignore when irrelevant)\n- You are a helpful and inspiring sidebar assistant on a {DISTRO} Linux system\n- Desktop environment: {DE}\n- Current date & time: {DATETIME}\n- Focused app: {WINDOWCLASS}\n\n## Presentation\n- Use Markdown features in your response: \n  - **Bold** text to **highlight keywords** in your response\n  - **Split long information into small sections** with h2 headers and a relevant emoji at the start of it (for example `## 🐧 Linux`). Bullet points are preferred over long paragraphs, unless you're offering writing support or instructed otherwise by the user.\n- Asked to compare different options? You should firstly use a table to compare the main aspects, then elaborate or include relevant comments from online forums *after* the table. Make sure to provide a final recommendation for the user's use case!\n- Use LaTeX formatting for mathematical and scientific notations whenever appropriate. Enclose all LaTeX '$$' delimiters. NEVER generate LaTeX code in a latex block unless the user explicitly asks for it. DO NOT use LaTeX for regular documents (resumes, letters, essays, CVs, etc.).\n"
-                property string tool: "functions" // search, functions, or none
-                property list<var> extraModels: [
-                    {
-                        "api_format": "openai", // Most of the time you want "openai". Use "gemini" for Google's models
-                        "description": "This is a custom model. Edit the config to add more! | Anyway, this is DeepSeek R1 Distill LLaMA 70B",
-                        "endpoint": "https://openrouter.ai/api/v1/chat/completions",
-                        "homepage": "https://openrouter.ai/deepseek/deepseek-r1-distill-llama-70b:free", // Not mandatory
-                        "icon": "spark-symbolic", // Not mandatory
-                        "key_get_link": "https://openrouter.ai/settings/keys", // Not mandatory
-                        "key_id": "openrouter",
-                        "model": "deepseek/deepseek-r1-distill-llama-70b:free",
-                        "name": "Custom: DS R1 Dstl. LLaMA 70B",
-                        "requires_key": true
-                    }
-                ]
             }
 
             property JsonObject appearance: JsonObject {
                 property bool extraBackgroundTint: true
                 property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
-                property JsonObject fonts: JsonObject {
-                    property string main: "Google Sans Flex"
-                    property string numbers: "Google Sans Flex"
-                    property string title: "Google Sans Flex"
-                    property string iconNerd: "JetBrains Mono NF"
-                    property string monospace: "JetBrains Mono NF"
-                    property string reading: "Readex Pro"
-                    property string expressive: "Space Grotesk"
-                }
+                property list<var> fonts: [
+                    {
+                        typography: {
+                            type: "Main",
+                            family: "Google Sans Flex",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Numbers",
+                            family: "Google Sans Flex",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Title",
+                            family: "Google Sans Flex",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Icons",
+                            family: "JetBrains Mono NF",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Monospace",
+                            family: "JetBrains Mono NF",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Reading",
+                            family: "Readex Pro",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Expressive",
+                            family: "Space Grotesk",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                ]
                 property JsonObject transparency: JsonObject {
                     property bool enable: false
                     property bool automatic: true
@@ -263,17 +292,62 @@ Singleton {
                 }
             }
 
-            property JsonObject apps: JsonObject {
-                property string bluetooth: "kcmshell6 kcm_bluetooth"
-                property string changePassword: "kitty -1 --hold=yes zsh -i -c 'passwd'"
-                property string network: "kcmshell6 kcm_networkmanagement"
-                property string manageUser: "kcmshell6 kcm_users"
-                property string networkEthernet: "kcmshell6 kcm_networkmanagement"
-                property string taskManager: "plasma-systemmonitor --page-name Processes"
-                property string terminal: "kitty -1" // This is only for shell actions
-                property string update: "kitty -1 --hold=yes zsh -i -c 'pkexec pacman -Syu'"
-                property string volumeMixer: `~/.config/hypr/hyprland/scripts/launch_first_available.sh "pavucontrol-qt" "pavucontrol"`
-            }
+            property list<var> apps: [
+                {
+                    type: {
+                        name: "Bluetooth",
+                        provider: "kcmshell6 kcm_bluetooth"
+                    }
+                },
+                {
+                    type: {
+                        name: "Change Password",
+                        provider: "kitty -1 --hold=yes zsh -i -c 'passwd'"
+                    }
+                },
+                {
+                    type: {
+                        name: "Network",
+                        provider: "kcmshell6 kcm_networkmanagement"
+                    }
+                },
+                {
+                    type: {
+                        name: "Ethernet",
+                        provider: "kcmshell6 kcm_networkmanagement"
+                    }
+                },
+                {
+                    type: {
+                        name: "Manage User",
+                        provider: "kcmshell6 kcm_users"
+                    }
+                },
+                {
+                    type: {
+                        name: "Task Manager",
+                        provider: "plasma-systemmonitor --page-name Processes"
+                    }
+                },
+                {
+                    type: {
+                        name: "Terminal",
+                        provider: "kitty -1"
+                    }
+                },
+                {
+                    type: {
+                        name: "Update",
+                        provider: "kitty -1 --hold=yes zsh -i -c 'pkexec pacman -Syu'"
+                    }
+                },
+                {
+                    type: {
+                        name: "Volume Mixer",
+                        provider: `~/.config/hypr/hyprland/scripts/launch_first_available.sh "pavucontrol-qt" "pavucontrol"`
+                    }
+                }
+            ]
 
             property JsonObject background: JsonObject {
                 property string wallpaperPath: ""
@@ -480,54 +554,73 @@ Singleton {
             }
 
             property JsonObject sidebar: JsonObject {
-                property bool keepRightSidebarLoaded: true
-                property JsonObject translator: JsonObject {
-                    property bool enable: false
-                    property int delay: 300 // Delay before sending request. Reduces (potential) rate limits and lag.
-                }
-                property JsonObject ai: JsonObject {
-                    property bool textFadeIn: false
-                }
-                property JsonObject booru: JsonObject {
-                    property bool allowNsfw: false
-                    property string defaultProvider: "yandere"
-                    property int limit: 20
-                    property JsonObject zerochan: JsonObject {
-                        property string username: "[unset]"
-                    }
-                }
-                property JsonObject cornerOpen: JsonObject {
-                    property bool enable: true
-                    property bool bottom: false
-                    property bool valueScroll: true
-                    property bool clickless: false
-                    property int cornerRegionWidth: 250
-                    property int cornerRegionHeight: 5
-                    property bool visualize: false
-                    property bool clicklessCornerEnd: true
-                    property int clicklessCornerVerticalOffset: 1
-                }
-
-                property JsonObject quickToggles: JsonObject {
-                    property string style: "android" // Options: classic, android
-                    property JsonObject android: JsonObject {
-                        property int columns: 5
-                        property list<var> toggles: [
-                            { "size": 2, "type": "network" },
-                            { "size": 2, "type": "bluetooth"  },
-                            { "size": 1, "type": "idleInhibitor" },
-                            { "size": 1, "type": "mic" },
-                            { "size": 2, "type": "audio" },
-                            { "size": 2, "type": "nightLight" }
+                property JsonObject left: JsonObject {
+                    property JsonObject ai: JsonObject {
+                        property int option: 1 // 0: No | 1: Yes | 2: Local
+                        property string systemPrompt: "## Style\n- Use casual tone, don't be formal! Make sure you answer precisely without hallucination and prefer bullet points over walls of text. You can have a friendly greeting at the beginning of the conversation, but don't repeat the user's question\n\n## Context (ignore when irrelevant)\n- You are a helpful and inspiring sidebar assistant on a {DISTRO} Linux system\n- Desktop environment: {DE}\n- Current date & time: {DATETIME}\n- Focused app: {WINDOWCLASS}\n\n## Presentation\n- Use Markdown features in your response: \n  - **Bold** text to **highlight keywords** in your response\n  - **Split long information into small sections** with h2 headers and a relevant emoji at the start of it (for example `## 🐧 Linux`). Bullet points are preferred over long paragraphs, unless you're offering writing support or instructed otherwise by the user.\n- Asked to compare different options? You should firstly use a table to compare the main aspects, then elaborate or include relevant comments from online forums *after* the table. Make sure to provide a final recommendation for the user's use case!\n- Use LaTeX formatting for mathematical and scientific notations whenever appropriate. Enclose all LaTeX '$$' delimiters. NEVER generate LaTeX code in a latex block unless the user explicitly asks for it. DO NOT use LaTeX for regular documents (resumes, letters, essays, CVs, etc.).\n"
+                        property string tool: "functions" // search, functions, or none
+                        property bool textFadeIn: false
+                        property list<var> extraModels: [
+                            {
+                                "api_format": "openai", // Most of the time you want "openai". Use "gemini" for Google's models
+                                "description": "This is a custom model. Edit the config to add more! | Anyway, this is DeepSeek R1 Distill LLaMA 70B",
+                                "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+                                "homepage": "https://openrouter.ai/deepseek/deepseek-r1-distill-llama-70b:free", // Not mandatory
+                                "icon": "spark-symbolic", // Not mandatory
+                                "key_get_link": "https://openrouter.ai/settings/keys", // Not mandatory
+                                "key_id": "openrouter",
+                                "model": "deepseek/deepseek-r1-distill-llama-70b:free",
+                                "name": "Custom: DS R1 Dstl. LLaMA 70B",
+                                "requires_key": true
+                            }
                         ]
                     }
+                    property bool keepRightSidebarLoaded: true
+                    property JsonObject translator: JsonObject {
+                        property bool enable: false
+                        property int delay: 300 // Delay before sending request. Reduces (potential) rate limits and lag.
+                    }
+                    property JsonObject booru: JsonObject {
+                        property bool allowNsfw: false
+                        property string defaultProvider: "yandere"
+                        property int limit: 20
+                        property JsonObject zerochan: JsonObject {
+                            property string username: "[unset]"
+                        }
+                    }
                 }
 
-                property JsonObject quickSliders: JsonObject {
-                    property bool enable: false
-                    property bool showMic: false
-                    property bool showVolume: true
-                    property bool showBrightness: true
+                property JsonObject right: JsonObject {
+                    property JsonObject cornerOpen: JsonObject {
+                        property bool enable: true
+                        property bool bottom: false
+                        property bool valueScroll: true
+                        property bool clickless: false
+                        property int cornerRegionWidth: 250
+                        property int cornerRegionHeight: 5
+                        property bool visualize: false
+                        property bool clicklessCornerEnd: true
+                        property int clicklessCornerVerticalOffset: 1
+                    }
+
+                    property JsonObject quickToggles: JsonObject {
+                        property int columns: 5
+                        property list<var> toggles: [
+                            { "size": 1, "type": "network" },
+                            { "size": 1, "type": "bluetooth"  },
+                            { "size": 1, "type": "idleInhibitor" },
+                            { "size": 1, "type": "mic" },
+                            { "size": 1, "type": "audio" },
+                            { "size": 1, "type": "nightLight" }
+                        ]
+                    }
+
+                    property JsonObject quickSliders: JsonObject {
+                        property bool enable: false
+                        property bool showMic: false
+                        property bool showVolume: false
+                        property bool showBrightness: true
+                    }
                 }
             }
 
