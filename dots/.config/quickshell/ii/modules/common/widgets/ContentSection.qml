@@ -8,6 +8,7 @@ ColumnLayout {
     id: root
     property string title
     property string icon: ""
+    property int iconRotation: 0
     default property alias contentData: sectionContent.data
 
     Layout.fillWidth: true
@@ -18,6 +19,7 @@ ColumnLayout {
         OptionalMaterialSymbol {
             icon: root.icon
             iconSize: Appearance.font.pixelSize.hugeass
+            rotation: root.iconRotation
         }
         StyledText {
             text: root.title
