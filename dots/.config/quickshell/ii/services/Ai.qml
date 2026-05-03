@@ -29,7 +29,7 @@ Singleton {
     signal responseFinished()
 
     property string systemPrompt: {
-        let prompt = Config.options?.ai?.systemPrompt ?? "";
+        let prompt = Config.options?.sidebar?.left?.ai?.systemPrompt ?? "";
         for (let key in root.promptSubstitutions) {
             // prompt = prompt.replaceAll(key, root.promptSubstitutions[key]);
             // QML/JS doesn't support replaceAll, so use split/join
@@ -254,7 +254,7 @@ Singleton {
     // - key_get_description: Description of pricing and how to get an API key
     // - api_format: The API format of the model. Can be "openai" or "gemini". Default is "openai".
     // - extraParams: Extra parameters to be passed to the model. This is a JSON object.
-    property var models: Config.options.policies.ai === 2 ? {} : {
+    property var models: Config.options.sidebar.left.ai.option.ai === 2 ? {} : {
         "gemini-2.5-flash": aiModelComponent.createObject(this, {
             "name": "Gemini 2.5 Flash",
             "icon": "google-gemini-symbolic",
@@ -434,13 +434,13 @@ Singleton {
         watchChanges: false;
         onLoadedChanged: {
             if (!promptLoader.loaded) return;
-            Config.options.ai.systemPrompt = promptLoader.text();
-            root.addMessage(Translation.tr("Loaded the following system prompt\n\n---\n\n%1").arg(Config.options.ai.systemPrompt), root.interfaceRole);
+            Config.options.sidebar.left.ai.systemPrompt = promptLoader.text();
+            root.addMessage(Translation.tr("Loaded the following system prompt\n\n---\n\n%1").arg(Config.options.sidebar.left.ai.systemPrompt), root.interfaceRole);
         }
     }
 
     function printPrompt() {
-        root.addMessage(Translation.tr("The current system prompt is\n\n---\n\n%1").arg(Config.options.ai.systemPrompt), root.interfaceRole);
+        root.addMessage(Translation.tr("The current system prompt is\n\n---\n\n%1").arg(Config.options.sidebar.left.ai.systemPrompt), root.interfaceRole);
     }
 
     function loadPrompt(filePath) {
@@ -489,7 +489,7 @@ Singleton {
         if (modelList.indexOf(modelId) !== -1) {
             const model = models[modelId]
             // See if policy prevents online models
-            if (Config.options.policies.ai === 2 && !model.endpoint.includes("localhost")) {
+            if (Config.options.sidebar.left.ai.option.ai === 2 && !model.endpoint.includes("localhost")) {
                 root.addMessage(
                     Translation.tr("Online models disallowed\n\nControlled by `policies.ai` config option"),
                     root.interfaceRole
@@ -514,7 +514,7 @@ Singleton {
             root.addMessage(Translation.tr("Invalid tool. Supported tools:\n- %1").arg(root.availableTools.join("\n- ")), root.interfaceRole);
             return false;
         }
-        Config.options.ai.tool = tool;
+        Config.options.sidebar.left.ai.tool = tool;
         return true;
     }
     
