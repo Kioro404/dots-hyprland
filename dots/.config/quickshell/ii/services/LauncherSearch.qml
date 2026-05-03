@@ -71,12 +71,6 @@ Singleton {
             }
         }),
         {
-            action: "randomwallpaper",
-            execute: () => {
-                Quickshell.execDetached([Quickshell.shellPath(`scripts/colors/random/random_${Config.options.background.provider.name}.sh`)]);
-            }
-        },
-        {
             action: "accentcolor",
             execute: args => {
                 Quickshell.execDetached([Directories.wallpaperSwitchScriptPath, "--noswitch", "--color", ...(args != '' ? [`${args}`] : [])]);
@@ -100,12 +94,6 @@ Singleton {
             action: "todo",
             execute: args => {
                 Todo.addTask(args);
-            }
-        },
-        {
-            action: "wallpaper",
-            execute: () => {
-                Hyprland.dispatch("global quickshell:wallpaperSelectorToggle")
             }
         },
         {
@@ -248,7 +236,7 @@ Singleton {
                         entry.execute();
                     else {
                         // Probably needs more proper escaping, but this will do for now
-                        Quickshell.execDetached(["bash", '-c', `${Config.options.apps.terminal} -e '${StringUtils.shellSingleQuoteEscape(entry.command.join(' '))}'`]);
+                        Quickshell.execDetached(["bash", '-c', `${Config.options.apps.find(app => app.type.name === "Terminal").type.provider} -e '${StringUtils.shellSingleQuoteEscape(entry.command.join(' '))}'`]);
                     }
                 },
                 comment: entry.comment,
@@ -264,7 +252,7 @@ Singleton {
                             if (!action.runInTerminal)
                                 action.execute();
                             else {
-                                Quickshell.execDetached(["bash", '-c', `${Config.options.apps.terminal} -e '${StringUtils.shellSingleQuoteEscape(action.command.join(' '))}'`]);
+                                Quickshell.execDetached(["bash", '-c', `${Config.options.apps.find(app => app.type.name === "Terminal").type.provider} -e '${StringUtils.shellSingleQuoteEscape(action.command.join(' '))}'`]);
                             }
                         }
                     });
@@ -284,7 +272,7 @@ Singleton {
                 if (cleanedCommand.startsWith(Config.options.search.prefix.shellCommand)) {
                     cleanedCommand = cleanedCommand.slice(Config.options.search.prefix.shellCommand.length);
                 }
-                Quickshell.execDetached(["bash", "-c", root.query.startsWith('sudo') ? `${Config.options.apps.terminal} zsh -C '${cleanedCommand}'` : cleanedCommand]);
+                Quickshell.execDetached(["bash", "-c", root.query.startsWith('sudo') ? `${Config.options.apps.find(app => app.type.name === "Terminal").type.provider} zsh -C '${cleanedCommand}'` : cleanedCommand]);
             }
         });
         const webSearchResultObject = resultComp.createObject(null, {
