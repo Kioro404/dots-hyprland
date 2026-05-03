@@ -213,14 +213,14 @@ Singleton {
 
     font: QtObject {
         property QtObject family: QtObject {
-            property string main: Config.options.appearance.fonts.main
-            property string numbers: Config.options.appearance.fonts.numbers
-            property string title: Config.options.appearance.fonts.title
+            property string main: Config.options.appearance.fonts.find(font => font.typography.type === "Main").family
+            property string numbers: Config.options.appearance.fonts.find(font => font.typography.type === "Numbers").family
+            property string title: Config.options.appearance.fonts.find(font => font.typography.type === "Title").family
             property string iconMaterial: "Material Symbols Rounded"
-            property string iconNerd: Config.options.appearance.fonts.iconNerd
-            property string monospace: Config.options.appearance.fonts.monospace
-            property string reading: Config.options.appearance.fonts.reading
-            property string expressive: Config.options.appearance.fonts.expressive
+            property string iconNerd: Config.options.appearance.fonts.find(font => font.typography.type === "Icons").family
+            property string monospace: Config.options.appearance.fonts.find(font => font.typography.type === "Monospace").family
+            property string reading: Config.options.appearance.fonts.find(font => font.typography.type === "Reading").family
+            property string expressive: Config.options.appearance.fonts.find(font => font.typography.type === "Expressive").family
         }
         property QtObject variableAxes: QtObject {
             property var main: ({
