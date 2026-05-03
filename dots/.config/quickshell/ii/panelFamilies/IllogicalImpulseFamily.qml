@@ -14,8 +14,8 @@ import qs.modules.panel.ii.regionSelector
 import qs.modules.panel.ii.screenCorners
 import qs.modules.panel.ii.screenTranslator
 import qs.modules.panel.ii.sessionScreen
-import qs.modules.panel.ii.sidebarLeft
-import qs.modules.panel.ii.sidebarRight
+import qs.modules.panel.ii.sidebar.left
+import qs.modules.panel.ii.sidebar.right
 import qs.modules.panel.ii.overlay
 import qs.modules.panel.ii.bar.horizontalBar
 import qs.modules.panel.ii.bar.verticalBar
