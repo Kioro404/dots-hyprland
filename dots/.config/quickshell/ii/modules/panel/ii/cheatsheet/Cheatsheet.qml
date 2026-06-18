@@ -46,8 +46,7 @@ Scope { // Scope
             implicitWidth: cheatsheetBackground.width + Appearance.sizes.elevationMargin * 2
             implicitHeight: cheatsheetBackground.height + Appearance.sizes.elevationMargin * 2
             WlrLayershell.namespace: "quickshell:cheatsheet"
-            // Hyprland 0.49: Focus is always exclusive and setting this breaks mouse focus grab
-            // WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
             color: "transparent"
 
             mask: Region {
@@ -157,8 +156,8 @@ Scope { // Scope
                             Persistent.states.cheatsheet.tabIndex = currentIndex;
                         }
 
-                        implicitWidth: Math.max.apply(null, contentChildren.map(child => child.implicitWidth || 0))
-                        implicitHeight: Math.max.apply(null, contentChildren.map(child => child.implicitHeight || 0))
+                        implicitWidth: Math.min(Math.max.apply(null, contentChildren.map(child => child.implicitWidth || 0)), 1200)
+                        implicitHeight: Math.min(Math.max.apply(null, contentChildren.map(child => child.implicitHeight || 0)), 700)
 
                         clip: true
                         layer.enabled: true
