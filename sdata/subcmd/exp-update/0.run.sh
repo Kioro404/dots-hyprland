@@ -18,7 +18,7 @@
 # exp-update.sh - Enhanced dotfiles update script
 #
 # Features:
-# - Auto-detect repository structure (dots/ prefix or direct config)
+# - Auto-detect repository structure (dots/default/ prefix or direct config)
 # - Pull latest commits from remote
 # - Rebuild packages if PKGBUILD files changed (user choice)
 # - Handle config file conflicts with user choices
@@ -60,11 +60,11 @@ declare -A CREATED_DIRS
 detect_repo_structure() {
   local found_dirs=()
   
-  # Check for dots/ prefixed structure
-  if [[ -d "${REPO_ROOT}/dots/.config" ]]; then
-    found_dirs+=("dots/.config")
-    [[ -d "${REPO_ROOT}/dots/.local/bin" ]] && found_dirs+=("dots/.local/bin")
-    [[ -d "${REPO_ROOT}/dots/.local/share" ]] && found_dirs+=("dots/.local/share")
+  # Check for dots/default/ prefixed structure
+  if [[ -d "${REPO_ROOT}/dots/default/.config" ]]; then
+    found_dirs+=("dots/default/.config")
+    [[ -d "${REPO_ROOT}/dots/default/.local/bin" ]] && found_dirs+=("dots/default/.local/bin")
+    [[ -d "${REPO_ROOT}/dots/default/.local/share" ]] && found_dirs+=("dots/default/.local/share")
   # Check for flat structure
   elif [[ -d "${REPO_ROOT}/.config" ]]; then
     found_dirs+=(".config")
@@ -72,7 +72,7 @@ detect_repo_structure() {
     [[ -d "${REPO_ROOT}/.local/share" ]] && found_dirs+=(".local/share")
   else
     # Manual detection of common directories
-    for candidate in "dots/.config" ".config" "dots/.local/bin" ".local/bin" "dots/.local/share" ".local/share"; do
+    for candidate in "dots/default/.config" ".config" "dots/default/.local/bin" ".local/bin" "dots/default/.local/share" ".local/share"; do
       if [[ -d "${REPO_ROOT}/${candidate}" ]]; then
         # Avoid duplicates
         if [[ ! " ${found_dirs[*]} " =~ " ${candidate} " ]]; then
@@ -1039,10 +1039,10 @@ if [[ "$process_files" == true ]]; then
       continue
     fi
     
-    # FIX: Properly handle dots/ prefix mapping
-    if [[ "$dir_name" == dots/* ]]; then
-      # Strip "dots/" prefix for home directory mapping
-      home_subdir="${dir_name#dots/}"
+    # FIX: Properly handle dots/default/ prefix mapping
+    if [[ "$dir_name" == dots/default/* ]]; then
+      # Strip "dots/default/" prefix for home directory mapping
+      home_subdir="${dir_name#dots/default/}"
       home_dir_path="${HOME}/${home_subdir}"
     else
       # Direct structure

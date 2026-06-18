@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cp -rf ~/.config/quickshell dots/.config/
+cp -rf ~/.config/quickshell dots/default/.config/

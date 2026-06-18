@@ -21,7 +21,7 @@ Options:
                         ignore:  Add to ignore     backup: Backup and replace
 
 This script updates your dotfiles by:
-  1. Auto-detecting repository structure (dots/ prefix or direct)
+  1. Auto-detecting repository structure (dots/default/ prefix or direct)
   2. Pulling latest changes from git remote
   3. Optionally rebuilding packages (if -p flag is used)
   4. Syncing configuration files to home directory

@@ -101,9 +101,9 @@ test_help_option() {
   fi
 }
 
-# Test 4: Test repository structure detection (dots/ prefix)
+# Test 4: Test repository structure detection (dots/default/ prefix)
 test_dots_structure() {
-  log_test "Testing dots/ prefix structure detection"
+  log_test "Testing dots/default/ prefix structure detection"
 
   local test_repo
   test_repo=$(setup_test_env)
@@ -111,9 +111,9 @@ test_dots_structure() {
 
   cd "$test_repo" || { log_fail "Failed to cd to test directory"; return 1; }
 
-  mkdir -p dots/.config/test-app
-  mkdir -p dots/.local/bin
-  echo "test config" > dots/.config/test-app/config.conf
+  mkdir -p dots/default/.config/test-app
+  mkdir -p dots/default/.local/bin
+  echo "test config" > dots/default/.config/test-app/config.conf
 
   git add .
   git commit -m "Add dots structure" -q
@@ -150,7 +150,7 @@ EOF
   chmod +x test_detection.sh
   result=$(./test_detection.sh "$test_repo")
 
-  if [[ "$result" == *"dots/.config"* ]]; then
+  if [[ "$result" == *"dots/default/.config"* ]]; then
     log_pass "Dots structure detected correctly"
     cd "$ORIGINAL_DIR"
     return 0
@@ -211,7 +211,7 @@ EOF
   chmod +x test_detection.sh
   result=$(./test_detection.sh "$test_repo")
 
-  if [[ "$result" == *".config"* ]] && [[ "$result" != *"dots/"* ]]; then
+  if [[ "$result" == *".config"* ]] && [[ "$result" != *"dots/default/"* ]]; then
     log_pass "Flat structure detected correctly"
     cd "$ORIGINAL_DIR"
     return 0
@@ -224,11 +224,11 @@ EOF
 
 # Test 6: Test dots prefix mapping to home directory
 test_dots_mapping() {
-  log_test "Testing dots/ prefix home directory mapping"
+  log_test "Testing dots/default/ prefix home directory mapping"
   
-  dir_name="dots/.config"
-  if [[ "$dir_name" == dots/* ]]; then
-    home_subdir="${dir_name#dots/}"
+  dir_name="dots/default/.config"
+  if [[ "$dir_name" == dots/default/* ]]; then
+    home_subdir="${dir_name#dots/default/}"
     home_dir_path="${HOME}/${home_subdir}"
   else
     home_dir_path="${HOME}/${dir_name}"
@@ -400,8 +400,8 @@ test_dry_run() {
   chmod +x setup
 
   # Create a test config file in repo
-  mkdir -p dots/.config/test-app
-  echo "test config" > dots/.config/test-app/config.conf
+  mkdir -p dots/default/.config/test-app
+  echo "test config" > dots/default/.config/test-app/config.conf
 
   git add .
   git commit -m "Add test config" -q
@@ -491,7 +491,7 @@ test_lock_file() {
   # Copy necessary files
   cp "$ORIGINAL_DIR/setup" .
   cp -r "$ORIGINAL_DIR/sdata" .
-  mkdir -p dots/.config
+  mkdir -p dots/default/.config
   chmod +x setup
   
   git add .

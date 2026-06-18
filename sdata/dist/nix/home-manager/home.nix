@@ -17,7 +17,7 @@ quickshell, home_attrs, ... }:
       xdg-desktop-portal-wlr
       kdePackages.xdg-desktop-portal-kde
     ];
-    # The following seems to generate ~/.config/xdg-desktop-portal conflicting with the one under dots/
+    # The following seems to generate ~/.config/xdg-desktop-portal conflicting with the one under dots/default/
     #config.hyprland = {
     #  default = [ "hyprland" "gtk" ];
     #  "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
