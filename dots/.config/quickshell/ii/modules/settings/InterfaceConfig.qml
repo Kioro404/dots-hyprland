@@ -39,30 +39,52 @@ ContentPage {
                 Config.options.cheatsheet.useMacSymbol = checked;
             }
             StyledToolTip {
-                text: Translation.tr("e.g. 󰘴  for Ctrl, 󰘵  for Alt, 󰘶  for Shift, etc")
+                text: Translation.tr("Replace %1").arg("Ctrl = 󰘴, Alt = 󰘵, Shift = 󰘶, etc")
             }
         }
 
         ConfigSwitch {
             buttonIcon: "󱊶"
-            text: Translation.tr("Use symbols for function keys")
+            text: Translation.tr("Use symbols for %1").arg(Translation.tr("Function keys").toLowerCase())
             checked: Config.options.cheatsheet.useFnSymbol
             onCheckedChanged: {
                 Config.options.cheatsheet.useFnSymbol = checked;
             }
             StyledToolTip {
-              text: Translation.tr("e.g. 󱊫 for F1, 󱊶  for F12")
+              text: Translation.tr("Replace %1").arg("F1 = 󱊫, F12 = 󱊶, etc")
             }
         }
         ConfigSwitch {
             buttonIcon: "󰍽"
-            text: Translation.tr("Use symbols for mouse")
+            text: Translation.tr("Use symbols for %1").arg(Translation.tr("Mouse").toLowerCase())
             checked: Config.options.cheatsheet.useMouseSymbol
             onCheckedChanged: {
                 Config.options.cheatsheet.useMouseSymbol = checked;
             }
             StyledToolTip {
-              text: Translation.tr("Replace 󱕐   for \"Scroll ↓\", 󱕑   \"Scroll ↑\", L󰍽   \"LMB\", R󰍽   \"RMB\", 󱕒   \"Scroll ↑/↓\" and ⇞/⇟ for \"Page_↑/↓\"")
+              text: Translation.tr("Replace %1").arg("󱕐 = \"Scroll ↓\", 󱕑 = \"Scroll ↑\", \"L 󰍽\" = \"LMB\", \"󰍽 R\" = \"RMB\", 󱕒 = \"Scroll ↑/↓\"")
+            }
+        }
+        ConfigSwitch {
+            buttonIcon: "󰁝/󰁅/󰁍/󰁔"
+            text: Translation.tr("Use symbols for %1").arg(Translation.tr("Arrows").toLowerCase())
+            checked: Config.options.cheatsheet.useArrowSymbol
+            onCheckedChanged: {
+                Config.options.cheatsheet.useArrowSymbol = checked;
+            }
+            StyledToolTip {
+              text: Translation.tr("Replace %1").arg("Up = 󰁝, Down = 󰁅, Left = 󰁍, Right = 󰁔")
+            }
+        }
+        ConfigSwitch {
+            buttonIcon: "⇞/⇟"
+            text: Translation.tr("Use symbols for %1").arg(Translation.tr("Pages").toLowerCase())
+            checked: Config.options.cheatsheet.usePageSymbol
+            onCheckedChanged: {
+                Config.options.cheatsheet.usePageSymbol = checked;
+            }
+            StyledToolTip {
+              text: Translation.tr("Replace %1").arg("\"Page ↑\" = ⇞, \"Page ↓\" = ⇟")
             }
         }
         ConfigSwitch {
