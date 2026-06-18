@@ -43,9 +43,9 @@ ContentPage {
         ConfigSwitch {
             buttonIcon: "translate"
             text: Translation.tr('Enable translator')
-            checked: Config.options.sidebar.translator.enable
+            checked: Config.options.sidebar.left.translator.enable
             onCheckedChanged: {
-                Config.options.sidebar.translator.enable = checked;
+                Config.options.sidebar.left.translator.enable = checked;
             }
         }
     }
