@@ -32,7 +32,7 @@ case "${SKIP_FONTCONFIG}" in
   *)
     case "$FONTSET_DIR_NAME" in
       "") install_dir__sync dots/default/.config/fontconfig "$XDG_CONFIG_HOME"/fontconfig ;;
-      *) install_dir__sync dots-extra/fontsets/$FONTSET_DIR_NAME "$XDG_CONFIG_HOME"/fontconfig ;;
+      *) install_dir__sync dots/extra/fontsets/$FONTSET_DIR_NAME "$XDG_CONFIG_HOME"/fontconfig ;;
     esac;;
 esac
 
@@ -46,7 +46,7 @@ case "${SKIP_HYPRLAND}" in
     done
     for i in hypridle.conf ; do
       if [[ "${INSTALL_VIA_NIX}" == true ]]; then
-        install_file__auto_backup "dots-extra/via-nix/$i" "${XDG_CONFIG_HOME}/hypr/$i"
+        install_file__auto_backup "dots/extra/via-nix/$i" "${XDG_CONFIG_HOME}/hypr/$i"
       else
         install_file__auto_backup "dots/default/.config/hypr/$i" "${XDG_CONFIG_HOME}/hypr/$i"
       fi
