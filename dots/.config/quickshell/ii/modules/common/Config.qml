@@ -374,9 +374,11 @@ Singleton {
                 // 10:  | 11:  | 12:  | 13:  | 14: 󱄛
                 property string superKey: ""
                 property bool useMacSymbol: false
-                property bool splitButtons: false
-                property bool useMouseSymbol: false
                 property bool useFnSymbol: false
+                property bool useMouseSymbol: false
+                property bool useArrowSymbol: false
+                property bool usePageSymbol: false
+                property bool splitButtons: false
                 property JsonObject fontSize: JsonObject {
                     property int key: Appearance.font.pixelSize.smaller
                     property int comment: Appearance.font.pixelSize.smaller
@@ -671,7 +673,6 @@ Singleton {
 
             property JsonObject workSafety: JsonObject {
                 property JsonObject enable: JsonObject {
-                    property bool wallpaper: false
                     property bool clipboard: false
                 }
                 property JsonObject triggerCondition: JsonObject {
