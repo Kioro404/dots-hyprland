@@ -13,7 +13,7 @@ Item {
     property int sidebarPadding: 10
     anchors.fill: parent
     property bool aiChatEnabled: Config.options.sidebar.left.ai.option.ai !== 0
-    property bool translatorEnabled: Config.options.sidebar.translator.enable
+    property bool translatorEnabled: Config.options.sidebar.left.translator.enable
     property bool animeEnabled: Config.options.sidebar.left.ai.option.weeb !== 0
     property bool animeCloset: Config.options.sidebar.left.ai.option.weeb === 2
     property var tabButtonList: [
