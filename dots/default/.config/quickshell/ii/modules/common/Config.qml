@@ -1,0 +1,686 @@
+pragma Singleton
+pragma ComponentBehavior: Bound
+import QtQuick
+import Quickshell
+import Quickshell.Io
+import qs.modules.common.functions
+
+Singleton {
+    id: root
+    property string filePath: Directories.shellConfigPath
+    property alias options: configOptionsJsonAdapter
+    property bool ready: false
+    property int readWriteDelay: 50 // milliseconds
+    property bool blockWrites: false
+
+    property int panelFamilyIndexII: {
+        let tools = Config.options?.panel?.tools;
+        if (!tools || tools.length === 0) return -1;
+        let index = tools.findIndex(tool => tool?.bar?.name === "ii");
+
+        return (index !== -1) ? index : 0;
+    }
+    property int panelFamilyIndexWAFFLE: {
+        let tools = Config.options?.panel?.tools;
+        if (!tools || tools.length === 0) return -1;
+        let index = tools.findIndex(tool => tool?.bar?.name === "waffle");
+
+        return (index !== -1) ? index : 1;
+    }
+
+    function setNestedValue(nestedKey, value) {
+        let keys = nestedKey.split(".");
+        let obj = root.options;
+        let parents = [obj];
+
+        // Traverse and collect parent objects
+        for (let i = 0; i < keys.length - 1; ++i) {
+            if (!obj[keys[i]] || typeof obj[keys[i]] !== "object") {
+                obj[keys[i]] = {};
+            }
+            obj = obj[keys[i]];
+            parents.push(obj);
+        }
+
+        // Convert value to correct type using JSON.parse when safe
+        let convertedValue = value;
+        if (typeof value === "string") {
+            let trimmed = value.trim();
+            if (trimmed === "true" || trimmed === "false" || !isNaN(Number(trimmed))) {
+                try {
+                    convertedValue = JSON.parse(trimmed);
+                } catch (e) {
+                    convertedValue = value;
+                }
+            }
+        }
+
+        obj[keys[keys.length - 1]] = convertedValue;
+    }
+
+    Timer {
+        id: fileReloadTimer
+        interval: root.readWriteDelay
+        repeat: false
+        onTriggered: {
+            configFileView.reload()
+        }
+    }
+
+    Timer {
+        id: fileWriteTimer
+        interval: root.readWriteDelay
+        repeat: false
+        onTriggered: {
+            configFileView.writeAdapter()
+        }
+    }
+
+    FileView {
+        id: configFileView
+        path: root.filePath
+        watchChanges: true
+        blockWrites: root.blockWrites
+        onFileChanged: fileReloadTimer.restart()
+        onAdapterUpdated: fileWriteTimer.restart()
+        onLoaded: root.ready = true
+        onLoadFailed: error => {
+            if (error == FileViewError.FileNotFound) {
+                writeAdapter();
+            }
+        }
+
+        JsonAdapter {
+            id: configOptionsJsonAdapter
+
+            property JsonObject panel: JsonObject {
+                property string family: "ii"
+                property bool disabled: false
+                property JsonObject dock: JsonObject {
+                    property bool enable: false
+                    property bool monochromeIcons: true
+                    property real height: 60
+                    property real hoverRegionHeight: 2
+                    property bool pinnedOnStartup: false
+                    property bool hoverToReveal: true // When false, only reveals on empty workspace
+                    property list<string> pinnedApps: ["org.kde.dolphin", "kitty"] // IDs of pinned entries
+                    property list<string> ignoredAppRegexes: []
+                }
+                property list<var> tools: [
+                    {
+                        bar: {
+                            name: "ii",
+                            config: {
+                                autoHide: {
+                                    enable: false,
+                                    hoverRegionWidth: 2,
+                                    pushWindows: false,
+                                    showWhenPressingSuper: {
+                                        enable: true,
+                                        delay: 140
+                                    }
+                                },
+                                bottom: false,
+                                cornerStyle: 0,
+                                floatStyleShadow: true,
+                                borderless: false,
+                                topLeftIcon: "spark",
+                                showBackground: true,
+                                verbose: true,
+                                vertical: false,
+                                resources: {
+                                    alwaysShowSwap: true,
+                                    alwaysShowCpu: true,
+                                    memoryWarningThreshold: 95,
+                                    swapWarningThreshold: 85,
+                                    cpuWarningThreshold: 90
+                                },
+                                utilButtons: {
+                                    showScreenSnip: true,
+                                    showColorPicker: false,
+                                    showMicToggle: false,
+                                    showKeyboardToggle: true,
+                                    showDarkModeToggle: true,
+                                    showPerformanceProfileToggle: false,
+                                    showScreenRecord: false
+                                },
+                                workspaces: {
+                                    monochromeIcons: true,
+                                    shown: 10,
+                                    showAppIcons: true,
+                                    alwaysShowNumbers: false,
+                                    showNumberDelay: 300,
+                                    numberMap: ["1", "2"],
+                                    useNerdFont: false
+                                },
+                                indicators: {
+                                    notifications: {
+                                        showUnreadCount: false
+                                    }
+                                },
+                                tooltips: {
+                                    clickToShow: false
+                                }
+                            }
+                        }
+                    },
+                    {
+                        bar: {
+                            name: "waffle",
+                            config: {
+                                tweaks: {
+                                    switchHandlePositionFix: true,
+                                    smootherMenuAnimations: true,
+                                    smootherSearchBar: true
+                                },
+                                bar: {
+                                    bottom: true,
+                                    leftAlignApps: false
+                                },
+                                actionCenter: {
+                                    toggles: [
+                                        "network", "bluetooth", "easyEffects", "powerProfile",
+                                        "idleInhibitor", "nightLight", "darkMode", "antiFlashbang",
+                                        "cloudflareWarp", "mic", "musicRecognition", "notifications",
+                                        "onScreenKeyboard", "gameMode", "screenSnip", "colorPicker"
+                                    ]
+                                },
+                                calendar: {
+                                    force2CharDayOfWeek: true
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+
+            property JsonObject policies: JsonObject {
+                property int weeb: 1 // 0: No | 1: Open | 2: Closet
+            }
+
+            property JsonObject appearance: JsonObject {
+                property bool extraBackgroundTint: true
+                property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
+                property list<var> fonts: [
+                    {
+                        typography: {
+                            type: "Main",
+                            family: "Google Sans Flex",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Numbers",
+                            family: "Google Sans Flex",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Title",
+                            family: "Google Sans Flex",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Icons",
+                            family: "JetBrains Mono NF",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Monospace",
+                            family: "JetBrains Mono NF",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Reading",
+                            family: "Readex Pro",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                    {
+                        typography: {
+                            type: "Expressive",
+                            family: "Space Grotesk",
+                            // style: "normal",
+                            // size: 14
+                        }
+                    },
+                ]
+                property JsonObject transparency: JsonObject {
+                    property bool enable: false
+                    property bool automatic: true
+                    property real backgroundTransparency: 0.11
+                    property real contentTransparency: 0.57
+                }
+                property JsonObject wallpaperTheming: JsonObject {
+                    property bool enableAppsAndShell: true
+                    property bool enableQtApps: true
+                    property bool enableTerminal: true
+                    property JsonObject terminalGenerationProps: JsonObject {
+                        property real harmony: 0.6
+                        property real harmonizeThreshold: 100
+                        property real termFgBoost: 0.35
+                        property bool forceDarkMode: false
+                    }
+                }
+                property JsonObject palette: JsonObject {
+                    property string type: "auto" // Allowed: auto, scheme-content, scheme-expressive, scheme-fidelity, scheme-fruit-salad, scheme-monochrome, scheme-neutral, scheme-rainbow, scheme-tonal-spot
+                    property string accentColor: ""
+                }
+            }
+
+            property JsonObject audio: JsonObject {
+                // Values in %
+                property JsonObject protection: JsonObject {
+                    // Prevent sudden bangs
+                    property bool enable: false
+                    property real maxAllowedIncrease: 10
+                    property real maxAllowed: 99
+                }
+            }
+
+            property list<var> apps: [
+                {
+                    type: {
+                        name: "Bluetooth",
+                        provider: "kcmshell6 kcm_bluetooth"
+                    }
+                },
+                {
+                    type: {
+                        name: "Change Password",
+                        provider: "kitty -1 --hold=yes zsh -i -c 'passwd'"
+                    }
+                },
+                {
+                    type: {
+                        name: "Network",
+                        provider: "kcmshell6 kcm_networkmanagement"
+                    }
+                },
+                {
+                    type: {
+                        name: "Ethernet",
+                        provider: "kcmshell6 kcm_networkmanagement"
+                    }
+                },
+                {
+                    type: {
+                        name: "Manage User",
+                        provider: "kcmshell6 kcm_users"
+                    }
+                },
+                {
+                    type: {
+                        name: "Task Manager",
+                        provider: "plasma-systemmonitor --page-name Processes"
+                    }
+                },
+                {
+                    type: {
+                        name: "Terminal",
+                        provider: "kitty -1"
+                    }
+                },
+                {
+                    type: {
+                        name: "Update",
+                        provider: "kitty -1 --hold=yes zsh -i -c 'pkexec pacman -Syu'"
+                    }
+                },
+                {
+                    type: {
+                        name: "Volume Mixer",
+                        provider: `~/.config/hypr/hyprland/scripts/launch_first_available.sh "pavucontrol-qt" "pavucontrol"`
+                    }
+                }
+            ]
+
+            property JsonObject background: JsonObject {
+                property string wallpaperPath: ""
+                property string thumbnailPath: ""
+            }
+
+            property JsonObject battery: JsonObject {
+                property int low: 20
+                property int critical: 5
+                property int full: 101
+                property bool automaticSuspend: true
+                property int suspend: 3
+                property bool idleInhibit: false
+            }
+
+            property JsonObject calendar: JsonObject {
+                property string locale: "en-GB"
+            }
+
+            property JsonObject cheatsheet: JsonObject {
+                // Use a nerdfont to see the icons
+                // 0: 󰖳  | 1: 󰌽 | 2: 󰘳 | 3:  | 4: 󰨡
+                // 5:  | 6:  | 7: 󰣇 | 8:  | 9: 
+                // 10:  | 11:  | 12:  | 13:  | 14: 󱄛
+                property string superKey: ""
+                property bool useMacSymbol: false
+                property bool useFnSymbol: false
+                property bool useMouseSymbol: false
+                property bool useArrowSymbol: false
+                property bool usePageSymbol: false
+                property bool splitButtons: false
+                property JsonObject fontSize: JsonObject {
+                    property int key: Appearance.font.pixelSize.smaller
+                    property int comment: Appearance.font.pixelSize.smaller
+                }
+            }
+
+            property JsonObject conflictKiller: JsonObject {
+                property bool autoKillNotificationDaemons: false
+                property bool autoKillTrays: false
+            }
+
+            property JsonObject crosshair: JsonObject {
+                // Valorant crosshair format. Use https://www.vcrdb.net/builder
+                property string code: "0;P;d;1;0l;10;0o;2;1b;0"
+            }
+
+            property JsonObject interactions: JsonObject {
+                property JsonObject scrolling: JsonObject {
+                    property bool fasterTouchpadScroll: false // Enable faster scrolling with touchpad
+                    property int mouseScrollDeltaThreshold: 120 // delta >= this then it gets detected as mouse scroll rather than touchpad
+                    property int mouseScrollFactor: 120
+                    property int touchpadScrollFactor: 450
+                }
+                property JsonObject deadPixelWorkaround: JsonObject { // Hyprland leaves out 1 pixel on the right for interactions
+                    property bool enable: false
+                }
+            }
+
+            property JsonObject language: JsonObject {
+                property string ui: "auto" // UI language. "auto" for system locale, or specific language code like "zh_CN", "en_US"
+                property JsonObject translator: JsonObject {
+                    property string engine: "auto" // Run `trans -list-engines` for available engines. auto should use google
+                    property string targetLanguage: "auto" // Run `trans -list-all` for available languages
+                    property string sourceLanguage: "auto"
+                }
+            }
+
+            property JsonObject launcher: JsonObject {
+                property list<string> pinnedApps: [ "org.kde.dolphin", "kitty", "cmake-gui"]
+            }
+
+            property JsonObject light: JsonObject {
+                property JsonObject night: JsonObject {
+                    property bool enabled: false
+                    property bool automatic: false
+                    property string from: "19:00" // Format: "HH:mm", 24-hour time
+                    property string to: "06:30"   // Format: "HH:mm", 24-hour time
+                    property int colorTemperature: 5000
+                }
+                property JsonObject antiFlashbang: JsonObject {
+                    property bool enable: false
+                }
+            }
+
+            property JsonObject lock: JsonObject {
+                property bool useHyprlock: false
+                property bool launchOnStartup: false
+                property JsonObject blur: JsonObject {
+                    property bool enable: true
+                    property real radius: 100
+                    property real extraZoom: 1.1
+                }
+                property bool centerClock: true
+                property bool showLockedText: true
+                property JsonObject security: JsonObject {
+                    property bool unlockKeyring: true
+                    property bool requirePasswordToPower: false
+                }
+                property bool materialShapeChars: true
+            }
+
+            property JsonObject media: JsonObject {
+                // Attempt to remove dupes (the aggregator playerctl one and browsers' native ones when there's plasma browser integration)
+                property bool filterDuplicatePlayers: true
+            }
+
+            property JsonObject networking: JsonObject {
+                property bool bluetoothEnabled: false
+                property string userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
+            }
+
+            property JsonObject notifications: JsonObject {
+                property bool disabled: false
+                property int timeout: 5000
+            }
+
+            property JsonObject osd: JsonObject {
+                property int timeout: 1000
+            }
+
+            property JsonObject osk: JsonObject {
+                property string layout: "qwerty_full"
+                property bool pinnedOnStartup: false
+            }
+
+            property JsonObject overlay: JsonObject {
+                property bool openingZoomAnimation: true
+                property bool darkenScreen: true
+                property real clickthroughOpacity: 0.8
+                property JsonObject floatingImage: JsonObject {
+                    property string imageSource: "https://media.tenor.com/H5U5bJzj3oAAAAAi/kukuru.gif"
+                    property real scale: 0.5
+                }
+            }
+
+            property JsonObject overview: JsonObject {
+                property bool enable: true
+                property real scale: 0.18 // Relative to screen size
+                property real rows: 2
+                property real columns: 5
+                property bool orderRightLeft: false
+                property bool orderBottomUp: false
+                property bool centerIcons: true
+            }
+
+            property JsonObject regionSelector: JsonObject {
+                property JsonObject targetRegions: JsonObject {
+                    property bool windows: true
+                    property bool layers: false
+                    property bool content: true
+                    property bool showLabel: false
+                    property real opacity: 0.3
+                    property real contentRegionOpacity: 0.8
+                    property int selectionPadding: 5
+                }
+                property JsonObject rect: JsonObject {
+                    property bool showAimLines: true
+                }
+                property JsonObject circle: JsonObject {
+                    property int strokeWidth: 6
+                    property int padding: 10
+                }
+                property JsonObject annotation: JsonObject {
+                    property bool useSatty: false
+                }
+            }
+
+            property JsonObject resources: JsonObject {
+                property int updateInterval: 3000
+                property int historyLength: 60
+            }
+
+            property JsonObject tray: JsonObject {
+                property bool monochromeIcons: true
+                property bool showItemId: false
+                property bool invertPinnedItems: true // Makes the below a whitelist for the tray and blacklist for the pinned area
+                property list<var> pinnedItems: [ "Fcitx" ]
+                property bool filterPassive: true
+            }
+
+            property JsonObject musicRecognition: JsonObject {
+                property int timeout: 16
+                property int interval: 4
+            }
+
+            property JsonObject search: JsonObject {
+                property int nonAppResultDelay: 30 // This prevents lagging when typing
+                property string engineBaseUrl: "https://www.google.com/search?q="
+                property list<string> excludedSites: ["quora.com", "facebook.com"]
+                property bool sloppy: false // Uses levenshtein distance based scoring instead of fuzzy sort. Very weird.
+                property JsonObject prefix: JsonObject {
+                    property bool showDefaultActionsWithoutPrefix: true
+                    property string action: "/"
+                    property string app: ">"
+                    property string clipboard: ";"
+                    property string emojis: ":"
+                    property string math: "="
+                    property string shellCommand: "$"
+                    property string webSearch: "?"
+                }
+                property JsonObject imageSearch: JsonObject {
+                    property string imageSearchEngineBaseUrl: "https://lens.google.com/uploadbyurl?url="
+                    property bool useCircleSelection: false
+                }
+            }
+
+            property JsonObject sidebar: JsonObject {
+                property JsonObject left: JsonObject {
+                    property JsonObject ai: JsonObject {
+                        property int option: 1 // 0: No | 1: Yes | 2: Local
+                        property string systemPrompt: "## Style\n- Use casual tone, don't be formal! Make sure you answer precisely without hallucination and prefer bullet points over walls of text. You can have a friendly greeting at the beginning of the conversation, but don't repeat the user's question\n\n## Context (ignore when irrelevant)\n- You are a helpful and inspiring sidebar assistant on a {DISTRO} Linux system\n- Desktop environment: {DE}\n- Current date & time: {DATETIME}\n- Focused app: {WINDOWCLASS}\n\n## Presentation\n- Use Markdown features in your response: \n  - **Bold** text to **highlight keywords** in your response\n  - **Split long information into small sections** with h2 headers and a relevant emoji at the start of it (for example `## 🐧 Linux`). Bullet points are preferred over long paragraphs, unless you're offering writing support or instructed otherwise by the user.\n- Asked to compare different options? You should firstly use a table to compare the main aspects, then elaborate or include relevant comments from online forums *after* the table. Make sure to provide a final recommendation for the user's use case!\n- Use LaTeX formatting for mathematical and scientific notations whenever appropriate. Enclose all LaTeX '$$' delimiters. NEVER generate LaTeX code in a latex block unless the user explicitly asks for it. DO NOT use LaTeX for regular documents (resumes, letters, essays, CVs, etc.).\n"
+                        property string tool: "functions" // search, functions, or none
+                        property bool textFadeIn: false
+                        property list<var> extraModels: [
+                            {
+                                "api_format": "openai", // Most of the time you want "openai". Use "gemini" for Google's models
+                                "description": "This is a custom model. Edit the config to add more! | Anyway, this is DeepSeek R1 Distill LLaMA 70B",
+                                "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+                                "homepage": "https://openrouter.ai/deepseek/deepseek-r1-distill-llama-70b:free", // Not mandatory
+                                "icon": "spark-symbolic", // Not mandatory
+                                "key_get_link": "https://openrouter.ai/settings/keys", // Not mandatory
+                                "key_id": "openrouter",
+                                "model": "deepseek/deepseek-r1-distill-llama-70b:free",
+                                "name": "Custom: DS R1 Dstl. LLaMA 70B",
+                                "requires_key": true
+                            }
+                        ]
+                    }
+                    property bool keepRightSidebarLoaded: true
+                    property JsonObject translator: JsonObject {
+                        property bool enable: false
+                        property int delay: 300 // Delay before sending request. Reduces (potential) rate limits and lag.
+                    }
+                    property JsonObject booru: JsonObject {
+                        property bool allowNsfw: false
+                        property string defaultProvider: "yandere"
+                        property int limit: 20
+                        property JsonObject zerochan: JsonObject {
+                            property string username: "[unset]"
+                        }
+                    }
+                }
+
+                property JsonObject right: JsonObject {
+                    property JsonObject cornerOpen: JsonObject {
+                        property bool enable: true
+                        property bool bottom: false
+                        property bool valueScroll: true
+                        property bool clickless: false
+                        property int cornerRegionWidth: 250
+                        property int cornerRegionHeight: 5
+                        property bool visualize: false
+                        property bool clicklessCornerEnd: true
+                        property int clicklessCornerVerticalOffset: 1
+                    }
+
+                    property JsonObject quickToggles: JsonObject {
+                        property int columns: 5
+                        property list<var> toggles: [
+                            { "size": 1, "type": "network" },
+                            { "size": 1, "type": "bluetooth"  },
+                            { "size": 1, "type": "idleInhibitor" },
+                            { "size": 1, "type": "mic" },
+                            { "size": 1, "type": "audio" },
+                            { "size": 1, "type": "nightLight" }
+                        ]
+                    }
+
+                    property JsonObject quickSliders: JsonObject {
+                        property bool enable: false
+                        property bool showMic: false
+                        property bool showVolume: false
+                        property bool showBrightness: true
+                    }
+                }
+            }
+
+            property JsonObject screenRecord: JsonObject {
+                property string savePath: Directories.videos.replace("file://","") // strip "file://"
+            }
+
+            property JsonObject screenSnip: JsonObject {
+                property string savePath: "" // only copy to clipboard when empty
+            }
+
+            property JsonObject sounds: JsonObject {
+                property bool battery: false
+                property bool pomodoro: false
+                property string theme: "freedesktop"
+            }
+
+            property JsonObject time: JsonObject {
+                // https://doc.qt.io/qt-6/qtime.html#toString
+                property string format: "hh:mm"
+                property string shortDateFormat: "dd/MM"
+                property string dateWithYearFormat: "dd/MM/yyyy"
+                property string dateFormat: "ddd, dd/MM"
+                property JsonObject pomodoro: JsonObject {
+                    property int breakTime: 300
+                    property int cyclesBeforeLongBreak: 4
+                    property int focus: 1500
+                    property int longBreak: 900
+                }
+                property bool secondPrecision: false
+            }
+
+            property JsonObject updates: JsonObject {
+                property bool enableCheck: true
+                property int checkInterval: 120 // minutes
+                property int adviseUpdateThreshold: 75 // packages
+                property int stronglyAdviseUpdateThreshold: 200 // packages
+            }
+
+            property JsonObject windows: JsonObject {
+                property bool showTitlebar: true // Client-side decoration for shell apps
+                property bool centerTitle: true
+            }
+
+            property JsonObject hacks: JsonObject {
+                property int arbitraryRaceConditionDelay: 20 // milliseconds
+            }
+
+            property JsonObject workSafety: JsonObject {
+                property JsonObject enable: JsonObject {
+                    property bool clipboard: false
+                }
+                property JsonObject triggerCondition: JsonObject {
+                    property list<string> networkNameKeywords: ["airport", "cafe", "college", "company", "eduroam", "free", "guest", "public", "school", "university"]
+                    property list<string> fileKeywords: ["anime", "booru", "ecchi", "hentai", "yande.re", "konachan", "breast", "nipples", "pussy", "nsfw", "spoiler", "girl"]
+                    property list<string> linkKeywords: ["hentai", "porn", "sukebei", "hitomi.la", "rule34", "gelbooru", "fanbox", "dlsite"]
+                }
+            }
+        }
+    }
+}

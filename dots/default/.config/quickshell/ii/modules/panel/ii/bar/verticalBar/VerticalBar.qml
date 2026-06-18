@@ -1,0 +1,256 @@
+import QtQuick
+import QtQuick.Layouts
+import Quickshell
+import Quickshell.Io
+import Quickshell.Wayland
+import Quickshell.Hyprland
+import Quickshell.Services.UPower
+import qs
+import qs.services
+import qs.modules.common
+import qs.modules.common.widgets
+import qs.modules.common.functions
+
+Scope {
+    id: bar
+    property bool showBarBackground: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.showBackground
+
+    Variants {
+        // For each monitor
+        model: {
+            if (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.disabled)
+                return [];
+            const screens = Quickshell.screens;
+            const list = Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.screenList;
+            if (!list || list.length === 0)
+                return screens;
+            return screens.filter(screen => list.includes(screen.name));
+        }
+        LazyLoader {
+            id: barLoader
+            active: GlobalStates.barOpen && !GlobalStates.screenLocked
+            required property ShellScreen modelData
+            component: PanelWindow { // Bar window
+                id: barRoot
+                screen: barLoader.modelData
+
+                property var brightnessMonitor: Brightness.getMonitorForScreen(barLoader.modelData)
+                
+                Timer {
+                    id: showBarTimer
+                    interval: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.showWhenPressingSuper.delay ?? 100)
+                    repeat: false
+                    onTriggered: {
+                        barRoot.superShow = true
+                    }
+                }
+                Connections {
+                    target: GlobalStates
+                    function onSuperDownChanged() {
+                        if (!Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.showWhenPressingSuper.enable) return;
+                        if (GlobalStates.superDown) showBarTimer.restart();
+                        else {
+                            showBarTimer.stop();
+                            barRoot.superShow = false;
+                        }
+                    }
+                }
+                property bool superShow: false
+                property bool mustShow: hoverRegion.containsMouse || superShow
+                exclusionMode: ExclusionMode.Ignore
+                exclusiveZone: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.enable && (!mustShow || !Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.pushWindows)) ? 0 :
+                    Appearance.sizes.baseVerticalBarWidth + (Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 1 ? Appearance.sizes.hyprlandGapsOut : 0)
+                WlrLayershell.layer: WlrLayer.Bottom
+                WlrLayershell.namespace: "quickshell:verticalBar"
+                implicitWidth: Appearance.sizes.verticalBarWidth + Appearance.rounding.screenRounding
+                mask: Region {
+                    item: hoverMaskRegion
+                }
+                color: "transparent"
+
+                // Positioning
+                anchors {
+                    left: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                    right: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                    top: true
+                    bottom: true
+                }
+
+                // Include in focus grab
+                Component.onCompleted: {
+                    GlobalFocusGrab.addPersistent(barRoot);
+                }
+                Component.onDestruction: {
+                    GlobalFocusGrab.removePersistent(barRoot);
+                }
+
+                MouseArea  {
+                    id: hoverRegion
+                    hoverEnabled: true
+                    anchors.fill: parent
+
+                    Item {
+                        id: hoverMaskRegion
+                        anchors {
+                            fill: barContent
+                            leftMargin: -Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.hoverRegionWidth
+                            rightMargin: -Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.hoverRegionWidth
+                        }
+                    }
+
+                    VerticalBarContent {
+                        id: barContent
+                        
+                        implicitWidth: Appearance.sizes.verticalBarWidth
+                        anchors {
+                            top: parent.top
+                            bottom: parent.bottom
+                            left: parent.left
+                            right: undefined
+                            leftMargin: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.enable && !mustShow) ? -Appearance.sizes.verticalBarWidth : 0
+                            rightMargin: 0
+                        }
+                        Behavior on anchors.leftMargin {
+                            animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
+                        }
+                        Behavior on anchors.rightMargin {
+                            animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
+                        }
+
+                        states: State {
+                            name: "right"
+                            when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                            AnchorChanges {
+                                target: barContent
+                                anchors {
+                                    top: parent.top
+                                    bottom: parent.bottom
+                                    left: undefined
+                                    right: parent.right
+                                }
+                            }
+                            PropertyChanges {
+                                target: barContent
+                                anchors.topMargin: 0
+                                anchors.rightMargin: (Config?.options.panel.tools[Config.panelFamilyIndexII].bar.config.autoHide.enable && !mustShow) ? -Appearance.sizes.barHeight : 0
+                            }
+                        }
+                    }
+
+                    // Round decorators
+                    Loader {
+                        id: roundDecorators
+                        anchors {
+                            top: parent.top
+                            bottom: parent.bottom
+                            left: barContent.right
+                            right: undefined
+                        }
+                        width: Appearance.rounding.screenRounding
+                        active: showBarBackground && Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.cornerStyle === 0 // Hug
+
+                        states: State {
+                            name: "right"
+                            when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                            AnchorChanges {
+                                target: roundDecorators
+                                anchors {
+                                    top: parent.top
+                                    bottom: parent.bottom
+                                    left: undefined
+                                    right: barContent.left
+                                }
+                            }
+                        }
+
+                        sourceComponent: Item {
+                            implicitHeight: Appearance.rounding.screenRounding
+                            RoundCorner {
+                                id: topCorner
+                                anchors {
+                                    left: parent.left
+                                    right: parent.right
+                                    top: parent.top
+                                }
+
+                                implicitSize: Appearance.rounding.screenRounding
+                                color: showBarBackground ? Appearance.colors.colLayer0 : "transparent"
+
+                                corner: RoundCorner.CornerEnum.TopLeft
+                                states: State {
+                                    name: "bottom"
+                                    when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                                    PropertyChanges {
+                                        topCorner.corner: RoundCorner.CornerEnum.TopRight
+                                    }
+                                }
+                            }
+                            RoundCorner {
+                                id: bottomCorner
+                                anchors {
+                                    bottom: parent.bottom
+                                    left: !Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? parent.left : undefined
+                                    right: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom ? parent.right : undefined
+                                }
+                                implicitSize: Appearance.rounding.screenRounding
+                                color: showBarBackground ? Appearance.colors.colLayer0 : "transparent"
+
+                                corner: RoundCorner.CornerEnum.BottomLeft
+                                states: State {
+                                    name: "bottom"
+                                    when: Config.options.panel.tools[Config.panelFamilyIndexII].bar.config.bottom
+                                    PropertyChanges {
+                                        bottomCorner.corner: RoundCorner.CornerEnum.BottomRight
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    IpcHandler {
+        target: "bar"
+
+        function toggle(): void {
+            GlobalStates.barOpen = !GlobalStates.barOpen
+        }
+
+        function close(): void {
+            GlobalStates.barOpen = false
+        }
+
+        function open(): void {
+            GlobalStates.barOpen = true
+        }
+    }
+
+    GlobalShortcut {
+        name: "barToggle"
+        description: "Toggles bar on press"
+
+        onPressed: {
+            GlobalStates.barOpen = !GlobalStates.barOpen;
+        }
+    }
+
+    GlobalShortcut {
+        name: "barOpen"
+        description: "Opens bar on press"
+
+        onPressed: {
+            GlobalStates.barOpen = true;
+        }
+    }
+
+    GlobalShortcut {
+        name: "barClose"
+        description: "Closes bar on press"
+
+        onPressed: {
+            GlobalStates.barOpen = false;
+        }
+    }
+}

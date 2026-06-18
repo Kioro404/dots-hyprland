@@ -1,0 +1,290 @@
+import qs
+import qs.services
+import qs.modules.common
+import qs.modules.common.widgets
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Quickshell
+import Quickshell.Bluetooth
+import Quickshell.Hyprland
+
+import qs.modules.panel.ii.sidebar.right.quickToggles
+import qs.modules.panel.ii.sidebar.right.bluetoothDevices
+import qs.modules.panel.ii.sidebar.right.nightLight
+import qs.modules.panel.ii.sidebar.right.volumeMixer
+import qs.modules.panel.ii.sidebar.right.wifiNetworks
+
+Item {
+    id: root
+    property int sidebarWidth: Appearance.sizes.sidebarWidth
+    property int sidebarPadding: 10
+    property string settingsQmlPath: Quickshell.shellPath("settings.qml")
+    property bool editMode: false
+
+    implicitHeight: sidebarRightBackground.implicitHeight
+    implicitWidth: sidebarRightBackground.implicitWidth
+
+    StyledRectangularShadow {
+        target: sidebarRightBackground
+    }
+    Rectangle {
+        id: sidebarRightBackground
+
+        anchors.fill: parent
+        implicitHeight: parent.height - Appearance.sizes.hyprlandGapsOut * 2
+        implicitWidth: sidebarWidth - Appearance.sizes.hyprlandGapsOut * 2
+        color: Appearance.colors.colLayer0
+        border.width: 1
+        border.color: Appearance.colors.colLayer0Border
+        radius: Appearance.rounding.screenRounding - Appearance.sizes.hyprlandGapsOut + 1
+
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: sidebarPadding
+            spacing: sidebarPadding
+
+            SystemButtonRow {
+                Layout.fillHeight: false
+                Layout.fillWidth: true
+                // Layout.margins: 10
+                Layout.topMargin: 5
+                Layout.bottomMargin: 0
+            }
+
+            Loader {
+                id: slidersLoader
+                Layout.fillWidth: true
+                visible: active
+                active: {
+                    const configQuickSliders = Config.options.sidebar.right.quickSliders
+                    if (!configQuickSliders.enable) return false
+                    if (!configQuickSliders.showMic && !configQuickSliders.showVolume && !configQuickSliders.showBrightness) return false;
+                    return true;
+                }
+                sourceComponent: QuickSliders {}
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                color: Appearance.colors.colLayer1
+                radius: Appearance.rounding.normal
+                implicitHeight: (quickTogglesLayout.implicitHeight + 16)
+
+                ColumnLayout {
+                    id: quickTogglesLayout
+                    anchors.fill: parent
+                    anchors.margins: 8
+                    spacing: 8
+
+                    LoaderedQuickPanelImplementation {
+                        // styleName: "android"
+                        sourceComponent: AndroidQuickPanel {
+                            editMode: root.editMode
+                        }
+                    }
+                }
+            }
+
+            CenterWidgetGroup {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+            }
+
+            BottomWidgetGroup {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: false
+                Layout.fillWidth: true
+                Layout.preferredHeight: implicitHeight
+            }
+        }
+    }
+
+    ToggleDialog {
+        shownPropertyString: "showAudioOutputDialog"
+        dialog: VolumeDialog {
+            isSink: true
+        }
+    }
+
+    ToggleDialog {
+        shownPropertyString: "showAudioInputDialog"
+        dialog: VolumeDialog {
+            isSink: false
+        }
+    }
+
+    ToggleDialog {
+        shownPropertyString: "showBluetoothDialog"
+        dialog: BluetoothDialog {}
+        onShownChanged: {
+            if (!shown) {
+                Bluetooth.defaultAdapter.discovering = false;
+            } else {
+                BluetoothStatus.setBluetoothState(true);
+                Bluetooth.defaultAdapter.discovering = true;
+            }
+        }
+    }
+
+    ToggleDialog {
+        shownPropertyString: "showNightLightDialog"
+        dialog: NightLightDialog {}
+    }
+
+    ToggleDialog {
+        shownPropertyString: "showWifiDialog"
+        dialog: WifiDialog {}
+        onShownChanged: {
+            if (!shown) return;
+            Network.setWifiStatus(true);
+            Network.rescanWifi();
+        }
+    }
+
+    component ToggleDialog: Loader {
+        id: toggleDialogLoader
+        required property string shownPropertyString
+        property alias dialog: toggleDialogLoader.sourceComponent
+        readonly property bool shown: GlobalStates[toggleDialogLoader.shownPropertyString]
+        anchors.fill: parent
+
+        onShownChanged: if (shown) toggleDialogLoader.active = true;
+        active: shown
+        onActiveChanged: {
+            if (active) {
+                item.show = true;
+                item.forceActiveFocus();
+            }
+        }
+        Connections {
+            target: toggleDialogLoader.item
+            function onDismiss() {
+                toggleDialogLoader.item.show = false
+                GlobalStates[toggleDialogLoader.shownPropertyString] = false;
+            }
+            function onVisibleChanged() {
+                if (!toggleDialogLoader.item.visible && !GlobalStates[toggleDialogLoader.shownPropertyString]) toggleDialogLoader.active = false;
+            }
+        }
+    }
+
+    component LoaderedQuickPanelImplementation: Loader {
+        id: quickPanelImplLoader
+        Layout.alignment: item?.Layout.alignment ?? Qt.AlignHCenter
+        Layout.fillWidth: item?.Layout.fillWidth ?? false
+        visible: active
+        Connections {
+            target: quickPanelImplLoader.item
+            function onOpenAudioOutputDialog() {
+                GlobalStates.showAudioOutputDialog = true;
+            }
+            function onOpenAudioInputDialog() {
+                GlobalStates.showAudioInputDialog = true;
+            }
+            function onOpenBluetoothDialog() {
+                GlobalStates.showBluetoothDialog = true;
+            }
+            function onOpenNightLightDialog() {
+                GlobalStates.showNightLightDialog = true;
+            }
+            function onOpenWifiDialog() {
+                GlobalStates.showWifiDialog = true;
+            }
+        }
+    }
+
+    component SystemButtonRow: Item {
+        implicitHeight: Math.max(uptimeContainer.implicitHeight, systemButtonsRow.implicitHeight)
+
+        Rectangle {
+            id: uptimeContainer
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.left
+            }
+            color: Appearance.colors.colLayer1
+            radius: height / 2
+            implicitWidth: uptimeRow.implicitWidth + 24
+            implicitHeight: uptimeRow.implicitHeight + 8
+            
+            Row {
+                id: uptimeRow
+                anchors.centerIn: parent
+                spacing: 8
+                CustomIcon {
+                    id: distroIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 25
+                    height: 25
+                    source: SystemInfo.distroIcon
+                    colorize: true
+                    color: Appearance.colors.colOnLayer0
+                }
+                StyledText {
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: Appearance.font.pixelSize.normal
+                    color: Appearance.colors.colOnLayer0
+                    text: Translation.tr("Up %1").arg(DateTime.uptime)
+                    textFormat: Text.MarkdownText
+                }
+            }
+        }
+
+        ButtonGroup {
+            id: systemButtonsRow
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                right: parent.right
+            }
+            color: Appearance.colors.colLayer1
+            padding: 4
+
+            QuickToggleButton {
+                toggled: root.editMode
+                buttonIcon: "edit"
+                onClicked: root.editMode = !root.editMode
+                StyledToolTip {
+                    text: Translation.tr("Edit quick toggles") + (root.editMode ? Translation.tr("\nLMB to enable/disable\nRMB to toggle size\nScroll to swap position") : "")
+                }
+            }
+            QuickToggleButton {
+                toggled: false
+                buttonIcon: "restart_alt"
+                onClicked: {
+                    GlobalStates.sidebarRightOpen = false;
+                    GlobalStates.sidebarLeftOpen = false;
+                    Hyprland.dispatch("reload");
+                    Quickshell.reload(true);
+                }
+                StyledToolTip {
+                    text: Translation.tr("Reload Hyprland & Quickshell")
+                }
+            }
+            QuickToggleButton {
+                toggled: false
+                buttonIcon: "settings"
+                onClicked: {
+                    GlobalStates.sidebarRightOpen = false;
+                    Quickshell.execDetached(["qs", "-p", root.settingsQmlPath]);
+                }
+                StyledToolTip {
+                    text: Translation.tr("Settings")
+                }
+            }
+            QuickToggleButton {
+                toggled: false
+                buttonIcon: "power_settings_new"
+                onClicked: {
+                    GlobalStates.sessionOpen = true;
+                }
+                StyledToolTip {
+                    text: Translation.tr("Session")
+                }
+            }
+        }
+    }
+}
